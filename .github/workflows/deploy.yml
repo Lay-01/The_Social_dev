@@ -1,0 +1,31 @@
+name: Deploy React App
+
+on:
+  push:
+    branches: [ main ] # Change to 'master' if your main branch is called master
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install and Build
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build # Change to 'dist' if you used Vite instead of Create React App
+          branch: gh-pages
