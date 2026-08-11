@@ -2,10 +2,13 @@ name: Deploy React App
 
 on:
   push:
-    branches: [ main ] # Change to 'master' if your main branch is called master
+    branches: [ main ]
 
+# This block forces GitHub to allow the script to write and create the gh-pages branch
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   build-and-deploy:
@@ -22,10 +25,10 @@ jobs:
       - name: Install and Build
         run: |
           npm install
-          npm run build
+          npm run build --if-present
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: build to folder: dist
+          folder: dist # Keeps your updated Vite folder
           branch: gh-pages
