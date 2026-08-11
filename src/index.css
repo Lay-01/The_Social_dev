@@ -1,0 +1,234 @@
+/* Master React Application CSS - The_Social_Dev */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap');
+
+:root {
+  --brand-primary: #8b5cf6;
+  --brand-cyan: #06b6d4;
+  --brand-accent: #ffa260;
+  --bg-dark: #07090e;
+  --bg-card: rgba(255, 255, 255, 0.03);
+  --border-glass: rgba(252, 252, 244, 0.15);
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-dark);
+  color: #ffffff;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Section Headings Font Override to match Webflow OptiRise */
+.section-sub-heading, h1 .section-sub-heading, h2 .section-sub-heading {
+  font-family: 'Instrument Serif', Georgia, serif !important;
+}
+
+/* Brand Logo Badges & Navbar Sizing */
+.brand-title-logo {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-accent {
+  color: var(--brand-accent);
+}
+
+.brand-code-badge {
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-cyan));
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-family: monospace;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+}
+
+.brand-logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.nav-link {
+  font-size: 0.875rem !important;
+  padding-left: 14px !important;
+  padding-right: 14px !important;
+  transition: color 0.25s ease !important;
+}
+
+.nav-link.w--current {
+  color: var(--brand-accent) !important;
+}
+
+.nav-button {
+  font-size: 0.875rem !important;
+}
+
+/* Clients Marquee Animation */
+.clients-marquee-logo-wrapper {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.clients-marquee-inner-logo-block {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  flex-shrink: 0;
+  animation: marqueeScroll 25s linear infinite;
+}
+
+.clients-marquee-logo-wrapper:hover .clients-marquee-inner-logo-block {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeScroll {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Custom Pricing Grid in React */
+.custom-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.custom-pricing-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  border-radius: 20px;
+  padding: 40px 30px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  backdrop-filter: blur(16px);
+}
+
+.custom-pricing-card:hover {
+  border-color: var(--brand-accent);
+  background: rgba(255, 162, 96, 0.06);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 162, 96, 0.2);
+}
+
+/* Modal Window Styles */
+.react-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(7, 9, 14, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.react-modal-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.react-modal-card {
+  background: #0d111a;
+  border: 1px solid var(--border-glass);
+  border-radius: 24px;
+  width: 90%;
+  max-width: 580px;
+  padding: 36px;
+  position: relative;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+  transform: translateY(20px) scale(0.95);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.react-modal-backdrop.active .react-modal-card {
+  transform: translateY(0) scale(1);
+}
+
+.react-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.react-modal-close:hover {
+  color: #ffffff;
+}
+
+.react-form-input, .react-form-select, .react-form-textarea {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-glass);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.react-form-input:focus, .react-form-select:focus, .react-form-textarea:focus {
+  border-color: var(--brand-accent);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 15px rgba(255, 162, 96, 0.25);
+}
+
+/* Toast Notifications */
+.react-toast-container {
+  position: fixed;
+  bottom: 85px;
+  right: 30px;
+  z-index: 10000;
+}
+
+.react-toast {
+  background: #0d111a;
+  border: 1px solid var(--brand-accent);
+  border-radius: 14px;
+  padding: 16px 24px;
+  color: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 162, 96, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: slideUpToast 0.4s ease forwards;
+}
+
+@keyframes slideUpToast {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
