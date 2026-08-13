@@ -18,7 +18,7 @@ export default function Navbar({ onToast }) {
         const el = document.getElementById(section);
         if (el) {
           const rect = el.getBoundingClientRect();
-          if (rect.top <= 120 && rect.bottom >= 120) {
+          if (rect.top <= 140 && rect.bottom >= 140) {
             current = section;
             break;
           }
@@ -30,6 +30,18 @@ export default function Navbar({ onToast }) {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Lock body scrolling when mobile menu drawer is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileOpen]);
 
   const handleGetInTouch = (e) => {
     e.preventDefault();
@@ -52,91 +64,97 @@ export default function Navbar({ onToast }) {
   };
 
   return (
-    <div className="navbar w-nav" style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 1000 }}>
-      <div className="nav-container">
-        <a href="/" aria-current="page" className="nav-brand w-nav-brand w--current">
+    <>
+      <header className={`custom-navbar ${scrolled ? 'scrolled' : ''}`}>
+        <div className="nav-container">
+          <a href="/" aria-current="page" className="nav-brand w-nav-brand w--current">
+            <div className="brand-title-logo">
+              <img src={logo} alt="The Social Dev logo" className="brand-logo" />
+              <span>The_<span className="brand-accent">Social_Dev</span></span>
+            </div>
+          </a>
+
+          {/* Desktop Navigation Links */}
+          <nav className="nav-desktop-menu">
+            <a href="#about" className={`nav-link ${activeSection === 'about' ? 'active' : ''}`}>About Us</a>
+            <a href="#services" className={`nav-link ${activeSection === 'services' ? 'active' : ''}`}>Services</a>
+            <a href="#why" className={`nav-link ${activeSection === 'why' ? 'active' : ''}`}>Why Us</a>
+            <a href="#process" className={`nav-link ${activeSection === 'process' ? 'active' : ''}`}>Process</a>
+            <a href="#pricing" className={`nav-link ${activeSection === 'pricing' ? 'active' : ''}`}>Pricing</a>
+          </nav>
+
+          {/* Desktop Right CTA Buttons */}
+          <div className="nav-button-block-desktop">
+            <button 
+              onClick={handleCopyEmail}
+              title="Copy email to clipboard"
+              className="btn-copy-email"
+            >
+              <i className="ri-file-copy-line" style={{ color: '#ffa260' }}></i> Copy Email
+            </button>
+
+            <a href="#contact" className="nav-button-cta" onClick={handleGetInTouch}>
+              <span>Get In Touch</span>
+            </a>
+          </div>
+
+          {/* Mobile Hamburger Toggle Button */}
+          <button 
+            className="nav-hamburger-btn" 
+            onClick={() => setMobileOpen(!mobileOpen)} 
+            aria-label="Toggle navigation"
+            aria-expanded={mobileOpen}
+          >
+            <i className={mobileOpen ? "ri-close-line" : "ri-menu-3-line"}></i>
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile Drawer Menu */}
+      <div className={`nav-mobile-drawer ${mobileOpen ? 'open' : ''}`}>
+        <div className="nav-mobile-header">
           <div className="brand-title-logo">
             <img src={logo} alt="The Social Dev logo" className="brand-logo" />
             <span>The_<span className="brand-accent">Social_Dev</span></span>
           </div>
-        </a>
+          <button className="nav-mobile-close-btn" onClick={() => setMobileOpen(false)} aria-label="Close menu">
+            <i className="ri-close-line"></i>
+          </button>
+        </div>
 
-        <nav role="navigation" className={`nav-menu-block w-nav-menu ${mobileOpen ? 'w--open' : ''}`}>
-          <div className="nav-menu-block-inner">
-            <div className="nav-menu-top-block">
-              <div className="brand-title-logo">
-                <img src={logo} alt="The Social Dev logo" className="brand-logo" />
-                <span>The_<span className="brand-accent">Social_Dev</span></span>
-              </div>
-            </div>
-            <div className="nav-links-wrapper">
-              <a href="#about" className={`nav-link w-nav-link ${activeSection === 'about' ? 'w--current' : ''}`} onClick={() => setMobileOpen(false)}>About Us</a>
-              <a href="#services" className={`nav-link w-nav-link ${activeSection === 'services' ? 'w--current' : ''}`} onClick={() => setMobileOpen(false)}>Services</a>
-              <a href="#why" className={`nav-link w-nav-link ${activeSection === 'why' ? 'w--current' : ''}`} onClick={() => setMobileOpen(false)}>Why Us</a>
-              <a href="#process" className={`nav-link w-nav-link ${activeSection === 'process' ? 'w--current' : ''}`} onClick={() => setMobileOpen(false)}>Process</a>
-              <a href="#pricing" className={`nav-link w-nav-link ${activeSection === 'pricing' ? 'w--current' : ''}`} onClick={() => setMobileOpen(false)}>Pricing</a>
-            </div>
-            
-            <div className="nav-button-block-mobile">
-              <a href="#contact" className="nav-button w-inline-block" onClick={handleGetInTouch}>
-                <div>Get In Touch</div>
-              </a>
-              <button 
-                onClick={handleCopyEmail}
-                style={{ 
-                  background: 'none', 
-                  border: '1px solid rgba(255,162,96,0.3)', 
-                  color: '#ffa260', 
-                  padding: '8px 16px', 
-                  borderRadius: '10px', 
-                  fontSize: '0.8rem', 
-                  cursor: 'pointer',
-                  marginTop: '10px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  justifyContent: 'center',
-                  width: '100%'
-                }}
-              >
-                <i className="ri-file-copy-line"></i> Copy Email
-              </button>
-            </div>
-          </div>
+        <nav className="nav-mobile-links">
+          <a href="#about" className={`nav-mobile-link ${activeSection === 'about' ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>
+            <i className="ri-information-line"></i> About Us
+          </a>
+          <a href="#services" className={`nav-mobile-link ${activeSection === 'services' ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>
+            <i className="ri-service-line"></i> Services
+          </a>
+          <a href="#why" className={`nav-mobile-link ${activeSection === 'why' ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>
+            <i className="ri-star-line"></i> Why Us
+          </a>
+          <a href="#process" className={`nav-mobile-link ${activeSection === 'process' ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>
+            <i className="ri-git-commit-line"></i> Process
+          </a>
+          <a href="#pricing" className={`nav-mobile-link ${activeSection === 'pricing' ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>
+            <i className="ri-price-tag-3-line"></i> Pricing
+          </a>
         </nav>
 
-        <div className="nav-button-block-desktop" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <button 
-            onClick={handleCopyEmail}
-            title="Copy email to clipboard"
-            style={{
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(252,252,244,0.15)',
-              color: 'rgba(255,255,255,0.8)',
-              padding: '8px 14px',
-              borderRadius: '20px',
-              fontSize: '0.8rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            <i className="ri-file-copy-line" style={{ color: '#ffa260' }}></i> Copy Email
-          </button>
-
-          <a href="#contact" className="nav-button w-inline-block" onClick={handleGetInTouch}>
-            <div>Get In Touch</div>
+        <div className="nav-mobile-actions">
+          <a href="#contact" className="nav-button-cta mobile-full" onClick={handleGetInTouch}>
+            Get In Touch
           </a>
-        </div>
-
-        <div className="nav-menu-button w-nav-button" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle navigation">
-          <img src="https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67e82572987ff97b2840c2e9_nav-menu-bar.svg" loading="lazy" alt="Nav bar icon" className="nav-menu-open-icon" style={{ display: mobileOpen ? 'none' : 'block' }}/>
-          <img src="https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67e82572f29a4db721b3f46d_nav-menu-close-icon.svg" loading="lazy" alt="Navbar close icon" className="nav-menu-close-icon" style={{ display: mobileOpen ? 'block' : 'none' }}/>
+          <button onClick={handleCopyEmail} className="btn-copy-email mobile-full">
+            <i className="ri-file-copy-line"></i> Copy Email
+          </button>
         </div>
       </div>
-      <div className="nav-bg-in-scroll" style={{ opacity: scrolled ? 1 : 0 }}></div>
-    </div>
+
+      {/* Mobile Drawer Backdrop Overlay */}
+      {mobileOpen && (
+        <div className="nav-mobile-backdrop" onClick={() => setMobileOpen(false)}></div>
+      )}
+    </>
   );
 }
+

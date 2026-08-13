@@ -18,6 +18,9 @@ export default function WhyChooseUs() {
                       We don’t believe in one-size-fits-all websites. We create custom, niche-focused websites that match your brand, connect with your audience, and support your business goals. From modern design and smooth functionality to SEO-friendly structure, we focus on every detail.
                       Most importantly, we value clear communication, quality work, and customer satisfaction—because your success is the real measure of ours.
                     </div>
+                    <div style={{ marginTop: '16px', color: 'rgba(255,255,255,0.65)', lineHeight: 1.7 }}>
+                      Our development approach combines cutting-edge technologies like React, Node.js, and modern CSS with proven UI/UX principles. We ensure every website loads fast, ranks well on search engines, and provides an intuitive experience across all devices and screen sizes.
+                    </div>
                   </div>
                 </div>
                 <div className="why-button-block" style={{ opacity: 1 }}>

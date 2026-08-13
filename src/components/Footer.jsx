@@ -2,14 +2,22 @@ import React from 'react';
 import logo from '../../images/socdev.jpg';
 
 export default function Footer() {
+  const socialLinks = [
+    { name: 'Instagram', icon: 'ri-instagram-line', url: 'https://www.instagram.com/thesocialdev' },
+    { name: 'LinkedIn', icon: 'ri-linkedin-fill', url: 'https://www.linkedin.com/company/thesocialdev' },
+    { name: 'X (Twitter)', icon: 'ri-twitter-x-fill', url: 'https://x.com/thesocialdev' },
+    { name: 'YouTube', icon: 'ri-youtube-fill', url: 'https://www.youtube.com/@thesocialdev' },
+    { name: 'Facebook', icon: 'ri-facebook-circle-fill', url: 'https://www.facebook.com/thesocialdev' }
+  ];
+
   return (
-    <section className="footer">
+    <footer className="footer">
       <div className="container">
         <div className="page-vertical-padding">
           <div className="footer-contant-wrapper" style={{ opacity: 1 }}>
             <div className="footer-info-wrapper">
               <div className="footer-info-block">
-                <a href="#hero" className="footer-nav-brand w-inline-block">
+                <a href="#about" className="footer-nav-brand w-inline-block">
                   <div className="brand-title-logo">
                     <img src={logo} alt="The Social Dev logo" className="brand-logo" />
                     <span>The_<span className="brand-accent">Social_Dev</span></span>
@@ -21,11 +29,40 @@ export default function Footer() {
                     Bridging technical performance with visual storytelling
                   </div>
                 </div>
+
+                {/* Social Media Links */}
+                <div className="footer-social-links" style={{ display: 'flex', gap: '12px', marginTop: '16px', flexWrap: 'wrap' }}>
+                  {socialLinks.map((item) => (
+                    <a
+                      key={item.name}
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Visit our ${item.name} page`}
+                      style={{
+                        width: '38px',
+                        height: '38px',
+                        borderRadius: '10px',
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        border: '1px solid rgba(255, 255, 255, 0.12)',
+                        color: '#ffa260',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '1.2rem',
+                        textDecoration: 'none',
+                        transition: 'all 0.25s ease'
+                      }}
+                    >
+                      <i className={item.icon}></i>
+                    </a>
+                  ))}
+                </div>
               </div>
 
               <div className="footer-nav-blocks-wrapper">
                 <div className="footer-nav-block">
-                  <div className="heading-style-h5">Navigation</div>
+                  <h3 style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '14px', fontWeight: 600 }}>Quick Links</h3>
                   <div className="footer-nav-link-block">
                     <a href="#about" className="footer-link">About Us</a>
                     <a href="#services" className="footer-link">Services</a>
@@ -35,11 +72,12 @@ export default function Footer() {
                   </div>
                 </div>
                 <div className="footer-nav-block">
-                  <div className="heading-style-h5">Services</div>
+                  <h3 style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '14px', fontWeight: 600 }}>Services</h3>
                   <div className="footer-nav-link-block">
                     <a href="#services" className="footer-link">Web Development</a>
                     <a href="#services" className="footer-link">Aesthetic Social Media</a>
-
+                    <a href="#services" className="footer-link">UI/UX Design</a>
+                    <a href="#services" className="footer-link">Brand Strategy</a>
                   </div>
                 </div>
               </div>
@@ -54,6 +92,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="footer-bg-glow"></div>
-    </section>
+    </footer>
   );
 }
+

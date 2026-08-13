@@ -25,7 +25,9 @@ export default function Hero() {
                 <div className="hero-info-block" style={{ opacity: 1, transform: 'none' }}>
                   <h1>WHERE TECH MEETS <span className="section-sub-heading">Aesthetic</span></h1>
                   <div className="hero-description-block">
-                    <div>At The Social Dev, we bridge the gap between robust technical performance, custom web development, and captivating visual storytelling for startups, entrepreneurs, and personal brands.</div>
+                    <div>
+                      At The Social Dev, we bridge the gap between high-performance technical engineering, custom web development, visual branding, and captivating social media storytelling for ambitious ventures, startups, and growing brands worldwide.
+                    </div>
                   </div>
                 </div>
               </div>
@@ -54,3 +56,4 @@ export default function Hero() {
     </section>
   );
 }
+

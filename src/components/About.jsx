@@ -17,6 +17,9 @@ export default function About() {
                     <div>
                       At The_Social_Dev, we create custom websites tailored to your business niche, goals, and audience. From modern designs to SEO-friendly website structures, we focus on building digital experiences that look great and perform effectively. Customer satisfaction is our motto, and we strive to turn every vision into a website you’re proud of.
                     </div>
+                    <div style={{ marginTop: '16px', color: 'rgba(255,255,255,0.65)', lineHeight: 1.7 }}>
+                      Whether you're a startup launching your first product, an entrepreneur building a personal brand, or a growing company scaling your online presence, our team delivers responsive, high-performance websites and cohesive social media strategies that drive real engagement and measurable results.
+                    </div>
                   </div>
                 </div>
                 <div className="about-button-block" style={{ opacity: 1 }}>

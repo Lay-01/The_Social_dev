@@ -52,8 +52,7 @@ export default function Contact({ onSubmitSuccess }) {
                 Let's Build Something <span className="section-sub-heading" style={{ color: '#ffa260' }}>Great</span>
               </h2>
               <p style={{ color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, fontSize: '1rem', margin: '0 auto', maxWidth: '540px' }}>
-                Fill in your details below.
-
+                Ready to bring your vision to life? Fill in your details below and tell us about your project. Whether you need a custom website, social media strategy, or brand identity, our team is here to help you grow your digital presence and achieve your business goals.
               </p>
             </div>
 

@@ -5,14 +5,20 @@ export default function Services() {
     {
       id: 1,
       title: "Website Development",
-      description: "From sleek landing pages to functional, database-driven web sites(PHP/Vanilla/react/node). We focus on user needs, responsiveness, and user experience.",
+      description: "From sleek landing pages to functional, database-driven web applications using PHP, React, Node.js, and vanilla JavaScript. We focus on user needs, responsive layouts, SEO optimization, and exceptional user experience across all devices.",
       icon: "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfd1dcc5b0275fa8dddfd3_service-logo-01.svg"
     },
     {
       id: 2,
       title: "Aesthetic Social Media Content",
-      description: "High-quality, visually cohesive posts designed to elevate your brand identity and boost engagement.",
+      description: "High-quality, visually cohesive social media posts and creative campaigns designed to elevate your brand identity, increase follower engagement, and build a strong visual presence across Instagram, LinkedIn, and other platforms.",
       icon: "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfd1dc769d5d9b9c2129fb_service-logo-02.svg"
+    },
+    {
+      id: 3,
+      title: "UI/UX Design & Branding",
+      description: "Modern, conversion-focused interface design paired with strategic brand identity development. We craft memorable logos, color palettes, typography systems, and digital brand guidelines that resonate with your target audience.",
+      icon: "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfd1dcc5b0275fa8dddfd3_service-logo-01.svg"
     }
   ];
 

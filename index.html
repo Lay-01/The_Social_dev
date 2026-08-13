@@ -3,33 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Social Dev | Creative Web Development & Social Media Content Agency</title>
-  <meta name="description" content="The Social Dev is a premier creative agency offering 360° custom web development, social media content strategies, visual branding, and digital growth solutions for ambitious ventures." />
+  <title>The Social Dev | Web Development & Content Agency</title>
+  <meta name="description" content="The Social Dev provides custom web development, visual branding, and social media content strategies for growing brands." />
   <meta name="keywords" content="Creative Agency, Web Development Agency, Social Media Content Agency, Web Design Agency, Digital Marketing Company, Branding Agency, Pocket Friendly Website Development, UI UX Design" />
   <meta name="author" content="The Social Dev" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  
+  <!-- Favicon Tags -->
+  <link rel="icon" type="image/jpeg" href="/images/socdev.jpg" />
+  <link rel="shortcut icon" type="image/jpeg" href="/images/socdev.jpg" />
+  <link rel="apple-touch-icon" href="/images/socdev.jpg" />
+
+  <!-- Canonical & Hreflang Language Tags -->
   <link rel="canonical" href="https://thesocialdev.com/" />
+  <link rel="alternate" hreflang="en" href="https://thesocialdev.com/" />
+  <link rel="alternate" hreflang="x-default" href="https://thesocialdev.com/" />
 
   <!-- Open Graph / Facebook / LinkedIn -->
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="The Social Dev | Creative Web Development & Social Media Content Agency" />
-  <meta property="og:description" content="Bridging robust technical performance with captivating visual storytelling. Web development, social media strategy, and digital branding for ambitious ventures." />
+  <meta property="og:title" content="The Social Dev | Web Development & Content Agency" />
+  <meta property="og:description" content="The Social Dev provides custom web development, visual branding, and social media content strategies for growing brands." />
   <meta property="og:url" content="https://thesocialdev.com/" />
   <meta property="og:site_name" content="The Social Dev" />
-  <meta property="og:image" content="https://thesocialdev.com/images/og-cover.png" />
+  <meta property="og:image" content="https://thesocialdev.com/images/socdev.jpg" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="The Social Dev | Creative Web Development & Social Media Content Agency" />
-  <meta name="twitter:description" content="Bridging robust technical performance with captivating visual storytelling. Custom Web Development & Social Media Content." />
-  <meta name="twitter:image" content="https://thesocialdev.com/images/og-cover.png" />
+  <meta name="twitter:title" content="The Social Dev | Web Development & Content Agency" />
+  <meta name="twitter:description" content="The Social Dev provides custom web development, visual branding, and social media content strategies for growing brands." />
+  <meta name="twitter:image" content="https://thesocialdev.com/images/socdev.jpg" />
   
-  <link href="https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/css/optirise-agency.webflow.03e068a6c.css" rel="stylesheet" type="text/css"/>
+  <!-- Defer non-critical external Webflow CSS to reduce INP / main-thread blocking -->
+  <link rel="preload" href="https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/css/optirise-agency.webflow.03e068a6c.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/css/optirise-agency.webflow.03e068a6c.css" rel="stylesheet" type="text/css"/></noscript>
+
+  <!-- Preconnect & Font Loading -->
   <link href="https://fonts.googleapis.com/" rel="preconnect"/>
   <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin="anonymous"/>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet"></noscript>
 
   <!-- Schema.org Organization Structured Data -->
   <script type="application/ld+json">
@@ -39,7 +53,7 @@
     "name": "The Social Dev",
     "alternateName": "The_Social_Dev Agency",
     "url": "https://thesocialdev.com/",
-    "logo": "https://thesocialdev.com/images/logo.png",
+    "logo": "https://thesocialdev.com/images/socdev.jpg",
     "contactPoint": {
       "@type": "ContactPoint",
       "email": "the.social.dev12@gmail.com",
@@ -48,7 +62,10 @@
     },
     "sameAs": [
       "https://www.instagram.com/thesocialdev",
-      "https://www.linkedin.com/company/thesocialdev"
+      "https://www.linkedin.com/company/thesocialdev",
+      "https://x.com/thesocialdev",
+      "https://www.youtube.com/@thesocialdev",
+      "https://www.facebook.com/thesocialdev"
     ]
   }
   </script>
@@ -59,7 +76,7 @@
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
     "name": "The Social Dev",
-    "image": "https://thesocialdev.com/images/og-cover.png",
+    "image": "https://thesocialdev.com/images/socdev.jpg",
     "url": "https://thesocialdev.com/",
     "email": "the.social.dev12@gmail.com",
     "priceRange": "$$",
@@ -143,3 +160,4 @@
   <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>
+
