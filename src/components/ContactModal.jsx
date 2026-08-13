@@ -78,7 +78,8 @@ export default function ContactModal({ isOpen, onClose, onSubmitSuccess }) {
                 Phone Number
               </label>
               <input 
-                type="tel" 
+                type="tel"
+                maxLength="12" 
                 className="react-form-input" 
                 placeholder="+1 (555) 000-0000"
                 value={formData.phone} 
@@ -91,6 +92,7 @@ export default function ContactModal({ isOpen, onClose, onSubmitSuccess }) {
                 Service Required
               </label>
               <input 
+                
                 type="text" 
                 className="react-form-input" 
                 placeholder="e.g. Web Dev, Branding"
