@@ -3,11 +3,8 @@ import logo from '../../images/socdev.jpg';
 
 export default function Footer() {
   const socialLinks = [
-    { name: 'Instagram', icon: 'ri-instagram-line', url: 'https://www.instagram.com/thesocialdev' },
-    { name: 'LinkedIn', icon: 'ri-linkedin-fill', url: 'https://www.linkedin.com/company/thesocialdev' },
-    { name: 'X (Twitter)', icon: 'ri-twitter-x-fill', url: 'https://x.com/thesocialdev' },
-    { name: 'YouTube', icon: 'ri-youtube-fill', url: 'https://www.youtube.com/@thesocialdev' },
-    { name: 'Facebook', icon: 'ri-facebook-circle-fill', url: 'https://www.facebook.com/thesocialdev' }
+    { name: 'Instagram', icon: 'ri-instagram-line', url: 'https://www.instagram.com/the_social_dev' },
+    
   ];
 
   return (
@@ -77,7 +74,7 @@ export default function Footer() {
                     <a href="#services" className="footer-link">Web Development</a>
                     <a href="#services" className="footer-link">Aesthetic Social Media</a>
                     <a href="#services" className="footer-link">UI/UX Design</a>
-                    <a href="#services" className="footer-link">Brand Strategy</a>
+                    
                   </div>
                 </div>
               </div>

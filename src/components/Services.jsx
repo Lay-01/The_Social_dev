@@ -16,7 +16,7 @@ export default function Services() {
     },
     {
       id: 3,
-      title: "UI/UX Design & Branding",
+      title: "Design & Branding",
       description: "Modern, conversion-focused interface design paired with strategic brand identity development. We craft memorable logos, color palettes, typography systems, and digital brand guidelines that resonate with your target audience.",
       icon: "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfd1dcc5b0275fa8dddfd3_service-logo-01.svg"
     }
