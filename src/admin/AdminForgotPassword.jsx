@@ -4,7 +4,7 @@ import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import './admin.css';
 
 export default function AdminForgotPassword({ onBackToLogin }) {
-  const [email, setEmail] = useState('the.social.dev12@gmail.com');
+  const [email, setEmail] = useState('');
   const [captchaValid, setCaptchaValid] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [statusMsg, setStatusMsg] = useState(null);
@@ -105,7 +105,7 @@ export default function AdminForgotPassword({ onBackToLogin }) {
                   className="adminkit-input"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="the.social.dev12@gmail.com"
+                  placeholder="Enter your email"
                   required
                 />
               </div>

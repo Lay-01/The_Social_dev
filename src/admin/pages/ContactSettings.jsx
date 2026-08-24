@@ -83,7 +83,7 @@ export default function ContactSettings() {
                 className="adminkit-input"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="the.social.dev12@gmail.com"
+                placeholder="Enter contact email"
                 required
               />
               <div className="adminkit-help-text">

@@ -8,8 +8,8 @@ import './admin.css';
 export default function AdminLogin({ onLoginSuccess }) {
   const { login } = useSiteContent();
   const [view, setView] = useState('login'); // 'login' | 'forgot'
-  const [email, setEmail] = useState(import.meta.env.VITE_ADMIN_DEFAULT_EMAIL || 'the.social.dev12@gmail.com');
-  const [password, setPassword] = useState(import.meta.env.VITE_ADMIN_PASSWORD || '');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [captchaValid, setCaptchaValid] = useState(false);
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -75,7 +75,7 @@ export default function AdminLogin({ onLoginSuccess }) {
             }}>
               <i className="ri-shield-keyhole-line"></i>
             </div>
-            <h2 style={{ fontSize: '1.35rem', fontWeight: 700, margin: 0, color: '#212529' }}>AdminKit Portal</h2>
+            <h2 style={{ fontSize: '1.35rem', fontWeight: 700, margin: 0, color: '#212529' }}>Social Dev Panel</h2>
             <p style={{ fontSize: '0.85rem', color: '#6c757d', marginTop: '0.25rem' }}>
               Sign in to manage site content & settings
             </p>
@@ -96,7 +96,7 @@ export default function AdminLogin({ onLoginSuccess }) {
                 className="adminkit-input"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="the.social.dev12@gmail.com"
+                placeholder="Enter your email"
                 required
               />
             </div>

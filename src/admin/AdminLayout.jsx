@@ -46,7 +46,7 @@ export default function AdminLayout({ initialTab = 'overview' }) {
       <aside className="adminkit-sidebar" style={{ display: sidebarOpen ? 'flex' : 'none' }}>
         <div className="adminkit-brand">
           <i className="ri-dashboard-3-line"></i>
-          <span>The_Social_Dev</span>
+          <span>Social Dev Panel</span>
         </div>
 
         <div className="adminkit-nav-header">Main Menu</div>
@@ -140,7 +140,7 @@ export default function AdminLayout({ initialTab = 'overview' }) {
               <i className="ri-menu-line"></i>
             </button>
             <div className="adminkit-breadcrumbs">
-              <span>AdminKit</span>
+              <span>Social Dev Panel</span>
               <span>/</span>
               <span className="active">{getBreadcrumbTitle()}</span>
             </div>
