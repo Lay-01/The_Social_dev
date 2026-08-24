@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSiteContent } from '../../context/SiteContext';
+import ImageUploader from '../components/ImageUploader';
 
 export default function WhyChooseUsEditor() {
   const { content, updateWhyChooseUs, saveStatus } = useSiteContent();
@@ -159,6 +160,13 @@ export default function WhyChooseUsEditor() {
                       className="adminkit-input"
                       value={metric.description || ''}
                       onChange={(e) => handleMetricChange(idx, 'description', e.target.value)}
+                    />
+                  </div>
+                  <div className="adminkit-form-group" style={{ marginTop: '1rem', marginBottom: 0 }}>
+                    <label className="adminkit-label">Metric Icon/Image</label>
+                    <ImageUploader 
+                      value={metric.icon || ''}
+                      onChange={(url) => handleMetricChange(idx, 'icon', url)}
                     />
                   </div>
                 </div>

@@ -45,7 +45,7 @@ export default function WhyChooseUs() {
                   <div className="why-image-card-01">
                     <div className="why-image-icon-block" style={{ transform: 'none' }}>
                       <img
-                        src="https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfc4966053f45e919d6cc5_why-grap-01.svg"
+                        src={metrics[0]?.icon || "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfc4966053f45e919d6cc5_why-grap-01.svg"}
                         loading="lazy"
                         alt="Graph"
                         onError={(e) => handleImageError(e, 'whyChart1')}
@@ -63,7 +63,7 @@ export default function WhyChooseUs() {
                       <div className="body-text-b1 font-size-decrase-mobile">{metrics[1]?.value || 'Modern UI'}</div>
                       <div className="why-card-image-block" style={{ opacity: 1 }}>
                         <img
-                          src="https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfc6b764f391f6e6d46b23_why-chart.svg"
+                          src={metrics[1]?.icon || "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfc6b764f391f6e6d46b23_why-chart.svg"}
                           loading="lazy"
                           alt="Chart"
                           className="why-card-chart-image"
@@ -80,7 +80,7 @@ export default function WhyChooseUs() {
                       </div>
                       <div className="why-card-image-block" style={{ opacity: 1 }}>
                         <img
-                          src="https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfc7b13494e491bdefb567_why-chart-01.svg"
+                          src={metrics[2]?.icon || "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfc7b13494e491bdefb567_why-chart-01.svg"}
                           loading="lazy"
                           alt="Chart"
                           className="why-card-graph-image"

@@ -108,7 +108,7 @@ export default function AdminLayout({ initialTab = 'overview' }) {
           </li>
 
           <li className="adminkit-nav-item">
-            <a href="/" className="adminkit-nav-link" target="_blank" rel="noreferrer">
+            <a href={window.location.pathname.replace(/\/admin\/?$/i, '') || '/'} className="adminkit-nav-link" target="_blank" rel="noreferrer">
               <i className="ri-external-link-line"></i>
               <span>View Live Website ↗</span>
             </a>
@@ -147,7 +147,7 @@ export default function AdminLayout({ initialTab = 'overview' }) {
           </div>
 
           <div className="adminkit-nav-actions">
-            <a href="/" className="adminkit-btn adminkit-btn-outline adminkit-btn-sm">
+            <a href={window.location.pathname.replace(/\/admin\/?$/i, '') || '/'} className="adminkit-btn adminkit-btn-outline adminkit-btn-sm" target="_blank" rel="noreferrer">
               <i className="ri-global-line"></i> View Site
             </a>
             <button className="adminkit-btn adminkit-btn-secondary adminkit-btn-sm" onClick={logout}>

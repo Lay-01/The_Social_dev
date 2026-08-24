@@ -144,8 +144,8 @@ export default function AdminLogin({ onLoginSuccess }) {
           </form>
 
           <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-            <a href="/" style={{ fontSize: '0.825rem', color: '#3b82f6', textDecoration: 'none', fontWeight: 600 }}>
-              ← Return to Main Website
+            <a href={window.location.pathname.replace(/\/admin\/?$/i, '') || '/'} style={{ fontSize: '0.825rem', color: '#3b82f6', textDecoration: 'none', fontWeight: 600 }}>
+              &larr; Back to Main Website
             </a>
           </div>
         </div>
