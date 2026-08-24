@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSiteContent } from '../../context/SiteContext';
+import ImageUploader from '../components/ImageUploader';
 
 export default function ServicesEditor() {
   const { content, addService, editService, deleteService, saveStatus } = useSiteContent();
@@ -182,16 +183,12 @@ export default function ServicesEditor() {
                   />
                 </div>
 
-                <div className="adminkit-form-group">
-                  <label className="adminkit-label">Icon Image URL</label>
-                  <input
-                    type="text"
-                    className="adminkit-input"
-                    placeholder="https://..."
-                    value={newIcon}
-                    onChange={(e) => setNewIcon(e.target.value)}
-                  />
-                </div>
+                <ImageUploader
+                  label="Icon / Service Image"
+                  value={newIcon}
+                  onChange={setNewIcon}
+                  placeholder="Paste URL (https://...) or upload image file"
+                />
               </div>
               <div className="adminkit-modal-footer">
                 <button type="button" className="adminkit-btn adminkit-btn-secondary" onClick={() => setIsAddModalOpen(false)}>
@@ -238,15 +235,12 @@ export default function ServicesEditor() {
                   />
                 </div>
 
-                <div className="adminkit-form-group">
-                  <label className="adminkit-label">Icon Image URL</label>
-                  <input
-                    type="text"
-                    className="adminkit-input"
-                    value={editIcon}
-                    onChange={(e) => setEditIcon(e.target.value)}
-                  />
-                </div>
+                <ImageUploader
+                  label="Icon / Service Image"
+                  value={editIcon}
+                  onChange={setEditIcon}
+                  placeholder="Paste URL (https://...) or upload image file"
+                />
 
                 <div className="adminkit-form-group" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <input

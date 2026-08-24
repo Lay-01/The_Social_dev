@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSiteContent } from '../../context/SiteContext';
+import ImageUploader from '../components/ImageUploader';
 
 export default function AboutEditor() {
   const { content, updateAbout, saveStatus } = useSiteContent();
@@ -178,49 +179,37 @@ export default function AboutEditor() {
 
         <div className="adminkit-card">
           <div className="adminkit-card-header">
-            <h3 className="adminkit-card-title">Image Asset URLs</h3>
+            <h3 className="adminkit-card-title">Image Asset URLs & Uploads</h3>
           </div>
           <div className="adminkit-card-body">
-            <div className="adminkit-form-group">
-              <label className="adminkit-label">Growth Chart Image URL</label>
-              <input
-                type="text"
-                className="adminkit-input"
-                value={formData.images?.growthChart || ''}
-                onChange={(e) => handleNestedChange('images', 'growthChart', e.target.value)}
+            <ImageUploader
+              label="Growth Chart Image"
+              value={formData.images?.growthChart || ''}
+              onChange={(val) => handleNestedChange('images', 'growthChart', val)}
+              placeholder="Paste URL (https://...) or upload image file"
+            />
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
+              <ImageUploader
+                label="Avatar 1 Image"
+                value={formData.images?.avatar1 || ''}
+                onChange={(val) => handleNestedChange('images', 'avatar1', val)}
+                placeholder="URL or upload file"
               />
-            </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
-              <div className="adminkit-form-group">
-                <label className="adminkit-label">Avatar 1 URL</label>
-                <input
-                  type="text"
-                  className="adminkit-input"
-                  value={formData.images?.avatar1 || ''}
-                  onChange={(e) => handleNestedChange('images', 'avatar1', e.target.value)}
-                />
-              </div>
+              <ImageUploader
+                label="Avatar 2 Image"
+                value={formData.images?.avatar2 || ''}
+                onChange={(val) => handleNestedChange('images', 'avatar2', val)}
+                placeholder="URL or upload file"
+              />
 
-              <div className="adminkit-form-group">
-                <label className="adminkit-label">Avatar 2 URL</label>
-                <input
-                  type="text"
-                  className="adminkit-input"
-                  value={formData.images?.avatar2 || ''}
-                  onChange={(e) => handleNestedChange('images', 'avatar2', e.target.value)}
-                />
-              </div>
-
-              <div className="adminkit-form-group">
-                <label className="adminkit-label">Avatar 3 URL</label>
-                <input
-                  type="text"
-                  className="adminkit-input"
-                  value={formData.images?.avatar3 || ''}
-                  onChange={(e) => handleNestedChange('images', 'avatar3', e.target.value)}
-                />
-              </div>
+              <ImageUploader
+                label="Avatar 3 Image"
+                value={formData.images?.avatar3 || ''}
+                onChange={(val) => handleNestedChange('images', 'avatar3', val)}
+                placeholder="URL or upload file"
+              />
             </div>
           </div>
         </div>
