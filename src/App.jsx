@@ -44,7 +44,7 @@ function MainLandingPage() {
     <div className="page-wrapper">
       <Navbar onToast={showToast} />
 
-      <main className="main-wrapper" style={{ paddingTop: '80px' }}>
+      <main>
         <Hero />
         <About />
         <Expertise />
@@ -52,38 +52,35 @@ function MainLandingPage() {
         <WhyChooseUs />
         <Process />
         <Pricing />
-        <Contact
-          onSubmitSuccess={(msg) =>
-            showToast(msg.includes('copied') ? msg : `Preparing email to ${currentEmail}...`)
-          }
-        />
+        <Contact onSubmitSuccess={showToast} />
       </main>
 
       <Footer />
 
-      {/* Floating Back to Top Button */}
+      {/* Floating Action Button (FAB) / Back to Top */}
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          aria-label="Scroll to top"
+          className="react-fab-top"
+          aria-label="Back to top"
           style={{
             position: 'fixed',
-            bottom: '30px',
-            right: '30px',
-            zIndex: 999,
-            width: '44px',
-            height: '44px',
+            bottom: '28px',
+            right: '28px',
+            width: '46px',
+            height: '46px',
             borderRadius: '50%',
-            background: '#0d111a',
-            border: '1px solid #ffa260',
-            color: '#ffa260',
+            backgroundColor: '#ffa260',
+            color: '#07090e',
+            border: 'none',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            fontSize: '1.4rem',
             cursor: 'pointer',
-            fontSize: '1.2rem',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.6)',
-            transition: 'all 0.3s ease'
+            boxShadow: '0 8px 24px rgba(255, 162, 96, 0.4)',
+            zIndex: 99,
+            transition: 'transform 0.25s ease'
           }}
         >
           <i className="ri-arrow-up-line"></i>
@@ -104,18 +101,40 @@ function MainLandingPage() {
 }
 
 function RouterApp() {
-  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const getRouteState = () => ({
+    path: window.location.pathname,
+    hash: window.location.hash,
+  });
+
+  const [routeState, setRouteState] = useState(getRouteState);
 
   useEffect(() => {
-    const onPopState = () => {
-      setCurrentPath(window.location.pathname);
+    const onLocationChange = () => setRouteState(getRouteState());
+    window.addEventListener('popstate', onLocationChange);
+    window.addEventListener('hashchange', onLocationChange);
+    return () => {
+      window.removeEventListener('popstate', onLocationChange);
+      window.removeEventListener('hashchange', onLocationChange);
     };
-    window.addEventListener('popstate', onPopState);
-    return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
-  // Simple client-side route matcher
-  if (currentPath.startsWith('/admin')) {
+  const { path, hash } = routeState;
+  const pathLower = path.toLowerCase();
+  const hashLower = hash.toLowerCase();
+
+  // Detect admin route:
+  // - Local dev: /admin
+  // - GitHub Pages: /The_Social_dev/admin
+  // - Hash routes from 404 redirect: #/admin or #admin
+  const isAdminRoute =
+    pathLower.endsWith('/admin') ||
+    pathLower.includes('/admin/') ||
+    hashLower === '#/admin' ||
+    hashLower.startsWith('#/admin/') ||
+    hashLower === '#admin' ||
+    hashLower.startsWith('#admin/');
+
+  if (isAdminRoute) {
     return (
       <ProtectedRoute>
         <AdminLayout />

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>The Social Dev</title>
+  <script type="text/javascript">
+    // GitHub Pages SPA 404 redirect trick
+    // When GitHub Pages hits a 404 (e.g. /The_Social_dev/admin),
+    // it serves this file. We redirect to the root index with the
+    // intended path encoded in the hash so the SPA can pick it up.
+    (function() {
+      var l = window.location;
+      // Extract the path after the repo base
+      var basePath = '/The_Social_dev';
+      var remainingPath = l.pathname.replace(basePath, '') || '/';
+      
+      // Redirect to base with hash encoding the remaining path
+      var redirectUrl = l.protocol + '//' + l.host + basePath + '/#' + remainingPath;
+      l.replace(redirectUrl);
+    })();
+  </script>
+</head>
+<body>
+  <p>Redirecting...</p>
+</body>
+</html>
