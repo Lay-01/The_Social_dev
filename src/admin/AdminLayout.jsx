@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSiteContent } from '../context/SiteContext';
 import AdminOverview from './pages/AdminOverview';
 import AboutEditor from './pages/AboutEditor';
@@ -11,12 +11,33 @@ import './admin.css';
 export default function AdminLayout({ initialTab = 'overview' }) {
   const { user, logout } = useSiteContent();
   const [activeTab, setActiveTab] = useState(initialTab);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    return typeof window !== 'undefined' && window.innerWidth >= 992;
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 992) {
+        setSidebarOpen(true);
+      } else {
+        setSidebarOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const selectTab = (tab) => {
+    setActiveTab(tab);
+    if (window.innerWidth < 992) {
+      setSidebarOpen(false);
+    }
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
       case 'overview':
-        return <AdminOverview setActiveTab={setActiveTab} />;
+        return <AdminOverview setActiveTab={selectTab} />;
       case 'about':
         return <AboutEditor />;
       case 'services':
@@ -28,7 +49,7 @@ export default function AdminLayout({ initialTab = 'overview' }) {
       case 'contact':
         return <ContactSettings />;
       default:
-        return <AdminOverview setActiveTab={setActiveTab} />;
+        return <AdminOverview setActiveTab={selectTab} />;
     }
   };
 
@@ -36,9 +57,9 @@ export default function AdminLayout({ initialTab = 'overview' }) {
     switch (activeTab) {
       case 'overview': return 'Overview';
       case 'about': return 'About Us Editor';
-      case 'services': return 'Services Management (CRUD)';
+      case 'services': return 'Services Management';
       case 'why': return 'Why Choose Us Editor';
-      case 'ventures': return 'Our Ventures (CRUD)';
+      case 'ventures': return 'Our Ventures Editor';
       case 'contact': return 'Contact Email Settings';
       default: return 'Overview';
     }
@@ -46,11 +67,23 @@ export default function AdminLayout({ initialTab = 'overview' }) {
 
   return (
     <div className="adminkit-wrapper">
+      {/* Mobile Sidebar Overlay Backdrop */}
+      {sidebarOpen && (
+        <div className="adminkit-sidebar-backdrop" onClick={() => setSidebarOpen(false)} />
+      )}
+
       {/* AdminKit Sidebar */}
-      <aside className="adminkit-sidebar" style={{ display: sidebarOpen ? 'flex' : 'none' }}>
+      <aside className={`adminkit-sidebar ${sidebarOpen ? 'open' : 'collapsed'}`}>
         <div className="adminkit-brand">
           <i className="ri-dashboard-3-line"></i>
           <span>Social Dev Panel</span>
+          <button
+            className="adminkit-sidebar-close-btn"
+            onClick={() => setSidebarOpen(false)}
+            aria-label="Close sidebar"
+          >
+            <i className="ri-close-line"></i>
+          </button>
         </div>
 
         <div className="adminkit-nav-header">Main Menu</div>
@@ -58,7 +91,7 @@ export default function AdminLayout({ initialTab = 'overview' }) {
           <li className="adminkit-nav-item">
             <button
               className={`adminkit-nav-link ${activeTab === 'overview' ? 'active' : ''}`}
-              onClick={() => setActiveTab('overview')}
+              onClick={() => selectTab('overview')}
             >
               <i className="ri-line-chart-line"></i>
               <span>Dashboard</span>
@@ -71,7 +104,7 @@ export default function AdminLayout({ initialTab = 'overview' }) {
           <li className="adminkit-nav-item">
             <button
               className={`adminkit-nav-link ${activeTab === 'about' ? 'active' : ''}`}
-              onClick={() => setActiveTab('about')}
+              onClick={() => selectTab('about')}
             >
               <i className="ri-user-star-line"></i>
               <span>About Us</span>
@@ -81,7 +114,7 @@ export default function AdminLayout({ initialTab = 'overview' }) {
           <li className="adminkit-nav-item">
             <button
               className={`adminkit-nav-link ${activeTab === 'services' ? 'active' : ''}`}
-              onClick={() => setActiveTab('services')}
+              onClick={() => selectTab('services')}
             >
               <i className="ri-layout-grid-line"></i>
               <span>Services (CRUD)</span>
@@ -91,7 +124,7 @@ export default function AdminLayout({ initialTab = 'overview' }) {
           <li className="adminkit-nav-item">
             <button
               className={`adminkit-nav-link ${activeTab === 'why' ? 'active' : ''}`}
-              onClick={() => setActiveTab('why')}
+              onClick={() => selectTab('why')}
             >
               <i className="ri-thumb-up-line"></i>
               <span>Why Choose Us</span>
@@ -101,7 +134,7 @@ export default function AdminLayout({ initialTab = 'overview' }) {
           <li className="adminkit-nav-item">
             <button
               className={`adminkit-nav-link ${activeTab === 'ventures' ? 'active' : ''}`}
-              onClick={() => setActiveTab('ventures')}
+              onClick={() => selectTab('ventures')}
             >
               <i className="ri-rocket-2-line"></i>
               <span>Our Ventures</span>
@@ -114,7 +147,7 @@ export default function AdminLayout({ initialTab = 'overview' }) {
           <li className="adminkit-nav-item">
             <button
               className={`adminkit-nav-link ${activeTab === 'contact' ? 'active' : ''}`}
-              onClick={() => setActiveTab('contact')}
+              onClick={() => selectTab('contact')}
             >
               <i className="ri-mail-send-line"></i>
               <span>Contact Email</span>
@@ -145,27 +178,28 @@ export default function AdminLayout({ initialTab = 'overview' }) {
       <div className="adminkit-main">
         {/* Top Navbar */}
         <header className="adminkit-navbar">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              style={{ background: 'none', border: 'none', fontSize: '1.25rem', color: '#475569', cursor: 'pointer' }}
+              className="adminkit-menu-toggle-btn"
               title="Toggle Sidebar"
+              aria-label="Toggle Navigation Sidebar"
             >
               <i className="ri-menu-line"></i>
             </button>
             <div className="adminkit-breadcrumbs">
-              <span>Social Dev Panel</span>
-              <span>/</span>
+              <span className="adminkit-breadcrumb-prefix">Panel</span>
+              <span className="adminkit-breadcrumb-divider">/</span>
               <span className="active">{getBreadcrumbTitle()}</span>
             </div>
           </div>
 
           <div className="adminkit-nav-actions">
             <a href={window.location.pathname.replace(/\/admin\/?$/i, '') || '/'} className="adminkit-btn adminkit-btn-outline adminkit-btn-sm" target="_blank" rel="noreferrer">
-              <i className="ri-global-line"></i> View Site
+              <i className="ri-global-line"></i> <span className="adminkit-btn-text">View Site</span>
             </a>
             <button className="adminkit-btn adminkit-btn-secondary adminkit-btn-sm" onClick={logout}>
-              <i className="ri-logout-box-r-line"></i> Sign Out
+              <i className="ri-logout-box-r-line"></i> <span className="adminkit-btn-text">Sign Out</span>
             </button>
           </div>
         </header>
