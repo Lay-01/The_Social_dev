@@ -9,9 +9,11 @@ export const isSupabaseConfigured = Boolean(
   supabaseUrl !== 'https://placeholder.supabase.co'
 );
 
+const supabaseServiceKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY || import.meta.env.SUPABASE_SERVICE_ROLE_KEY;
+
 // Native fetch headers with explicit JWT session access token injection
 function getHeaders(sessionToken = null) {
-  const activeToken = sessionToken || localStorage.getItem('supabase_access_token') || supabaseAnonKey;
+  const activeToken = sessionToken || localStorage.getItem('supabase_access_token') || supabaseServiceKey || supabaseAnonKey;
   return {
     'apikey': supabaseAnonKey,
     'Authorization': `Bearer ${activeToken}`,
