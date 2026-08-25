@@ -8,7 +8,13 @@ The project is a single-page marketing website and dynamic CMS for **The_Social_
 
 The application features:
 1. **Public Marketing Landing Page** (`/`): Anchor-based single-page experience built with a full dark glassmorphic design system.
-2. **Social Dev Content Management Panel** (`/admin`): Authenticated admin dashboard allowing real-time CRUD management for About Us, Services, Why Choose Us, Contact Email, and Footer Social Media buttons.
+2. **Social Dev Content Management Panel** (`/admin`): Authenticated admin dashboard allowing real-time CRUD management for About Us, Services, Our Ventures, Why Choose Us, Contact Email, and Footer Social Media buttons.
+
+### Vercel Deployment & SPA Rewrites (`vercel.json`)
+
+To deploy to **Vercel** with full support for direct `/admin` URL navigation:
+- `vercel.json` is included in the project root to rewrite all requests (`/(.*)`) to `/index.html`.
+- On Vercel Project Settings -> Environment Variables, add `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, and `VITE_ADMIN_PASSWORD`.
 
 The active React render order for `/` is:
 1. `Navbar`
@@ -16,11 +22,12 @@ The active React render order for `/` is:
 3. `About`
 4. `Expertise`
 5. `Services`
-6. `WhyChooseUs`
-7. `Process`
-8. `Pricing`
-9. `Contact`
-10. `Footer`
+6. `Ventures`
+7. `WhyChooseUs`
+8. `Process`
+9. `Pricing`
+10. `Contact`
+11. `Footer`
 
 This order is defined in [`src/App.jsx`](src/App.jsx).
 
@@ -40,7 +47,7 @@ This order is defined in [`src/App.jsx`](src/App.jsx).
 
 ### Smart `ImageUploader` Component (`src/admin/components/ImageUploader.jsx`)
 
-The system provides unified image handling across all admin dashboard forms (About Us, Services, Why Choose Us, Social Media Links):
+The system provides unified image handling across all admin dashboard forms (About Us, Services, Our Ventures, Why Choose Us, Social Media Links):
 
 1. **Local File Uploads**: Convert uploaded local image files into base64 Data URLs (max 5MB) for instant local persistence and Supabase sync.
 2. **External 3rd Party URLs**: Paste any direct HTTPS image link (PNG, JPG, SVG, WebP).
@@ -53,9 +60,31 @@ The system provides unified image handling across all admin dashboard forms (Abo
 
 ### Dual Persistence Architecture
 
-- **Supabase Cloud Sync**: Synchronizes all site settings and service offerings directly with Supabase PostgreSQL tables (`site_settings`, `services`).
+- **Supabase Cloud Sync**: Synchronizes all site settings and content directly with Supabase PostgreSQL tables (`site_settings`, `services`, `ventures`).
 - **Browser LocalStorage Backup**: Automatically mirrors data in `localStorage` so changes persist seamlessly even when offline or before Supabase connects.
 - **Zero-Downtime Updates**: Edits made in the Admin Dashboard update the database dynamically **without requiring a site rebuild or GitHub commit**. Visitors see updates live on refresh.
+
+### Our Ventures Data Model
+
+Each venture item in `content.ventures[]` has the following shape:
+
+```js
+{
+  id: "vtr-TIMESTAMP",          // Unique identifier (auto-generated)
+  title: "Project Name",         // Display title on the public card
+  description: "Short blurb...", // 1-2 sentence project summary
+  url: "https://example.com",    // Live site URL (used for the CTA button)
+  image: "https://...",          // Site thumbnail (URL or base64 upload)
+  isActive: true,                // If false, hidden from the public website
+  sortOrder: 1                   // Display order (auto-assigned on save)
+}
+```
+
+### Supabase Tables
+
+- `site_settings` — key/value JSONB pairs (contactEmail, about, whyChooseUs, socialLinks, ventures as JSON fallback)
+- `services` — dedicated rows for service CRUD
+- `ventures` — dedicated rows for venture CRUD (title, description, url, image, is_active, sort_order)
 
 ---
 
@@ -96,11 +125,11 @@ For the live site to render correctly on GitHub Pages:
 │   ├── App.jsx                         # SiteProvider, hash router (/ and /admin)
 │   ├── index.css                       # Master public React stylesheet
 │   ├── data/
-│   │   └── defaultContent.js           # Initial default site content data
+│   │   └── defaultContent.js           # Initial default site content data (includes ventures[])
 │   ├── lib/
-│   │   └── supabase.js                 # Supabase REST client adapter & SQL setup
+│   │   └── supabase.js                 # Supabase REST client adapter & SQL setup (ventures table)
 │   ├── context/
-│   │   └── SiteContext.jsx             # Master site state & auth provider
+│   │   └── SiteContext.jsx             # Master site state & auth provider (ventures CRUD mutators)
 │   ├── utils/
 │   │   ├── mailto.js                   # Gmail & mailto link composer utility
 │   │   └── imageFallback.js            # SVG fallback graphic handler for broken images
@@ -116,14 +145,16 @@ For the live site to render correctly on GitHub Pages:
 │   │       ├── AdminOverview.jsx       # Overview dashboard stats & SQL script setup
 │   │       ├── AboutEditor.jsx         # About Us section form editor with ImageUploader
 │   │       ├── ServicesEditor.jsx      # Services CRUD manager (table & modals) with ImageUploader
+│   │       ├── VenturesEditor.jsx      # Our Ventures CRUD manager with thumbnail ImageUploader
 │   │       ├── WhyChooseUsEditor.jsx   # Why Choose Us copy, metrics & icon editor
 │   │       └── ContactSettings.jsx     # Contact email & dynamic social media buttons CRUD
 │   └── components/
-│       ├── Navbar.jsx                  # Header navigation & scroll spy
+│       ├── Navbar.jsx                  # Header navigation & scroll spy (includes #ventures)
 │       ├── Hero.jsx                    # Hero section
 │       ├── About.jsx                   # Dynamic About section
 │       ├── Expertise.jsx               # Agency stats
 │       ├── Services.jsx                # Dynamic Services list mapping
+│       ├── Ventures.jsx                # Dynamic Our Ventures card grid with browser-frame mockups
 │       ├── WhyChooseUs.jsx             # Dynamic Why Choose Us copy & metrics
 │       ├── Process.jsx                 # 4-Step work process
 │       ├── Pricing.jsx                 # Pricing tiers
@@ -133,7 +164,19 @@ For the live site to render correctly on GitHub Pages:
 
 ---
 
-## 6. How to Deploy Updates to GitHub
+## 6. Our Ventures — Admin Workflow
+
+1. Log in to `/admin`.
+2. Click **"Our Ventures"** in the sidebar Content Management menu.
+3. Click **"Add New Venture"** to open the modal.
+4. Fill in: Title, Short Description, Live Site URL, and upload or paste a Site Thumbnail.
+5. Click **"Create Venture"** — the venture appears instantly on the public `#ventures` section.
+6. Use **Edit** to update any field (including toggling Active/Hidden status).
+7. Use the **Delete** button to permanently remove a venture.
+
+---
+
+## 7. How to Deploy Updates to GitHub
 
 To push source code updates to GitHub and trigger automatic site deployment:
 

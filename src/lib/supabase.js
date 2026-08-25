@@ -145,15 +145,31 @@ CREATE TABLE IF NOT EXISTS services (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 3. Row Level Security Policies
+-- 3. Create ventures table (for Our Ventures CRUD)
+CREATE TABLE IF NOT EXISTS ventures (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  url TEXT,
+  image TEXT,
+  is_active BOOLEAN DEFAULT TRUE,
+  sort_order INT DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 4. Row Level Security Policies
 ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE services ENABLE ROW LEVEL SECURITY;
+ALTER TABLE ventures ENABLE ROW LEVEL SECURITY;
 
 -- Allow public read access
 CREATE POLICY "Public read site_settings" ON site_settings FOR SELECT USING (true);
 CREATE POLICY "Public read services" ON services FOR SELECT USING (true);
+CREATE POLICY "Public read ventures" ON ventures FOR SELECT USING (true);
 
 -- Allow authenticated admin write access strictly checking authenticated JWT role
 CREATE POLICY "Admin write site_settings" ON site_settings FOR ALL USING (auth.role() = 'authenticated');
 CREATE POLICY "Admin write services" ON services FOR ALL USING (auth.role() = 'authenticated');
+CREATE POLICY "Admin write ventures" ON ventures FOR ALL USING (auth.role() = 'authenticated');
 `;

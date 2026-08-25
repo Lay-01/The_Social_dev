@@ -16,7 +16,7 @@ export default function Navbar({ onToast }) {
       setScrolled(window.scrollY > 30);
 
       // Section scroll spy
-      const sections = ['about', 'services', 'why', 'process', 'pricing', 'contact'];
+      const sections = ['about', 'services', 'ventures', 'why', 'process', 'pricing', 'contact'];
       let current = '';
       for (const section of sections) {
         const el = document.getElementById(section);
@@ -82,6 +82,7 @@ export default function Navbar({ onToast }) {
           <nav className="nav-desktop-menu">
             <a href="#about" className={`nav-link ${activeSection === 'about' ? 'active' : ''}`}>About Us</a>
             <a href="#services" className={`nav-link ${activeSection === 'services' ? 'active' : ''}`}>Services</a>
+            <a href="#ventures" className={`nav-link ${activeSection === 'ventures' ? 'active' : ''}`}>Our Ventures</a>
             <a href="#why" className={`nav-link ${activeSection === 'why' ? 'active' : ''}`}>Why Us</a>
             <a href="#process" className={`nav-link ${activeSection === 'process' ? 'active' : ''}`}>Process</a>
             <a href="#pricing" className={`nav-link ${activeSection === 'pricing' ? 'active' : ''}`}>Pricing</a>
@@ -132,6 +133,9 @@ export default function Navbar({ onToast }) {
           </a>
           <a href="#services" className={`nav-mobile-link ${activeSection === 'services' ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>
             <i className="ri-service-line"></i> Services
+          </a>
+          <a href="#ventures" className={`nav-mobile-link ${activeSection === 'ventures' ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>
+            <i className="ri-rocket-2-line"></i> Our Ventures
           </a>
           <a href="#why" className={`nav-mobile-link ${activeSection === 'why' ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>
             <i className="ri-star-line"></i> Why Us

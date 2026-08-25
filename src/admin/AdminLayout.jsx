@@ -5,6 +5,7 @@ import AboutEditor from './pages/AboutEditor';
 import ServicesEditor from './pages/ServicesEditor';
 import WhyChooseUsEditor from './pages/WhyChooseUsEditor';
 import ContactSettings from './pages/ContactSettings';
+import VenturesEditor from './pages/VenturesEditor';
 import './admin.css';
 
 export default function AdminLayout({ initialTab = 'overview' }) {
@@ -22,6 +23,8 @@ export default function AdminLayout({ initialTab = 'overview' }) {
         return <ServicesEditor />;
       case 'why':
         return <WhyChooseUsEditor />;
+      case 'ventures':
+        return <VenturesEditor />;
       case 'contact':
         return <ContactSettings />;
       default:
@@ -35,6 +38,7 @@ export default function AdminLayout({ initialTab = 'overview' }) {
       case 'about': return 'About Us Editor';
       case 'services': return 'Services Management (CRUD)';
       case 'why': return 'Why Choose Us Editor';
+      case 'ventures': return 'Our Ventures (CRUD)';
       case 'contact': return 'Contact Email Settings';
       default: return 'Overview';
     }
@@ -91,6 +95,16 @@ export default function AdminLayout({ initialTab = 'overview' }) {
             >
               <i className="ri-thumb-up-line"></i>
               <span>Why Choose Us</span>
+            </button>
+          </li>
+
+          <li className="adminkit-nav-item">
+            <button
+              className={`adminkit-nav-link ${activeTab === 'ventures' ? 'active' : ''}`}
+              onClick={() => setActiveTab('ventures')}
+            >
+              <i className="ri-rocket-2-line"></i>
+              <span>Our Ventures</span>
             </button>
           </li>
         </ul>

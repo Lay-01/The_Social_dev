@@ -5,6 +5,7 @@ import About from './components/About';
 import Expertise from './components/Expertise';
 import Services from './components/Services';
 import WhyChooseUs from './components/WhyChooseUs';
+import Ventures from './components/Ventures';
 import Process from './components/Process';
 import Pricing from './components/Pricing';
 import Contact from './components/Contact';
@@ -49,6 +50,7 @@ function MainLandingPage() {
         <About />
         <Expertise />
         <Services />
+        <Ventures />
         <WhyChooseUs />
         <Process />
         <Pricing />

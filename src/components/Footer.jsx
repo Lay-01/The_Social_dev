@@ -73,6 +73,7 @@ export default function Footer() {
                   <div className="footer-nav-link-block">
                     <a href="#about" className="footer-link">About Us</a>
                     <a href="#services" className="footer-link">Services</a>
+                    <a href="#ventures" className="footer-link">Our Ventures</a>
                     <a href="#why" className="footer-link">Why Choose Us</a>
                     <a href="#process" className="footer-link">Process</a>
                     <a href="#pricing" className="footer-link">Pricing</a>

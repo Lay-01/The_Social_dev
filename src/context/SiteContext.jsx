@@ -16,7 +16,8 @@ export function SiteProvider({ children }) {
         return {
           ...DEFAULT_SITE_CONTENT,
           ...parsed,
-          socialLinks: parsed.socialLinks || DEFAULT_SITE_CONTENT.socialLinks
+          socialLinks: parsed.socialLinks || DEFAULT_SITE_CONTENT.socialLinks,
+          ventures: parsed.ventures || DEFAULT_SITE_CONTENT.ventures
         };
       }
       return DEFAULT_SITE_CONTENT;
@@ -53,6 +54,11 @@ export function SiteProvider({ children }) {
           .select('*')
           .order('sort_order', { ascending: true });
 
+        const { data: venturesData } = await supabase
+          .from('ventures')
+          .select('*')
+          .order('sort_order', { ascending: true });
+
         if (!settingsErr && settingsData && settingsData.length > 0) {
           const settingsMap = settingsData.reduce((acc, row) => {
             acc[row.key] = row.value;
@@ -65,7 +71,12 @@ export function SiteProvider({ children }) {
             socialLinks: settingsMap.socialLinks || prev.socialLinks,
             about: settingsMap.about || prev.about,
             whyChooseUs: settingsMap.whyChooseUs || prev.whyChooseUs,
-            services: servicesData && servicesData.length > 0 ? servicesData : prev.services
+            services: servicesData && servicesData.length > 0 ? servicesData : (settingsMap.services || prev.services),
+            ventures: venturesData && venturesData.length > 0 ? venturesData.map(v => ({
+              ...v,
+              isActive: v.is_active !== false,
+              sortOrder: v.sort_order
+            })) : (settingsMap.ventures || prev.ventures)
           }));
         }
       } catch (err) {
@@ -101,7 +112,8 @@ export function SiteProvider({ children }) {
           { key: 'contactEmail', value: newContent.contactEmail },
           { key: 'socialLinks', value: newContent.socialLinks },
           { key: 'about', value: newContent.about },
-          { key: 'whyChooseUs', value: newContent.whyChooseUs }
+          { key: 'whyChooseUs', value: newContent.whyChooseUs },
+          { key: 'ventures', value: newContent.ventures }
         ]);
 
         if (newContent.services && newContent.services.length > 0) {
@@ -112,6 +124,20 @@ export function SiteProvider({ children }) {
               description: srv.description,
               icon: srv.icon,
               is_active: srv.isActive !== false,
+              sort_order: idx + 1
+            }))
+          );
+        }
+
+        if (newContent.ventures && newContent.ventures.length > 0) {
+          await supabase.from('ventures').upsert(
+            newContent.ventures.map((vtr, idx) => ({
+              id: vtr.id,
+              title: vtr.title,
+              description: vtr.description,
+              url: vtr.url,
+              image: vtr.image,
+              is_active: vtr.isActive !== false,
               sort_order: idx + 1
             }))
           );
@@ -195,21 +221,51 @@ export function SiteProvider({ children }) {
       description: serviceItem.description,
       icon: serviceItem.icon || "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfd1dcc5b0275fa8dddf33_service-logo-01.svg",
       isActive: true,
-      sortOrder: content.services.length + 1
+      sortOrder: (content.services || []).length + 1
     };
-    saveContent({ ...content, services: [...content.services, newService] });
+    saveContent({ ...content, services: [...(content.services || []), newService] });
   };
 
   const editService = (id, updatedFields) => {
-    const updatedList = content.services.map(srv => 
+    const updatedList = (content.services || []).map(srv => 
       srv.id === id ? { ...srv, ...updatedFields } : srv
     );
     saveContent({ ...content, services: updatedList });
   };
 
   const deleteService = (id) => {
-    const updatedList = content.services.filter(srv => srv.id !== id);
+    const updatedList = (content.services || []).filter(srv => srv.id !== id);
     saveContent({ ...content, services: updatedList });
+  };
+
+  // Ventures Mutators
+  const updateVentures = (newVenturesList) => {
+    saveContent({ ...content, ventures: newVenturesList });
+  };
+
+  const addVenture = (ventureItem) => {
+    const newVenture = {
+      id: `vtr-${Date.now()}`,
+      title: ventureItem.title,
+      description: ventureItem.description,
+      url: ventureItem.url || '',
+      image: ventureItem.image || '',
+      isActive: true,
+      sortOrder: (content.ventures || []).length + 1
+    };
+    saveContent({ ...content, ventures: [...(content.ventures || []), newVenture] });
+  };
+
+  const editVenture = (id, updatedFields) => {
+    const updatedList = (content.ventures || []).map(vtr => 
+      vtr.id === id ? { ...vtr, ...updatedFields } : vtr
+    );
+    saveContent({ ...content, ventures: updatedList });
+  };
+
+  const deleteVenture = (id) => {
+    const updatedList = (content.ventures || []).filter(vtr => vtr.id !== id);
+    saveContent({ ...content, ventures: updatedList });
   };
 
   const updateWhyChooseUs = (whyData) => {
@@ -257,6 +313,10 @@ export function SiteProvider({ children }) {
         addService,
         editService,
         deleteService,
+        updateVentures,
+        addVenture,
+        editVenture,
+        deleteVenture,
         updateWhyChooseUs,
         updateContactEmail,
         updateSocialLinks,
