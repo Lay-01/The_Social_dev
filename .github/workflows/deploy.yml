@@ -31,6 +31,9 @@ jobs:
         run: npm install --legacy-peer-deps
 
       - name: Build Project
+        env:
+          VITE_SUPABASE_URL: https://hbcpxaavhlblceqjlyza.supabase.co
+          VITE_SUPABASE_ANON_KEY: sb_publishable_RL0Buoy8YpRGlSFvo7U4wQ_vAca-t9E
         run: npm run build
 
       - name: Copy index.html for 404 SPA fallback

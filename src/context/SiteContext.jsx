@@ -71,12 +71,16 @@ export function SiteProvider({ children }) {
             socialLinks: settingsMap.socialLinks || prev.socialLinks,
             about: settingsMap.about || prev.about,
             whyChooseUs: settingsMap.whyChooseUs || prev.whyChooseUs,
-            services: servicesData && servicesData.length > 0 ? servicesData : (settingsMap.services || prev.services),
-            ventures: venturesData && venturesData.length > 0 ? venturesData.map(v => ({
-              ...v,
-              isActive: v.is_active !== false,
-              sortOrder: v.sort_order
-            })) : (settingsMap.ventures || prev.ventures)
+            services: (settingsMap.services && Array.isArray(settingsMap.services) && settingsMap.services.length > 0)
+              ? settingsMap.services
+              : (servicesData && servicesData.length > 0 ? servicesData : prev.services),
+            ventures: (settingsMap.ventures && Array.isArray(settingsMap.ventures) && settingsMap.ventures.length > 0)
+              ? settingsMap.ventures
+              : (venturesData && venturesData.length > 0 ? venturesData.map(v => ({
+                  ...v,
+                  isActive: v.is_active !== false,
+                  sortOrder: v.sort_order
+                })) : prev.ventures)
           }));
         }
       } catch (err) {
@@ -102,48 +106,63 @@ export function SiteProvider({ children }) {
 
   // Save changes locally and to Supabase
   const saveContent = async (newContent) => {
-    setContent(newContent);
     setSaveStatus('saving');
     try {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newContent));
-
       if (isSupabaseConfigured) {
-        await supabase.from('site_settings').upsert([
+        const { error: settingsErr } = await supabase.from('site_settings').upsert([
           { key: 'contactEmail', value: newContent.contactEmail },
           { key: 'socialLinks', value: newContent.socialLinks },
           { key: 'about', value: newContent.about },
           { key: 'whyChooseUs', value: newContent.whyChooseUs },
-          { key: 'ventures', value: newContent.ventures }
+          { key: 'ventures', value: newContent.ventures },
+          { key: 'services', value: newContent.services }
         ]);
 
+        if (settingsErr) {
+          console.error('Supabase site_settings upsert error:', settingsErr);
+          throw new Error(settingsErr.message || 'Failed to sync content to Supabase database');
+        }
+
         if (newContent.services && newContent.services.length > 0) {
-          await supabase.from('services').upsert(
-            newContent.services.map((srv, idx) => ({
-              id: srv.id,
-              title: srv.title,
-              description: srv.description,
-              icon: srv.icon,
-              is_active: srv.isActive !== false,
-              sort_order: idx + 1
-            }))
+          const validUuidServices = newContent.services.filter(s =>
+            /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(s.id)
           );
+          if (validUuidServices.length > 0) {
+            await supabase.from('services').upsert(
+              validUuidServices.map((srv, idx) => ({
+                id: srv.id,
+                title: srv.title,
+                description: srv.description,
+                icon: srv.icon,
+                is_active: srv.isActive !== false,
+                sort_order: idx + 1
+              }))
+            );
+          }
         }
 
         if (newContent.ventures && newContent.ventures.length > 0) {
-          await supabase.from('ventures').upsert(
-            newContent.ventures.map((vtr, idx) => ({
-              id: vtr.id,
-              title: vtr.title,
-              description: vtr.description,
-              url: vtr.url,
-              image: vtr.image,
-              is_active: vtr.isActive !== false,
-              sort_order: idx + 1
-            }))
+          const validUuidVentures = newContent.ventures.filter(v =>
+            /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v.id)
           );
+          if (validUuidVentures.length > 0) {
+            await supabase.from('ventures').upsert(
+              validUuidVentures.map((vtr, idx) => ({
+                id: vtr.id,
+                title: vtr.title,
+                description: vtr.description,
+                url: vtr.url,
+                image: vtr.image,
+                is_active: vtr.isActive !== false,
+                sort_order: idx + 1
+              }))
+            );
+          }
         }
       }
 
+      setContent(newContent);
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newContent));
       setSaveStatus('success');
       setTimeout(() => setSaveStatus(null), 3000);
     } catch (err) {
