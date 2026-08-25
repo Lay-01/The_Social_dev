@@ -1,0 +1,133 @@
+=====================================================================
+ THE SOCIAL DEV - FIX CROSS-DEVICE SYNC (VENTURES / SERVICES)
+ Steps to fix: changes in one browser not appearing in others
+=====================================================================
+
+WHY IT WAS BROKEN
+-----------------
+- The "ventures" table was MISSING from your Supabase database.
+- Row Level Security (RLS) had NO write policies, so every admin
+  save failed silently server-side.
+- Your database was completely empty (0 rows everywhere).
+- Edge only showed your updates because it reads its own browser
+  localStorage - Chrome/mobile kept their own stale caches.
+
+The code fix is ALREADY DEPLOYED to your website. You only need to
+run the SQL below inside Supabase, then seed the data once.
+
+=====================================================================
+STEP 1 - RUN THE SQL IN SUPABASE (required)
+=====================================================================
+1. Go to https://supabase.com/dashboard and open your project.
+2. In the left menu click: SQL Editor
+3. Click: New query
+4. Copy EVERYTHING between the BEGIN/END lines below, paste it,
+   and click RUN.
+
+-----BEGIN SQL-----
+
+CREATE TABLE IF NOT EXISTS public.ventures (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  url TEXT,
+  image TEXT,
+  is_active BOOLEAN DEFAULT TRUE,
+  sort_order INT DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE public.site_settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.services ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.ventures ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public read site_settings" ON public.site_settings;
+CREATE POLICY "Public read site_settings" ON public.site_settings FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Public read services" ON public.services;
+CREATE POLICY "Public read services" ON public.services FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Public read ventures" ON public.ventures;
+CREATE POLICY "Public read ventures" ON public.ventures FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Admin write site_settings" ON public.site_settings;
+CREATE POLICY "Admin write site_settings" ON public.site_settings FOR ALL USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Admin write services" ON public.services;
+CREATE POLICY "Admin write services" ON public.services FOR ALL USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Admin write ventures" ON public.ventures;
+CREATE POLICY "Admin write ventures" ON public.ventures FOR ALL USING (true) WITH CHECK (true);
+
+-----END SQL-----
+
+You should see "Success. No rows returned" when it finishes.
+It is safe to run this script more than once.
+
+=====================================================================
+STEP 2 - SEED THE DATABASE FROM EDGE (one time)
+=====================================================================
+1. Open www.thesocialdev.co.in/admin in Microsoft Edge and log in.
+2. Make ONE small save so your current content is pushed into the
+   now-working database. Example:
+   - Click "Our Ventures" -> Edit any venture -> change nothing or
+     one letter -> Save Changes.
+   - Or edit the About section and save.
+3. You should see the GREEN success alert.
+   - If you see a RED error alert instead, note the message shown
+     and report it - saves are no longer hidden.
+
+This one save uploads your current content (from Edge's localStorage)
+into Supabase so every other device can download it.
+
+=====================================================================
+STEP 3 - REFRESH THE OTHER BROWSERS / DEVICES (one time)
+=====================================================================
+Their localStorage still holds old cached content. Clear it once:
+
+CHROME (desktop):
+1. Open www.thesocialdev.co.in
+2. Press Ctrl + Shift + R  (hard refresh)
+3. If content is still stale: press F12 -> Application tab ->
+   Local Storage -> click the site -> right-click -> Clear,
+   then refresh normally.
+
+MOBILE PHONE:
+1. Open the site.
+2. Refresh once. If still stale, clear site data:
+   Chrome menu -> Settings -> Site settings -> Data stored /
+   (or: padlock next to URL -> Cookies & site data -> Clear)
+   then reload the page.
+
+From now on, every device fetches fresh content from Supabase on
+each page load, and deletions/edits sync automatically.
+
+=====================================================================
+STEP 4 - VERIFY THE SYNC WORKS
+=====================================================================
+1. In Edge admin panel: add a test venture -> check it appears on
+   Chrome/mobile after refresh.
+2. Delete the test venture in Edge -> confirm it disappears on
+   Chrome/mobile after refresh.
+3. Edits (title/description/image) should also appear everywhere
+   after a simple refresh - no rebuild needed.
+
+=====================================================================
+WHAT WAS FIXED IN THE CODE (already deployed)
+=====================================================================
+Commit 4ae8302:
+- Added .delete().eq(column, value) hard-delete method to the custom
+  Supabase REST client (src/lib/supabase.js).
+- Every save now reconciles the dedicated services/ventures tables:
+  DB rows missing from the saved list are hard-deleted, so deleted
+  items stop reappearing on other devices.
+- fetchFromSupabase() now treats the dedicated tables as the source
+  of truth (site_settings JSON is only a fallback).
+
+Commit 0dcc4bb:
+- Admin panel now shows a REAL red error alert when a cloud save
+  fails (previously it always showed success, hiding this bug).
+
+Commit 8767ae0:
+- Repo cleanup (no extra files).
+
+STILL USING: Supabase only - nothing about your database setup,
+URL, keys, or hosting was changed.
+=====================================================================

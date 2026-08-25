@@ -202,9 +202,26 @@ export function SiteProvider({ children }) {
           console.error('Supabase site_settings upsert FAILED:', settingsErr);
         }
 
-        if (newContent.services && newContent.services.length > 0) {
-          const formattedServices = newContent.services.map((srv, idx) => ({
-            id: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(srv.id) ? srv.id : generateUUID(),
+        // Ensure every item carries a STABLE database-compatible UUID BEFORE
+        // saving. Previously a fresh random UUID was generated on every save
+        // for legacy non-UUID ids, creating duplicate rows in Supabase and
+        // breaking deletion reconciliation.
+        let idsNormalized = false;
+        const ensureStableIds = (items) => {
+          (items || []).forEach(item => {
+            if (item && item.id && !SUPABASE_UUID_REGEX.test(item.id)) {
+              item.id = generateUUID();
+              idsNormalized = true;
+            }
+          });
+          return items || [];
+        };
+        const stableServices = ensureStableIds(newContent.services);
+        const stableVentures = ensureStableIds(newContent.ventures);
+
+        if (stableServices.length > 0) {
+          const formattedServices = stableServices.map((srv, idx) => ({
+            id: srv.id,
             title: srv.title,
             description: srv.description,
             icon: srv.icon,
@@ -218,9 +235,9 @@ export function SiteProvider({ children }) {
           }
         }
 
-        if (newContent.ventures && newContent.ventures.length > 0) {
-          const formattedVentures = newContent.ventures.map((vtr, idx) => ({
-            id: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(vtr.id) ? vtr.id : generateUUID(),
+        if (stableVentures.length > 0) {
+          const formattedVentures = stableVentures.map((vtr, idx) => ({
+            id: vtr.id,
             title: vtr.title,
             description: vtr.description,
             url: vtr.url || '',
@@ -233,6 +250,13 @@ export function SiteProvider({ children }) {
             cloudSyncFailed = true;
             console.error('Supabase ventures upsert FAILED:', venturesErr);
           }
+        }
+
+        // Persist newly assigned UUIDs locally so future saves reuse them
+        if (idsNormalized) {
+          try {
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ ...newContent, services: stableServices, ventures: stableVentures }));
+          } catch {}
         }
 
         // Reconcile the dedicated tables against the saved lists by HARD-DELETING
@@ -269,8 +293,8 @@ export function SiteProvider({ children }) {
           }
         };
 
-        await reconcileHardDeletes('services', newContent.services || []);
-        await reconcileHardDeletes('ventures', newContent.ventures || []);
+        await reconcileHardDeletes('services', stableServices);
+        await reconcileHardDeletes('ventures', stableVentures);
       }
 
       // Surface real cloud-sync failures to the admin UI instead of silently

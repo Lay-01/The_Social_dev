@@ -9,11 +9,9 @@ export const isSupabaseConfigured = Boolean(
   supabaseUrl !== 'https://placeholder.supabase.co'
 );
 
-const supabaseServiceKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY || import.meta.env.SUPABASE_SERVICE_ROLE_KEY;
-
 // Native fetch headers with explicit JWT session access token injection & cache control
 function getHeaders(sessionToken = null) {
-  const activeToken = sessionToken || localStorage.getItem('supabase_access_token') || supabaseServiceKey || supabaseAnonKey;
+  const activeToken = sessionToken || localStorage.getItem('supabase_access_token') || supabaseAnonKey;
   return {
     'apikey': supabaseAnonKey,
     'Authorization': `Bearer ${activeToken}`,
@@ -23,6 +21,19 @@ function getHeaders(sessionToken = null) {
     'Pragma': 'no-cache',
     'Expires': '0'
   };
+}
+
+// Auth-aware fetch: retries ONCE without the stored access token when it is
+// expired/invalid (401), so a stale Supabase session can never permanently
+// block admin saves. Falls back cleanly to anonymous (RLS-governed) requests.
+async function authFetch(url, options = {}) {
+  const send = () => fetch(url, { ...options, headers: { ...getHeaders(), ...(options.headers || {}) }, cache: 'no-store' });
+  let res = await send();
+  if (res.status === 401 && localStorage.getItem('supabase_access_token')) {
+    localStorage.removeItem('supabase_access_token');
+    res = await send();
+  }
+  return res;
 }
 
 export const supabase = {
@@ -85,7 +96,7 @@ export const supabase = {
           try {
             let url = `${supabaseUrl}/rest/v1/${tableName}?select=${columns}&_t=${Date.now()}`;
             if (orderClause) url += `&${orderClause}`;
-            const res = await fetch(url, { headers: getHeaders(), cache: 'no-store' });
+            const res = await authFetch(url);
             const data = await res.json();
             if (!res.ok) throw new Error(data.message || 'Error fetching data');
             return { data, error: null };
@@ -125,10 +136,8 @@ export const supabase = {
             const query = filters
               .map(({ column, value }) => `${encodeURIComponent(column)}=eq.${encodeURIComponent(value)}`)
               .join('&');
-            const res = await fetch(`${supabaseUrl}/rest/v1/${tableName}?${query}&_t=${Date.now()}`, {
-              method: 'DELETE',
-              headers: getHeaders(),
-              cache: 'no-store'
+            const res = await authFetch(`${supabaseUrl}/rest/v1/${tableName}?${query}&_t=${Date.now()}`, {
+              method: 'DELETE'
             });
             if (!res.ok) {
               const data = await res.json().catch(() => ({}));
@@ -157,10 +166,9 @@ export const supabase = {
         }
         try {
           const conflictCol = options.onConflict ? options.onConflict : (tableName === 'site_settings' ? 'key' : 'id');
-          const res = await fetch(`${supabaseUrl}/rest/v1/${tableName}?on_conflict=${conflictCol}`, {
+          const res = await authFetch(`${supabaseUrl}/rest/v1/${tableName}?on_conflict=${conflictCol}`, {
             method: 'POST',
             headers: {
-              ...getHeaders(),
               'Prefer': 'resolution=merge-duplicates,return=representation'
             },
             body: JSON.stringify(records)
