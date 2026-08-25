@@ -64,27 +64,42 @@ The system provides unified image handling across all admin dashboard forms (Abo
 - **Browser LocalStorage Backup**: Automatically mirrors data in `localStorage` so changes persist seamlessly even when offline or before Supabase connects.
 - **Zero-Downtime Updates**: Edits made in the Admin Dashboard update the database dynamically **without requiring a site rebuild or GitHub commit**. Visitors see updates live on refresh.
 
+### Cross-Device Deletion Sync (Hard Deletes)
+
+Deleting a venture or service in one browser must propagate to every other browser/device. Because HTTP `upsert` only inserts or updates rows (it never removes them), a deleted item used to survive as an orphaned row in the dedicated `ventures`/`services` tables and reappear on clients that fetch from those tables. The fix consists of three parts:
+
+1. **Custom REST client `.delete().eq(column, value)` method (`src/lib/supabase.js`)**: Issues `DELETE /rest/v1/<table>?<column>=eq.<value>` with the same auth/anti-caching headers as every other call, and refuses to execute when no `.eq()` filter is supplied (prevents accidental full-table deletes).
+2. **Reconciliation on every save (`src/context/SiteContext.jsx` → `saveContent()`)**: After upserting the current lists, the client fetches existing row IDs from the dedicated `services` and `ventures` tables and hard-deletes any DB row whose ID is not present in the list being saved. This both propagates new deletions instantly and heals any pre-existing orphaned/stale rows on the very next admin save.
+3. **Single source of truth on read**: `fetchFromSupabase()` prefers the dedicated `ventures`/`services` tables over the `site_settings` JSON mirror. The JSON mirror (`site_settings.ventures`, `site_settings.services`) is retained only as a legacy/fresh-database fallback when the dedicated tables are empty.
+
+
 ### Our Ventures Data Model
 
 Each venture item in `content.ventures[]` has the following shape:
 
 ```js
 {
-  id: "vtr-TIMESTAMP",          // Unique identifier (auto-generated)
-  title: "Project Name",         // Display title on the public card
-  description: "Short blurb...", // 1-2 sentence project summary
-  url: "https://example.com",    // Live site URL (used for the CTA button)
-  image: "https://...",          // Site thumbnail (URL or base64 upload)
-  isActive: true,                // If false, hidden from the public website
-  sortOrder: 1                   // Display order (auto-assigned on save)
+  id: "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx", // RFC 4122 UUID v4 (auto-generated)
+  title: "Project Name",                        // Display title on the public card
+  description: "Short blurb...",                // 1-2 sentence project summary
+  url: "https://example.com",                   // Live site URL (used for the CTA button)
+  image: "https://...",                         // Site thumbnail (URL or base64 upload)
+  isActive: true,                               // If false, hidden from the public website
+  sortOrder: 1                                  // Display order (auto-assigned on save)
 }
 ```
+
+### Security, Sanitization & Anti-Caching Specs
+
+- **Input Sanitization (`src/utils/sanitize.js`)**: All user inputs in the Admin Panel are passed through `sanitizeString()` and `sanitizeUrl()` before updating state or persistent storage, removing script tags, iframe embeds, inline JS handlers, and dangerous URL protocols (`javascript:`).
+- **Anti-Caching HTTP Controls (`src/lib/supabase.js`)**: REST API requests include strict HTTP cache prevention headers (`Cache-Control: no-cache, no-store, must-revalidate`, `Pragma: no-cache`, `Expires: 0`), set `cache: 'no-store'`, and append a dynamic nonce `_t=${Date.now()}` to bypass browser/CDN HTTP caching across sessions and browsers (Chrome, Edge, Mobile).
+- **Responsive Admin Containers (`src/admin/admin.css`)**: All admin tables are enclosed in `<div className="adminkit-table-container">` wrappers (`overflow-x: auto; -webkit-overflow-scrolling: touch;`), enabling touch-friendly horizontal scrolling on mobile viewports (<768px).
 
 ### Supabase Tables
 
 - `site_settings` — key/value JSONB pairs (contactEmail, about, whyChooseUs, socialLinks, ventures as JSON fallback)
-- `services` — dedicated rows for service CRUD
-- `ventures` — dedicated rows for venture CRUD (title, description, url, image, is_active, sort_order)
+- `services` — dedicated rows for service CRUD (id UUID, title, description, icon, is_active, sort_order)
+- `ventures` — dedicated rows for venture CRUD (id UUID, title, description, url, image, is_active, sort_order)
 
 ---
 
@@ -110,7 +125,7 @@ For the live site to render correctly on GitHub Pages:
 
 ```text
 /
-├── index.html                         # HTML5 root shell
+├── index.html                         # HTML5 root shell (includes anti-caching meta tags)
 ├── package.json                        # Project dependencies
 ├── vite.config.js                     # Vite build & dev server config (port 3000)
 ├── PROJECT_CONTEXT_SPEC.md             # Complete project specification & developer context
@@ -127,14 +142,15 @@ For the live site to render correctly on GitHub Pages:
 │   ├── data/
 │   │   └── defaultContent.js           # Initial default site content data (includes ventures[])
 │   ├── lib/
-│   │   └── supabase.js                 # Supabase REST client adapter & SQL setup (ventures table)
+│   │   └── supabase.js                 # Supabase REST client adapter with anti-caching headers & hard-delete (.delete().eq()) support
 │   ├── context/
 │   │   └── SiteContext.jsx             # Master site state & auth provider (ventures CRUD mutators)
 │   ├── utils/
+│   │   ├── sanitize.js                 # Input sanitization, URL validation, and UUID v4 helper
 │   │   ├── mailto.js                   # Gmail & mailto link composer utility
 │   │   └── imageFallback.js            # SVG fallback graphic handler for broken images
 │   ├── admin/
-│   │   ├── admin.css                   # Social Dev Panel custom dashboard styling
+│   │   ├── admin.css                   # Responsive Social Dev Panel dashboard styling
 │   │   ├── AdminLayout.jsx             # Admin sidebar, header, and route views
 │   │   ├── AdminLogin.jsx              # Admin authentication login view
 │   │   ├── AdminForgotPassword.jsx     # CAPTCHA-secured password reset view

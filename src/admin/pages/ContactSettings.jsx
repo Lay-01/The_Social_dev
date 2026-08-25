@@ -113,6 +113,7 @@ export default function ContactSettings() {
                 No social media buttons configured. Use the form below to add your links!
               </div>
             ) : (
+            <div className="adminkit-table-container">
               <table className="adminkit-table" style={{ border: '1px solid #e2e8f0', borderRadius: '6px', overflow: 'hidden' }}>
                 <thead>
                   <tr>
@@ -164,6 +165,7 @@ export default function ContactSettings() {
                   ))}
                 </tbody>
               </table>
+            </div>
             )}
           </div>
 

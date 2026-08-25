@@ -5,7 +5,8 @@ import AdminLogin from './AdminLogin';
 export default function ProtectedRoute({ children }) {
   const { user } = useSiteContent();
 
-  if (!user) {
+  // Enforce session object validation (must have valid email or user id)
+  if (!user || (!user.email && !user.id)) {
     return <AdminLogin />;
   }
 

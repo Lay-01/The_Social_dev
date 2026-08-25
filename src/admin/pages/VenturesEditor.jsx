@@ -116,104 +116,106 @@ export default function VenturesEditor() {
               No ventures found. Click <strong>"Add New Venture"</strong> to showcase your first project!
             </div>
           ) : (
-            <table className="adminkit-table">
-              <thead>
-                <tr>
-                  <th>Preview</th>
-                  <th>Title</th>
-                  <th>URL</th>
-                  <th>Status</th>
-                  <th style={{ textAlign: 'right' }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {ventures.map((vtr) => (
-                  <tr key={vtr.id}>
-                    <td style={{ width: '80px', minWidth: '80px' }}>
-                      <div
-                        style={{
-                          width: '72px',
-                          height: '48px',
-                          borderRadius: '6px',
-                          overflow: 'hidden',
-                          backgroundColor: '#0f172a',
-                          border: '1px solid rgba(255,255,255,0.08)',
-                          flexShrink: 0
-                        }}
-                      >
-                        {vtr.image ? (
-                          <img
-                            src={vtr.image}
-                            alt={vtr.title}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                            onError={(e) => {
-                              e.target.style.display = 'none';
-                            }}
-                          />
-                        ) : (
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-                            <i className="ri-image-line" style={{ fontSize: '1.25rem', color: '#475569' }}></i>
-                          </div>
-                        )}
-                      </div>
-                    </td>
-                    <td style={{ fontWeight: 600, minWidth: '160px' }}>
-                      <div>{vtr.title}</div>
-                      <div style={{ fontSize: '0.79rem', color: '#94a3b8', fontWeight: 400, marginTop: '2px', maxWidth: '260px' }}>
-                        {vtr.description?.length > 80 ? `${vtr.description.substring(0, 80)}...` : vtr.description}
-                      </div>
-                    </td>
-                    <td style={{ color: '#60a5fa', maxWidth: '200px' }}>
-                      {vtr.url ? (
-                        <a
-                          href={vtr.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
+            <div className="adminkit-table-container">
+              <table className="adminkit-table">
+                <thead>
+                  <tr>
+                    <th>Preview</th>
+                    <th>Title</th>
+                    <th>URL</th>
+                    <th>Status</th>
+                    <th style={{ textAlign: 'right' }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ventures.map((vtr) => (
+                    <tr key={vtr.id}>
+                      <td style={{ width: '80px', minWidth: '80px' }}>
+                        <div
                           style={{
-                            color: '#60a5fa',
-                            textDecoration: 'none',
-                            fontSize: '0.82rem',
-                            wordBreak: 'break-all',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.3rem'
+                            width: '72px',
+                            height: '48px',
+                            borderRadius: '6px',
+                            overflow: 'hidden',
+                            backgroundColor: '#0f172a',
+                            border: '1px solid rgba(255,255,255,0.08)',
+                            flexShrink: 0
                           }}
                         >
-                          <i className="ri-external-link-line"></i>
-                          {vtr.url.replace(/^https?:\/\//i, '').slice(0, 30)}{vtr.url.length > 33 ? '...' : ''}
-                        </a>
-                      ) : (
-                        <span style={{ color: '#475569', fontSize: '0.82rem' }}>— No URL —</span>
-                      )}
-                    </td>
-                    <td>
-                      <button
-                        className={`adminkit-badge ${vtr.isActive !== false ? 'adminkit-badge-success' : 'adminkit-badge-warning'}`}
-                        style={{ border: 'none', cursor: 'pointer' }}
-                        onClick={() => editVenture(vtr.id, { isActive: vtr.isActive === false })}
-                      >
-                        {vtr.isActive !== false ? 'Active' : 'Hidden'}
-                      </button>
-                    </td>
-                    <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
-                      <button
-                        className="adminkit-btn adminkit-btn-outline adminkit-btn-sm"
-                        style={{ marginRight: '0.5rem' }}
-                        onClick={() => handleStartEdit(vtr)}
-                      >
-                        <i className="ri-pencil-line"></i> Edit
-                      </button>
-                      <button
-                        className="adminkit-btn adminkit-btn-danger adminkit-btn-sm"
-                        onClick={() => setDeletingId(vtr.id)}
-                      >
-                        <i className="ri-delete-bin-line"></i>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                          {vtr.image ? (
+                            <img
+                              src={vtr.image}
+                              alt={vtr.title}
+                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                              }}
+                            />
+                          ) : (
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+                              <i className="ri-image-line" style={{ fontSize: '1.25rem', color: '#475569' }}></i>
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                      <td style={{ fontWeight: 600, minWidth: '160px' }}>
+                        <div>{vtr.title}</div>
+                        <div style={{ fontSize: '0.79rem', color: '#94a3b8', fontWeight: 400, marginTop: '2px', maxWidth: '260px' }}>
+                          {vtr.description?.length > 80 ? `${vtr.description.substring(0, 80)}...` : vtr.description}
+                        </div>
+                      </td>
+                      <td style={{ color: '#60a5fa', maxWidth: '200px' }}>
+                        {vtr.url ? (
+                          <a
+                            href={vtr.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              color: '#60a5fa',
+                              textDecoration: 'none',
+                              fontSize: '0.82rem',
+                              wordBreak: 'break-all',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '0.3rem'
+                            }}
+                          >
+                            <i className="ri-external-link-line"></i>
+                            {vtr.url.replace(/^https?:\/\//i, '').slice(0, 30)}{vtr.url.length > 33 ? '...' : ''}
+                          </a>
+                        ) : (
+                          <span style={{ color: '#475569', fontSize: '0.82rem' }}>— No URL —</span>
+                        )}
+                      </td>
+                      <td>
+                        <button
+                          className={`adminkit-badge ${vtr.isActive !== false ? 'adminkit-badge-success' : 'adminkit-badge-warning'}`}
+                          style={{ border: 'none', cursor: 'pointer' }}
+                          onClick={() => editVenture(vtr.id, { isActive: vtr.isActive === false })}
+                        >
+                          {vtr.isActive !== false ? 'Active' : 'Hidden'}
+                        </button>
+                      </td>
+                      <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
+                        <button
+                          className="adminkit-btn adminkit-btn-outline adminkit-btn-sm"
+                          style={{ marginRight: '0.5rem' }}
+                          onClick={() => handleStartEdit(vtr)}
+                        >
+                          <i className="ri-pencil-line"></i> Edit
+                        </button>
+                        <button
+                          className="adminkit-btn adminkit-btn-danger adminkit-btn-sm"
+                          onClick={() => setDeletingId(vtr.id)}
+                        >
+                          <i className="ri-delete-bin-line"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </div>

@@ -94,57 +94,59 @@ export default function ServicesEditor() {
               No services found. Click "Add New Service" above to create one!
             </div>
           ) : (
-            <table className="adminkit-table">
-              <thead>
-                <tr>
-                  <th>Service</th>
-                  <th>Description</th>
-                  <th>Status</th>
-                  <th style={{ textAlign: 'right' }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {content.services.map((srv) => (
-                  <tr key={srv.id}>
-                    <td style={{ fontWeight: 600, minWidth: '180px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                        {srv.icon && (
-                          <img src={srv.icon} alt="" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
-                        )}
-                        <span>{srv.title}</span>
-                      </div>
-                    </td>
-                    <td style={{ color: '#475569', maxWidth: '350px' }}>
-                      {srv.description.length > 90 ? `${srv.description.substring(0, 90)}...` : srv.description}
-                    </td>
-                    <td>
-                      <button
-                        className={`adminkit-badge ${srv.isActive !== false ? 'adminkit-badge-success' : 'adminkit-badge-warning'}`}
-                        style={{ border: 'none', cursor: 'pointer' }}
-                        onClick={() => editService(srv.id, { isActive: srv.isActive === false })}
-                      >
-                        {srv.isActive !== false ? 'Active' : 'Inactive'}
-                      </button>
-                    </td>
-                    <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
-                      <button
-                        className="adminkit-btn adminkit-btn-outline adminkit-btn-sm"
-                        style={{ marginRight: '0.5rem' }}
-                        onClick={() => handleStartEdit(srv)}
-                      >
-                        <i className="ri-pencil-line"></i> Edit
-                      </button>
-                      <button
-                        className="adminkit-btn adminkit-btn-danger adminkit-btn-sm"
-                        onClick={() => setDeletingId(srv.id)}
-                      >
-                        <i className="ri-delete-bin-line"></i>
-                      </button>
-                    </td>
+            <div className="adminkit-table-container">
+              <table className="adminkit-table">
+                <thead>
+                  <tr>
+                    <th>Service</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th style={{ textAlign: 'right' }}>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {content.services.map((srv) => (
+                    <tr key={srv.id}>
+                      <td style={{ fontWeight: 600, minWidth: '180px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                          {srv.icon && (
+                            <img src={srv.icon} alt="" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
+                          )}
+                          <span>{srv.title}</span>
+                        </div>
+                      </td>
+                      <td style={{ color: '#475569', maxWidth: '350px' }}>
+                        {srv.description.length > 90 ? `${srv.description.substring(0, 90)}...` : srv.description}
+                      </td>
+                      <td>
+                        <button
+                          className={`adminkit-badge ${srv.isActive !== false ? 'adminkit-badge-success' : 'adminkit-badge-warning'}`}
+                          style={{ border: 'none', cursor: 'pointer' }}
+                          onClick={() => editService(srv.id, { isActive: srv.isActive === false })}
+                        >
+                          {srv.isActive !== false ? 'Active' : 'Inactive'}
+                        </button>
+                      </td>
+                      <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
+                        <button
+                          className="adminkit-btn adminkit-btn-outline adminkit-btn-sm"
+                          style={{ marginRight: '0.5rem' }}
+                          onClick={() => handleStartEdit(srv)}
+                        >
+                          <i className="ri-pencil-line"></i> Edit
+                        </button>
+                        <button
+                          className="adminkit-btn adminkit-btn-danger adminkit-btn-sm"
+                          onClick={() => setDeletingId(srv.id)}
+                        >
+                          <i className="ri-delete-bin-line"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </div>
