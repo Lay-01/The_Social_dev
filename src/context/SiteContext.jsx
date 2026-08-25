@@ -216,8 +216,24 @@ export function SiteProvider({ children }) {
           });
           return items || [];
         };
-        const stableServices = ensureStableIds(newContent.services);
-        const stableVentures = ensureStableIds(newContent.ventures);
+        // Merge duplicate rows created by the old per-save-UUID bug: items
+        // sharing the same title collapse into their most recent entry.
+        const dedupeByTitle = (items) => {
+          const list = items || [];
+          const winner = new Map();
+          list.forEach(item => {
+            const key = (item?.title || '').trim().toLowerCase();
+            if (key) winner.set(key, item);
+          });
+          const deduped = list.filter(item => {
+            const key = (item?.title || '').trim().toLowerCase();
+            return !key || winner.get(key) === item;
+          });
+          if (deduped.length !== list.length) idsNormalized = true;
+          return deduped;
+        };
+        const stableServices = dedupeByTitle(ensureStableIds(newContent.services));
+        const stableVentures = dedupeByTitle(ensureStableIds(newContent.ventures));
 
         if (stableServices.length > 0) {
           const formattedServices = stableServices.map((srv, idx) => ({

@@ -94,7 +94,10 @@ export const supabase = {
             return { data: null, error: null };
           }
           try {
-            let url = `${supabaseUrl}/rest/v1/${tableName}?select=${columns}&_t=${Date.now()}`;
+            // NOTE: no cache-busting nonce here - PostgREST parses every
+            // query param as a filter, so extra params like &_t=... cause
+            // 400 "failed to parse filter". Caching is prevented via headers.
+            let url = `${supabaseUrl}/rest/v1/${tableName}?select=${columns}`;
             if (orderClause) url += `&${orderClause}`;
             const res = await authFetch(url);
             const data = await res.json();
@@ -136,7 +139,7 @@ export const supabase = {
             const query = filters
               .map(({ column, value }) => `${encodeURIComponent(column)}=eq.${encodeURIComponent(value)}`)
               .join('&');
-            const res = await authFetch(`${supabaseUrl}/rest/v1/${tableName}?${query}&_t=${Date.now()}`, {
+            const res = await authFetch(`${supabaseUrl}/rest/v1/${tableName}?${query}`, {
               method: 'DELETE'
             });
             if (!res.ok) {
