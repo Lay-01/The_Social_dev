@@ -29,6 +29,19 @@ export default function ImageUploader({ label, value, onChange, placeholder = 'h
     }
   };
 
+  const handleInputChange = (val) => {
+    let cleanVal = val.trim();
+
+    // Auto-convert Icons8 webpage URLs (e.g. https://icons8.com/icon/XnHBz2LnhELw/dashboard-layout)
+    // into direct PNG CDN URLs (https://img.icons8.com/?size=100&id=XnHBz2LnhELw&format=png)
+    const icons8Match = cleanVal.match(/icons8\.com\/icon\/([a-zA-Z0-9_-]+)/);
+    if (icons8Match && icons8Match[1]) {
+      cleanVal = `https://img.icons8.com/?size=100&id=${icons8Match[1]}&format=png`;
+    }
+
+    onChange(cleanVal);
+  };
+
   return (
     <div className="adminkit-form-group" style={{ marginBottom: '1.25rem' }}>
       {label && <label className="adminkit-label">{label}</label>}
@@ -40,7 +53,7 @@ export default function ImageUploader({ label, value, onChange, placeholder = 'h
             type="text"
             className="adminkit-input"
             value={value || ''}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => handleInputChange(e.target.value)}
             placeholder={placeholder}
             style={{ flex: 1 }}
           />
