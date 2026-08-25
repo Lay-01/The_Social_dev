@@ -186,6 +186,7 @@ export function SiteProvider({ children }) {
     setSaveStatus('saving');
 
     try {
+      let cloudSyncFailed = false;
       if (isSupabaseConfigured) {
         const { error: settingsErr } = await supabase.from('site_settings').upsert([
           { key: 'contactEmail', value: newContent.contactEmail },
@@ -197,7 +198,8 @@ export function SiteProvider({ children }) {
         ], { onConflict: 'key' });
 
         if (settingsErr) {
-          console.warn('Supabase site_settings upsert notice:', settingsErr);
+          cloudSyncFailed = true;
+          console.error('Supabase site_settings upsert FAILED:', settingsErr);
         }
 
         if (newContent.services && newContent.services.length > 0) {
@@ -209,7 +211,11 @@ export function SiteProvider({ children }) {
             is_active: srv.isActive !== false,
             sort_order: idx + 1
           }));
-          await supabase.from('services').upsert(formattedServices, { onConflict: 'id' });
+          const { error: servicesErr } = await supabase.from('services').upsert(formattedServices, { onConflict: 'id' });
+          if (servicesErr) {
+            cloudSyncFailed = true;
+            console.error('Supabase services upsert FAILED:', servicesErr);
+          }
         }
 
         if (newContent.ventures && newContent.ventures.length > 0) {
@@ -222,7 +228,11 @@ export function SiteProvider({ children }) {
             is_active: vtr.isActive !== false,
             sort_order: idx + 1
           }));
-          await supabase.from('ventures').upsert(formattedVentures, { onConflict: 'id' });
+          const { error: venturesErr } = await supabase.from('ventures').upsert(formattedVentures, { onConflict: 'id' });
+          if (venturesErr) {
+            cloudSyncFailed = true;
+            console.error('Supabase ventures upsert FAILED:', venturesErr);
+          }
         }
 
         // Reconcile the dedicated tables against the saved lists by HARD-DELETING
@@ -234,7 +244,10 @@ export function SiteProvider({ children }) {
           try {
             const { data: existingRows, error: fetchErr } = await supabase.from(tableName).select('id');
             if (fetchErr || !Array.isArray(existingRows)) {
-              if (fetchErr) console.warn(`Supabase ${tableName} reconcile notice:`, fetchErr);
+              if (fetchErr) {
+                cloudSyncFailed = true;
+                console.error(`Supabase ${tableName} reconcile read FAILED:`, fetchErr);
+              }
               return;
             }
             const keptIds = new Set(
@@ -245,10 +258,14 @@ export function SiteProvider({ children }) {
             const staleRows = existingRows.filter(row => !keptIds.has(String(row.id)));
             for (const row of staleRows) {
               const { error: delErr } = await supabase.from(tableName).delete().eq('id', row.id);
-              if (delErr) console.warn(`Supabase ${tableName} hard-delete notice:`, delErr);
+              if (delErr) {
+                cloudSyncFailed = true;
+                console.error(`Supabase ${tableName} hard-delete FAILED:`, delErr);
+              }
             }
           } catch (err) {
-            console.warn(`Supabase ${tableName} reconcile exception:`, err);
+            cloudSyncFailed = true;
+            console.error(`Supabase ${tableName} reconcile exception:`, err);
           }
         };
 
@@ -256,12 +273,14 @@ export function SiteProvider({ children }) {
         await reconcileHardDeletes('ventures', newContent.ventures || []);
       }
 
-      setSaveStatus('success');
+      // Surface real cloud-sync failures to the admin UI instead of silently
+      // reporting success while the database was never actually updated.
+      setSaveStatus(cloudSyncFailed ? 'error' : 'success');
       setTimeout(() => setSaveStatus(null), 3000);
     } catch (err) {
       console.error('Error saving content:', err);
-      setSaveStatus('success');
-      setTimeout(() => setSaveStatus(null), 3000);
+      setSaveStatus('error');
+      setTimeout(() => setSaveStatus(null), 4000);
     }
   };
 
