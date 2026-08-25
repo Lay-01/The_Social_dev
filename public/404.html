@@ -4,18 +4,27 @@
   <meta charset="UTF-8" />
   <title>The Social Dev</title>
   <script type="text/javascript">
-    // GitHub Pages SPA 404 redirect trick
-    // When GitHub Pages hits a 404 (e.g. /The_Social_dev/admin),
-    // it serves this file. We redirect to the root index with the
-    // intended path encoded in the hash so the SPA can pick it up.
+    // Dynamic SPA 404 redirect handler (Supports Vercel, Netlify, Custom Domains & GitHub Pages)
     (function() {
       var l = window.location;
-      // Extract the path after the repo base
-      var basePath = '/The_Social_dev';
-      var remainingPath = l.pathname.replace(basePath, '') || '/';
       
-      // Redirect to base with hash encoding the remaining path
-      var redirectUrl = l.protocol + '//' + l.host + basePath + '/#' + remainingPath;
+      // Check if we are on GitHub Pages subpath (/The_Social_dev)
+      var hasSubpath = l.pathname.toLowerCase().startsWith('/the_social_dev');
+      var basePath = hasSubpath ? '/The_Social_dev' : '';
+      var remainingPath = hasSubpath ? l.pathname.substring('/The_Social_dev'.length) : l.pathname;
+      
+      if (!remainingPath || remainingPath === '/') {
+        remainingPath = '';
+      }
+
+      // Encode path into hash format (e.g. #/admin)
+      var redirectUrl = l.protocol + '//' + l.host + basePath + '/#' + (remainingPath.startsWith('/') ? remainingPath : '/' + remainingPath);
+      
+      // Avoid infinite loop if already on hash
+      if (l.hash) {
+        redirectUrl += l.hash;
+      }
+
       l.replace(redirectUrl);
     })();
   </script>
