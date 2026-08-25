@@ -55,7 +55,11 @@ export default function Footer() {
                             transition: 'all 0.25s ease'
                           }}
                         >
-                          <i className={item.icon || 'ri-global-line'}></i>
+                          {item.icon && (item.icon.startsWith('http') || item.icon.startsWith('data:')) ? (
+                            <img src={item.icon} alt={item.name} style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
+                          ) : (
+                            <i className={item.icon || 'ri-global-line'}></i>
+                          )}
                         </a>
                       );
                     })}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSiteContent } from '../../context/SiteContext';
+import ImageUploader from '../components/ImageUploader';
 
 const PRESET_ICONS = [
   { name: 'Instagram', icon: 'ri-instagram-line' },
@@ -134,9 +135,14 @@ export default function ContactSettings() {
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          fontSize: '1.1rem'
+                          fontSize: '1.1rem',
+                          overflow: 'hidden'
                         }}>
-                          <i className={link.icon || 'ri-global-line'}></i>
+                          {link.icon && (link.icon.startsWith('http') || link.icon.startsWith('data:')) ? (
+                            <img src={link.icon} alt={link.name} style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
+                          ) : (
+                            <i className={link.icon || 'ri-global-line'}></i>
+                          )}
                         </div>
                       </td>
                       <td style={{ fontWeight: 600 }}>{link.name}</td>
@@ -208,32 +214,13 @@ export default function ContactSettings() {
                 </div>
               </div>
 
-              <div className="adminkit-form-group">
-                <label className="adminkit-label">Icon Class (Remix Icon)</label>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <input
-                    type="text"
-                    className="adminkit-input"
-                    value={newIcon}
-                    onChange={(e) => setNewIcon(e.target.value)}
-                    placeholder="ri-instagram-line"
-                    required
-                  />
-                  <div style={{
-                    width: '38px',
-                    height: '38px',
-                    borderRadius: '6px',
-                    backgroundColor: '#222e3c',
-                    color: '#ffa260',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '1.2rem',
-                    flexShrink: 0
-                  }}>
-                    <i className={newIcon}></i>
-                  </div>
-                </div>
+              <div style={{ marginTop: '1rem' }}>
+                <ImageUploader
+                  label="Icon (Remix Icon Class, Image URL, or Uploaded File)"
+                  value={newIcon}
+                  onChange={setNewIcon}
+                  placeholder="ri-instagram-line or paste URL / upload file"
+                />
               </div>
 
               <button type="submit" className="adminkit-btn adminkit-btn-primary">
