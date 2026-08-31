@@ -1,12 +1,14 @@
 import React from 'react';
-import { useSiteContent } from '../context/SiteContext';
+import { useSiteContent, ALLOWED_ADMIN_EMAILS } from '../context/SiteContext';
 import AdminLogin from './AdminLogin';
 
 export default function ProtectedRoute({ children }) {
   const { user } = useSiteContent();
 
-  // Enforce session object validation (must have valid email or user id)
-  if (!user || (!user.email && !user.id)) {
+  const userEmail = (user?.email || '').toLowerCase().trim();
+
+  // Enforce session object validation and authorized email whitelist
+  if (!user || !ALLOWED_ADMIN_EMAILS.includes(userEmail)) {
     return <AdminLogin />;
   }
 

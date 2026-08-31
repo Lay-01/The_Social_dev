@@ -1,7 +1,7 @@
 // Standalone Supabase REST Client Adapter (Zero-dependency, Vite-friendly)
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://hbcpxaavhlblceqjlyza.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_RL0Buoy8YpRGlSFvo7U4wQ_vAca-t9E';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
 export const isSupabaseConfigured = Boolean(
   supabaseUrl && 
@@ -59,18 +59,44 @@ export const supabase = {
       return { data: { user: { id: data.user.id, email: data.user.email }, access_token: data.access_token }, error: null };
     },
 
+    signUp: async ({ email, password, options = {} }) => {
+      if (!isSupabaseConfigured) {
+        throw new Error('Supabase URL/Key is not set in .env');
+      }
+      const redirectTo = options.redirectTo || `${window.location.origin}/admin`;
+      const res = await fetch(`${supabaseUrl}/auth/v1/signup?redirect_to=${encodeURIComponent(redirectTo)}`, {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify({ email, password }),
+        cache: 'no-store'
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        return { data: null, error: new Error(data.msg || data.error_description || 'Signup failed') };
+      }
+      return { data, error: null };
+    },
+
     resetPasswordForEmail: async (email, options = {}) => {
       if (!isSupabaseConfigured) {
         return { data: {}, error: null };
       }
-      const res = await fetch(`${supabaseUrl}/auth/v1/recover?_t=${Date.now()}`, {
+      const redirectTo = options.redirectTo || `${window.location.origin}/admin`;
+
+      const res = await fetch(`${supabaseUrl}/auth/v1/recover?redirect_to=${encodeURIComponent(redirectTo)}`, {
         method: 'POST',
         headers: getHeaders(),
-        body: JSON.stringify({ email, ...options }),
+        body: JSON.stringify({ email }),
         cache: 'no-store'
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.msg || data.error_description || 'Password reset request failed');
+      if (!res.ok) {
+        const errorMsg = data.msg || data.error_description || 'Password reset request failed';
+        if (errorMsg.toLowerCase().includes('rate limit') || res.status === 429) {
+          throw new Error('Supabase email limit exceeded (3 emails per hour on default SMTP). Please wait a few minutes before requesting another link, or check your spam folder for links already sent.');
+        }
+        throw new Error(errorMsg);
+      }
       return { data, error: null };
     },
 

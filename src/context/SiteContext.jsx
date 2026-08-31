@@ -11,6 +11,11 @@ const LOCAL_AUTH_KEY = 'the_social_dev_admin_session_v1';
 // RFC 4122 UUID v4 pattern used to detect real database-backed records
 const SUPABASE_UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
+export const ALLOWED_ADMIN_EMAILS = [
+  'laymankad02@gmail.com',
+  'the.social.dev12@gmail.com'
+];
+
 export function SiteProvider({ children }) {
   const [content, setContent] = useState(() => {
     try {
@@ -33,7 +38,14 @@ export function SiteProvider({ children }) {
   const [user, setUser] = useState(() => {
     try {
       const savedAuth = localStorage.getItem(LOCAL_AUTH_KEY);
-      return savedAuth ? JSON.parse(savedAuth) : null;
+      if (savedAuth) {
+        const parsed = JSON.parse(savedAuth);
+        const cleanEmail = (parsed?.email || '').toLowerCase().trim();
+        if (ALLOWED_ADMIN_EMAILS.includes(cleanEmail)) {
+          return parsed;
+        }
+      }
+      return null;
     } catch {
       return null;
     }
@@ -324,19 +336,29 @@ export function SiteProvider({ children }) {
     }
   };
 
-  // Auth Methods with Seamless Fallback
+  // Auth Methods with Strict Email Whitelist & Password Validation
   const login = async (emailInput, passwordInput) => {
-    const cleanEmail = sanitizeString(emailInput || import.meta.env.VITE_ADMIN_DEFAULT_EMAIL || 'the.social.dev12@gmail.com', 100);
-    const envPassword = import.meta.env.VITE_ADMIN_PASSWORD;
+    const cleanEmail = (emailInput || '').trim().toLowerCase();
 
     if (!validateEmail(cleanEmail)) {
       throw new Error('Please enter a valid email address.');
     }
 
+    if (!ALLOWED_ADMIN_EMAILS.includes(cleanEmail)) {
+      throw new Error('Access denied: Email address is not authorized for Admin Access.');
+    }
+
+    if (!passwordInput) {
+      throw new Error('Please enter your admin password.');
+    }
+
     // 1. If Supabase Cloud is configured, attempt cloud authentication first
     if (isSupabaseConfigured) {
       try {
-        const { data, error } = await supabase.auth.signInWithPassword({ email: cleanEmail, password: passwordInput });
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: cleanEmail,
+          password: passwordInput
+        });
         if (!error && data?.user) {
           const adminUser = { email: data.user.email, id: data.user.id };
           setUser(adminUser);
@@ -344,31 +366,49 @@ export function SiteProvider({ children }) {
           return adminUser;
         }
       } catch {
-        // Fallback to VITE_ADMIN_PASSWORD if cloud user is not registered yet
+        // Fallback to local password check if cloud user is not created yet
       }
     }
 
-    // 2. Local environment password validation check
-    if (envPassword) {
-      if (passwordInput === envPassword) {
-        const adminUser = { email: cleanEmail, id: 'admin-local-1' };
-        setUser(adminUser);
-        localStorage.setItem(LOCAL_AUTH_KEY, JSON.stringify(adminUser));
-        return adminUser;
-      } else {
-        throw new Error('Incorrect admin password');
+    // 2. Strict Password Validation Check
+    // Checks custom updated password -> env variable only (no hardcoded default)
+    const customPassword = localStorage.getItem('the_social_dev_custom_admin_password');
+    const expectedPassword = customPassword || import.meta.env.VITE_ADMIN_PASSWORD;
+
+    if (!expectedPassword) {
+      throw new Error('Admin password not configured. Please set VITE_ADMIN_PASSWORD in your environment variables.');
+    }
+
+    if (passwordInput === expectedPassword) {
+      const adminUser = { email: cleanEmail, id: 'admin-local-1' };
+      setUser(adminUser);
+      localStorage.setItem(LOCAL_AUTH_KEY, JSON.stringify(adminUser));
+      return adminUser;
+    }
+
+    throw new Error('Incorrect admin password. Please try again.');
+  };
+
+  const updateAdminPassword = async (newPassword) => {
+    if (!newPassword || newPassword.length < 6) {
+      throw new Error('New password must be at least 6 characters long.');
+    }
+
+    // 1. If Supabase is configured, update the cloud user password
+    if (isSupabaseConfigured) {
+      try {
+        const { error } = await supabase.auth.updateUser({ password: newPassword });
+        if (error) {
+          console.warn('Supabase password update note:', error.message);
+        }
+      } catch (err) {
+        console.warn('Supabase password update error:', err);
       }
     }
 
-    // 3. Fallback check for any 4+ character password if no env password specified
-    if (!passwordInput || passwordInput.length < 4) {
-      throw new Error('Password must be at least 4 characters long');
-    }
-
-    const adminUser = { email: cleanEmail, id: 'admin-local-1' };
-    setUser(adminUser);
-    localStorage.setItem(LOCAL_AUTH_KEY, JSON.stringify(adminUser));
-    return adminUser;
+    // 2. Persist custom password in localStorage for immediate fallback login
+    localStorage.setItem('the_social_dev_custom_admin_password', newPassword);
+    return true;
   };
 
   const logout = async () => {
@@ -544,6 +584,7 @@ export function SiteProvider({ children }) {
         saveStatus,
         login,
         logout,
+        updateAdminPassword,
         revalidateContent: fetchFromSupabase,
         updateAbout,
         updateServices,

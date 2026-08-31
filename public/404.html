@@ -5,6 +5,7 @@
   <title>The Social Dev</title>
   <script type="text/javascript">
     // Dynamic SPA 404 redirect handler (Supports Vercel, Netlify, Custom Domains & GitHub Pages)
+    // Preserves query strings (?token_hash=...&type=recovery) and hash fragments (#access_token=...)
     (function() {
       var l = window.location;
       
@@ -17,13 +18,12 @@
         remainingPath = '';
       }
 
-      // Encode path into hash format (e.g. #/admin)
-      var redirectUrl = l.protocol + '//' + l.host + basePath + '/#' + (remainingPath.startsWith('/') ? remainingPath : '/' + remainingPath);
-      
-      // Avoid infinite loop if already on hash
-      if (l.hash) {
-        redirectUrl += l.hash;
-      }
+      // Preserve query params (?type=recovery) and hash fragments (#access_token=...)
+      var extraParams = (l.search || '') + (l.hash || '');
+      var formattedPath = remainingPath.startsWith('/') ? remainingPath : '/' + remainingPath;
+
+      // Encode path into hash format (e.g. #/admin?type=recovery)
+      var redirectUrl = l.protocol + '//' + l.host + basePath + '/#' + formattedPath + extraParams;
 
       l.replace(redirectUrl);
     })();

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SecurityCaptcha from './components/SecurityCaptcha';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { ALLOWED_ADMIN_EMAILS } from '../context/SiteContext';
 import './admin.css';
 
 export default function AdminForgotPassword({ onBackToLogin }) {
@@ -14,13 +15,20 @@ export default function AdminForgotPassword({ onBackToLogin }) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailStr);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSendResetEmail = async (e) => {
     e.preventDefault();
     setStatusMsg(null);
     setErrorMsg(null);
 
-    if (!validateEmail(email)) {
+    const cleanEmail = (email || '').trim().toLowerCase();
+
+    if (!validateEmail(cleanEmail)) {
       setErrorMsg('Please enter a valid email address.');
+      return;
+    }
+
+    if (!ALLOWED_ADMIN_EMAILS.includes(cleanEmail)) {
+      setErrorMsg('Access denied: Email address is not authorized for Admin Access.');
       return;
     }
 
@@ -32,18 +40,25 @@ export default function AdminForgotPassword({ onBackToLogin }) {
     setSubmitting(true);
 
     try {
+      const origin = window.location.origin;
+      const cleanPath = window.location.pathname.replace(/\/admin\/?$/i, '');
+      const redirectTarget = `${origin}${cleanPath}/admin`;
+
       if (isSupabaseConfigured) {
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${window.location.origin}/admin`
+        await supabase.auth.resetPasswordForEmail(cleanEmail, {
+          redirectTo: redirectTarget
         });
-        if (error) throw error;
-        setStatusMsg(`Password reset link sent to ${email}! Please check your email inbox.`);
+        setStatusMsg(`Password reset link sent to ${cleanEmail}! Please check your email inbox and spam folder.`);
       } else {
-        // Local mode verification response
-        setStatusMsg(`Verification link generated for ${email}! Check your email inbox to complete password reset.`);
+        setStatusMsg(`Password reset link generated for ${cleanEmail}! Check your inbox to complete reset.`);
       }
     } catch (err) {
-      setErrorMsg(err.message || 'Error processing password reset request.');
+      const msg = err.message || 'Error processing password reset request.';
+      if (msg.toLowerCase().includes('rate limit')) {
+        setErrorMsg('Rate limit reached: Supabase limits default SMTP emails to 3 per hour. Please check your spam folder for previously sent emails or try again shortly.');
+      } else {
+        setErrorMsg(msg);
+      }
     } finally {
       setSubmitting(false);
     }
@@ -97,7 +112,7 @@ export default function AdminForgotPassword({ onBackToLogin }) {
           )}
 
           {!statusMsg && (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSendResetEmail}>
               <div className="adminkit-form-group">
                 <label className="adminkit-label">Admin Email Address</label>
                 <input
@@ -110,7 +125,6 @@ export default function AdminForgotPassword({ onBackToLogin }) {
                 />
               </div>
 
-              {/* Free CAPTCHA Verification Challenge */}
               <SecurityCaptcha onValidate={setCaptchaValid} />
 
               <button
