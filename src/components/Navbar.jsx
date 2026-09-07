@@ -73,7 +73,7 @@ export default function Navbar({ onToast }) {
         <div className="nav-container">
           <a href="/" aria-label="The Social Dev Homepage" title="The Social Dev - Web Development & Digital Solutions" className="nav-brand w-nav-brand w--current">
             <div className="brand-title-logo">
-              <img src={logo} alt="The Social Dev Logo" decoding="async" className="brand-logo" />
+              <img src={logo} alt="The Social Dev Logo" width="40" height="40" decoding="async" className="brand-logo" />
               <span>The_<span className="brand-accent">Social_Dev</span></span>
             </div>
           </a>
@@ -107,7 +107,7 @@ export default function Navbar({ onToast }) {
           <button 
             className="nav-hamburger-btn" 
             onClick={() => setMobileOpen(!mobileOpen)} 
-            aria-label="Toggle navigation"
+            aria-label="Toggle navigation menu"
             aria-expanded={mobileOpen}
           >
             <i className={mobileOpen ? "ri-close-line" : "ri-menu-3-line"}></i>
@@ -119,7 +119,7 @@ export default function Navbar({ onToast }) {
       <div className={`nav-mobile-drawer ${mobileOpen ? 'open' : ''}`}>
         <div className="nav-mobile-header">
           <div className="brand-title-logo">
-            <img src={logo} alt="The Social Dev logo" className="brand-logo" />
+            <img src={logo} alt="The Social Dev logo" width="40" height="40" decoding="async" className="brand-logo" />
             <span>The_<span className="brand-accent">Social_Dev</span></span>
           </div>
           <button className="nav-mobile-close-btn" onClick={() => setMobileOpen(false)} aria-label="Close menu">

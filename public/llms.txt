@@ -20,6 +20,8 @@ The Social Dev is a web development and digital agency that bridges high-perform
 - Pricing Packages: https://thesocialdev.co.in/#pricing
 - Frequently Asked Questions: https://thesocialdev.co.in/#faq
 - Contact & Inquiries: https://thesocialdev.co.in/#contact
+- Privacy Policy: https://thesocialdev.co.in/privacy-policy
+- Terms of Service: https://thesocialdev.co.in/terms-of-service
 
 ## Official Social Media
 - Instagram: https://www.instagram.com/thesocialdev

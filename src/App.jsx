@@ -16,6 +16,8 @@ import SEOHead from './components/SEOHead';
 import { SiteProvider, useSiteContent } from './context/SiteContext';
 import AdminLayout from './admin/AdminLayout';
 import ProtectedRoute from './admin/ProtectedRoute';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 
 function MainLandingPage() {
   const [toastMessage, setToastMessage] = useState(null);
@@ -52,7 +54,7 @@ function MainLandingPage() {
       />
       <Navbar onToast={showToast} />
 
-      <main>
+      <main id="main-content">
         <Hero />
         <About />
         <Expertise />
@@ -156,6 +158,14 @@ function RouterApp() {
         <AdminLayout />
       </ProtectedRoute>
     );
+  }
+
+  if (pathLower.includes('/privacy-policy') || hashLower.includes('privacy-policy')) {
+    return <PrivacyPolicy />;
+  }
+
+  if (pathLower.includes('/terms-of-service') || hashLower.includes('terms-of-service')) {
+    return <TermsOfService />;
   }
 
   return <MainLandingPage />;

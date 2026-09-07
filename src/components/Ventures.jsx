@@ -124,6 +124,8 @@ export default function Ventures() {
                           alt={`${vtr.title} web development project preview`}
                           loading="lazy"
                           decoding="async"
+                          width="400"
+                          height="210"
                           style={{
                             width: '100%',
                             height: '100%',

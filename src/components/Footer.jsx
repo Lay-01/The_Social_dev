@@ -16,7 +16,7 @@ export default function Footer() {
               <div className="footer-info-block">
                 <a href="#about" className="footer-nav-brand w-inline-block" title="The Social Dev - Home">
                   <div className="brand-title-logo">
-                    <img src={logo} alt="The Social Dev - Web Development & Digital Solutions Agency Logo" decoding="async" className="brand-logo" />
+                    <img src={logo} alt="The Social Dev - Web Development & Digital Solutions Agency Logo" width="40" height="40" decoding="async" className="brand-logo" />
                     <span>The_<span className="brand-accent">Social_Dev</span></span>
                   </div>
                 </a>
@@ -78,6 +78,8 @@ export default function Footer() {
                     <a href="#process" className="footer-link" title="Our 4-Step Web Development Process">Development Process</a>
                     <a href="#faq" className="footer-link" title="Frequently Asked Questions">FAQ</a>
                     <a href="#pricing" className="footer-link" title="Web Development Packages & Pricing">Pricing Packages</a>
+                    <a href="/privacy-policy" className="footer-link" title="Privacy Policy">Privacy Policy</a>
+                    <a href="/terms-of-service" className="footer-link" title="Terms of Service">Terms of Service</a>
                   </div>
                 </div>
                 <div className="footer-nav-block">
@@ -93,9 +95,11 @@ export default function Footer() {
             </div>
 
             <div className="footer-devider-block"></div>
-            <div className="footer-bottom-link">
+            <div className="footer-bottom-link" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
               <div className="body-text-b3">&copy; 2026 The_Social_Dev. All rights reserved.</div>
-              <div className="body-text-b3">Where Tech Meets Aesthetic</div>
+              <div className="body-text-b3" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem' }}>
+                Last updated: March 2026 | Where Tech Meets Aesthetic
+              </div>
             </div>
           </div>
         </div>

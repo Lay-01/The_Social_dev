@@ -55,6 +55,8 @@ export default function About() {
                       src={about.images?.growthChart || "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfaa9940ba14c0f21e85fb_about-chart.svg"}
                       loading="lazy"
                       decoding="async"
+                      width="280"
+                      height="120"
                       alt="Website growth and search performance chart"
                       className="about-image-card-01-image"
                       onError={(e) => handleImageError(e, 'growthChart')}
@@ -67,6 +69,8 @@ export default function About() {
                       src={about.images?.avatar1 || "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67f337bc70ca14a61b4cc7a0_about-image-card-02-avater-01.avif"}
                       loading="lazy"
                       decoding="async"
+                      width="40"
+                      height="40"
                       style={{ transform: 'none' }}
                       alt="Client satisfaction representative 1"
                       className="about-image-card-avater"
@@ -76,6 +80,8 @@ export default function About() {
                       src={about.images?.avatar2 || "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67f337bcec871d961392581c_about-image-card-02-avater-02.avif"}
                       loading="lazy"
                       decoding="async"
+                      width="40"
+                      height="40"
                       alt="Client satisfaction representative 2"
                       className="about-image-card-avater margin-left--12px"
                       onError={(e) => handleImageError(e, 'avatar')}
@@ -84,6 +90,8 @@ export default function About() {
                       src={about.images?.avatar3 || "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67f337bcdd5971319d41ad96_about-image-card-02-avater-03.avif"}
                       loading="lazy"
                       decoding="async"
+                      width="40"
+                      height="40"
                       alt="Client satisfaction representative 3"
                       className="about-image-card-avater margin-left--12px"
                       onError={(e) => handleImageError(e, 'avatar')}
@@ -98,6 +106,8 @@ export default function About() {
                         src={about.images?.starIcon || "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfac7f22d52b417b05ec6c_star-logo.svg"}
                         loading="lazy"
                         decoding="async"
+                        width="16"
+                        height="16"
                         alt="Star rating icon"
                         className="icon-16px"
                         onError={(e) => handleImageError(e, 'serviceIcon')}
@@ -112,6 +122,8 @@ export default function About() {
                       src="https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfad4ec963e2fea811de6f_about-arrow.svg"
                       loading="lazy"
                       decoding="async"
+                      width="24"
+                      height="24"
                       alt=""
                       onError={(e) => handleImageError(e, 'serviceIcon')}
                     />
@@ -125,6 +137,8 @@ export default function About() {
                     src="https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfae58af96e37837d4ed40_about-logo.svg"
                     loading="lazy"
                     decoding="async"
+                    width="48"
+                    height="48"
                     alt=""
                     className="about-boost-image"
                     onError={(e) => handleImageError(e, 'serviceIcon')}

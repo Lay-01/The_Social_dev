@@ -80,6 +80,7 @@
           "name": "The Social Dev",
           "description": "Web Development & Digital Solutions Agency",
           "publisher": {
+            "@type": "Organization",
             "@id": "https://thesocialdev.co.in/#organization"
           }
         }
@@ -87,10 +88,12 @@
     }
     </script>
 
-    <!-- Remix Icon & Google Fonts -->
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <!-- Remix Icon & Google Fonts Optimization -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" as="style" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet" />
 
     <style>
@@ -120,6 +123,7 @@
     </style>
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div id="root">
       <!-- Initial Crawlable Semantic HTML for Search Engines & GEO/AI Crawlers -->
       <header>
@@ -146,7 +150,7 @@
         </section>
         <section id="about">
           <h2>About The Social Dev - Custom Web Development &amp; Digital Solutions</h2>
-          <p>At The Social Dev, we engineer custom websites and web applications tailored specifically to your business niche, target audience, and growth objectives. From modern UI/UX design to SEO-friendly web architecture, we build high-performance digital experiences that look stunning and drive real business growth.</p>
+          <p>At The Social Dev, we engineer tailored digital platforms and web applications customized to your business niche, target audience, and growth objectives. From modern UI/UX design to SEO-friendly web architecture, we build high-performance digital experiences that look stunning and drive real business growth.</p>
           <p>Whether you are a startup launching your first web product, an entrepreneur building a personal brand, or an established company scaling your digital presence, our software development team delivers responsive websites, custom React web applications, and aesthetic social media content strategies that deliver measurable results.</p>
           <a href="#services">Explore Our Services</a>
         </section>
@@ -185,7 +189,7 @@
         </section>
         <section id="why">
           <h2>Custom Web Solutions Built Around Your Business</h2>
-          <p>We do not believe in cookie-cutter website templates. We engineer custom web development solutions tailored to your unique brand, audience, and commercial goals. From responsive front-end design to robust back-end architecture, we focus on every technical detail.</p>
+          <p>We do not believe in cookie-cutter website templates. We engineer bespoke web solutions tailored to your unique brand, audience, and commercial goals. From responsive front-end design to robust back-end architecture, we focus on every technical detail.</p>
           <a href="#pricing">View Pricing Packages</a>
         </section>
         <section id="process">
