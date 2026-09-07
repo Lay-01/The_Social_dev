@@ -7,12 +7,12 @@ export const DEFAULT_SITE_CONTENT = {
     caption: "About Us",
     heading: "Powered by Us",
     subheading: "Built on Customer Needs",
-    description1: "At The_Social_Dev, we create custom websites tailored to your business niche, goals, and audience. From modern designs to SEO-friendly website structures, we focus on building digital experiences that look great and perform effectively. Customer satisfaction is our motto, and we strive to turn every vision into a website you’re proud of.",
-    description2: "Whether you're a startup launching your first product, an entrepreneur building a personal brand, or a growing company scaling your online presence, our team delivers responsive, high-performance websites and cohesive social media strategies that drive real engagement and measurable results.",
+    description1: "At The Social Dev, we engineer custom websites and web applications tailored specifically to your business niche, target audience, and growth objectives. From modern UI/UX design to SEO-friendly web architecture, we build high-performance digital experiences that look stunning and drive real business growth.",
+    description2: "Whether you are a startup launching your first web product, an entrepreneur building a personal brand, or an established company scaling your digital presence, our software development team delivers responsive websites, custom React web applications, and aesthetic social media content strategies that deliver measurable results.",
     ctaLabel: "Our Services",
     ctaLink: "#services",
     labels: {
-      performance: "Performance & Visiblity",
+      performance: "Performance & Visibility",
       audience: "Startups & Brands",
       satisfaction: "Motto: Customer Satisfaction",
       growth: "Scale Ambitious Ventures"
@@ -29,8 +29,8 @@ export const DEFAULT_SITE_CONTENT = {
   services: [
     {
       id: "srv-1",
-      title: "Website Development",
-      description: "From sleek landing pages to functional, database-driven web applications using PHP, React, Node.js, and vanilla JavaScript. We focus on user needs, responsive layouts, SEO optimization, and exceptional user experience across all devices.",
+      title: "Website & Web Application Development",
+      description: "Custom web development from sleek landing pages to database-driven React applications, Node.js backends, and full-stack software solutions. Built with responsive layouts, fast load speeds, and search engine optimization.",
       icon: "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfd1dcc5b0275fa8dddfd3_service-logo-01.svg",
       isActive: true,
       sortOrder: 1
@@ -38,15 +38,15 @@ export const DEFAULT_SITE_CONTENT = {
     {
       id: "srv-2",
       title: "Aesthetic Social Media Content",
-      description: "High-quality, visually cohesive social media posts and creative campaigns designed to elevate your brand identity, increase follower engagement, and build a strong visual presence across Instagram, LinkedIn, and other platforms.",
+      description: "High-quality, visually cohesive social media designs and creative branding campaigns crafted to elevate brand identity, boost audience engagement, and build a strong visual presence on Instagram.",
       icon: "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfd1dc769d5d9b9c2129fb_service-logo-02.svg",
       isActive: true,
       sortOrder: 2
     },
     {
       id: "srv-3",
-      title: "UI/UX Design & Branding",
-      description: "Modern, conversion-focused interface design paired with strategic brand identity development. We craft memorable logos, color palettes, typography systems, and digital brand guidelines that resonate with your target audience.",
+      title: "UI/UX Design & Digital Branding",
+      description: "Conversion-focused user interface design paired with strategic visual identity development. We design memorable logos, color schemes, typography, and digital design systems that resonate with your customers.",
       icon: "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfd1dca2a5a3817450cec1_service-logo-03.svg",
       isActive: true,
       sortOrder: 3
@@ -56,8 +56,8 @@ export const DEFAULT_SITE_CONTENT = {
     caption: "Why Choose Us?",
     heading: "Built Around",
     subheading: "Your Business",
-    description1: "We don’t believe in one-size-fits-all websites. We create custom, niche-focused websites that match your brand, connect with your audience, and support your business goals. From modern design and smooth functionality to SEO-friendly structure, we focus on every detail. Most importantly, we value clear communication, quality work, and customer satisfaction—because your success is the real measure of ours.",
-    description2: "Our development approach combines cutting-edge technologies like React, Node.js, and modern CSS with proven UI/UX principles. We ensure every website loads fast, ranks well on search engines, and provides an intuitive experience across all devices and screen sizes.",
+    description1: "We do not believe in cookie-cutter website templates. We engineer custom web development solutions tailored to your unique brand, audience, and commercial goals. From responsive front-end design to robust back-end architecture, we focus on every technical detail.",
+    description2: "Our development workflow leverages modern technologies like React, Node.js, and modern CSS with proven UI/UX principles. We ensure every website loads fast, ranks well on search engines, and delivers an intuitive experience across all mobile devices.",
     ctaLabel: "See Pricing",
     ctaLink: "#pricing",
     metrics: [
@@ -65,7 +65,7 @@ export const DEFAULT_SITE_CONTENT = {
         id: "m-1",
         value: "100%",
         label: "Quality",
-        description: "Customer satisfaction guarantee on all deliverables."
+        description: "Customer satisfaction guarantee on all web deliverables."
       },
       {
         id: "m-2",
@@ -85,7 +85,7 @@ export const DEFAULT_SITE_CONTENT = {
     {
       id: "vtr-1",
       title: "Optirise Digital Agency",
-      description: "High-performance digital growth platform with dark glassmorphic UI, dynamic web tools, interactive client dashboards, and responsive layout designs.",
+      description: "High-performance digital agency web platform featuring dark glassmorphic UI, dynamic web tools, interactive client dashboards, and responsive layout designs.",
       url: "https://optirise-agency.webflow.io",
       image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
       isActive: true,
@@ -94,8 +94,8 @@ export const DEFAULT_SITE_CONTENT = {
     {
       id: "vtr-2",
       title: "Pulse Social Media Suite",
-      description: "Automated social media curation and creative branding hub designed for ambitious content creators and fast-scaling e-commerce ventures.",
-      url: "https://thesocialdev.com/ventures/pulse",
+      description: "Automated social media curation and creative branding hub designed for ambitious content creators and fast-scaling digital ventures.",
+      url: "https://thesocialdev.co.in/ventures/pulse",
       image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
       isActive: true,
       sortOrder: 2
@@ -103,11 +103,48 @@ export const DEFAULT_SITE_CONTENT = {
     {
       id: "vtr-3",
       title: "Nova Web Studio & App Platform",
-      description: "Full-stack SaaS application landing page featuring real-time data sync, custom UI components, and integrated booking workflow systems.",
-      url: "https://thesocialdev.com/ventures/nova",
+      description: "Full-stack SaaS web application landing page featuring real-time data sync, custom UI components, and integrated booking workflow systems.",
+      url: "https://thesocialdev.co.in/ventures/nova",
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
       isActive: true,
       sortOrder: 3
+    }
+  ],
+  faqs: [
+    {
+      id: "faq-1",
+      question: "What web development services does The Social Dev provide?",
+      answer: "The Social Dev specializes in end-to-end custom web development. We build high-performance React web applications, database-driven business websites, modern landing pages, e-commerce web portals, UI/UX brand designs, and aesthetic social media content campaigns.",
+      isActive: true,
+      sortOrder: 1
+    },
+    {
+      id: "faq-2",
+      question: "Who does The Social Dev serve?",
+      answer: "We partner with ambitious startups, growing enterprises, local business owners, content creators, and digital brands looking for sleek, scalable web development and visual identity solutions built around their unique goals.",
+      isActive: true,
+      sortOrder: 2
+    },
+    {
+      id: "faq-3",
+      question: "How long does a custom web development project take?",
+      answer: "Timeline depends on project scope, custom features, and design requirements. Standard custom websites and business landing pages typically launch within 1 to 3 weeks, while complex full-stack web applications follow an agile 4-step delivery lifecycle.",
+      isActive: true,
+      sortOrder: 3
+    },
+    {
+      id: "faq-4",
+      question: "Are all websites built by The Social Dev mobile-responsive and SEO-optimized?",
+      answer: "Yes, absolutely. Every website and web application we engineer is built mobile-first, performance-tuned for rapid PageSpeed, structured with proper heading hierarchy, dynamic metadata, clean code architecture, and modern SEO best practices.",
+      isActive: true,
+      sortOrder: 4
+    },
+    {
+      id: "faq-5",
+      question: "Why choose The Social Dev over generic website builders?",
+      answer: "We do not rely on bloated templates or cookie-cutter builders. We engineer custom, tailored web solutions combining high-performance code (React, Node.js, modern CSS) with conversion-focused UI/UX design, transparent pricing, and direct communication.",
+      isActive: true,
+      sortOrder: 5
     }
   ]
 };

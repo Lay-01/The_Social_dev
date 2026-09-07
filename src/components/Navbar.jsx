@@ -71,21 +71,21 @@ export default function Navbar({ onToast }) {
     <>
       <header className={`custom-navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="nav-container">
-          <a href="/" aria-current="page" className="nav-brand w-nav-brand w--current">
+          <a href="/" aria-label="The Social Dev Homepage" title="The Social Dev - Web Development & Digital Solutions" className="nav-brand w-nav-brand w--current">
             <div className="brand-title-logo">
-              <img src={logo} alt="The Social Dev logo" className="brand-logo" />
+              <img src={logo} alt="The Social Dev Logo" decoding="async" className="brand-logo" />
               <span>The_<span className="brand-accent">Social_Dev</span></span>
             </div>
           </a>
 
           {/* Desktop Navigation Links */}
           <nav className="nav-desktop-menu">
-            <a href="#about" className={`nav-link ${activeSection === 'about' ? 'active' : ''}`}>About Us</a>
-            <a href="#services" className={`nav-link ${activeSection === 'services' ? 'active' : ''}`}>Services</a>
-            <a href="#ventures" className={`nav-link ${activeSection === 'ventures' ? 'active' : ''}`}>Our Ventures</a>
-            <a href="#why" className={`nav-link ${activeSection === 'why' ? 'active' : ''}`}>Why Us</a>
-            <a href="#process" className={`nav-link ${activeSection === 'process' ? 'active' : ''}`}>Process</a>
-            <a href="#pricing" className={`nav-link ${activeSection === 'pricing' ? 'active' : ''}`}>Pricing</a>
+            <a href="#about" title="About Our Web Development Agency" className={`nav-link ${activeSection === 'about' ? 'active' : ''}`}>About Us</a>
+            <a href="#services" title="Web & Digital Services" className={`nav-link ${activeSection === 'services' ? 'active' : ''}`}>Services</a>
+            <a href="#ventures" title="Featured Projects & Ventures" className={`nav-link ${activeSection === 'ventures' ? 'active' : ''}`}>Our Ventures</a>
+            <a href="#why" title="Why Choose The Social Dev" className={`nav-link ${activeSection === 'why' ? 'active' : ''}`}>Why Us</a>
+            <a href="#process" title="Web Development Process" className={`nav-link ${activeSection === 'process' ? 'active' : ''}`}>Process</a>
+            <a href="#pricing" title="Web Development Pricing" className={`nav-link ${activeSection === 'pricing' ? 'active' : ''}`}>Pricing</a>
           </nav>
 
           {/* Desktop Right CTA Buttons */}

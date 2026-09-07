@@ -24,23 +24,27 @@ export default function Services() {
               <div className="section-top-block service-section">
                 <div className="section-caption-block"><div>Services</div></div>
                 <div className="service-title-block">
-                  <h2>End-to-End Solutions <span className="section-sub-heading">For Digital Growth</span></h2>
+                  <h2>End-to-End Web & Digital Solutions <span className="section-sub-heading">For Business Growth</span></h2>
                 </div>
               </div>
 
               <div className="service-cards-block" style={{ opacity: 1, transform: 'none' }}>
                 {servicesList.map((srv) => (
-                  <div
+                  <a
                     key={srv.id}
+                    href="#contact"
                     className="service-card"
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: 'pointer', textDecoration: 'none', color: 'inherit', display: 'block' }}
                     onClick={handleScrollToContact}
+                    title={`Inquire about ${srv.title} services`}
+                    aria-label={`Inquire about ${srv.title} services`}
                   >
                     <div className="service-card-logo-block">
                       <img
                         src={srv.icon}
                         loading="lazy"
-                        alt={srv.title}
+                        decoding="async"
+                        alt={`${srv.title} icon`}
                         onError={(e) => handleImageError(e, 'serviceIcon')}
                       />
                     </div>
@@ -50,7 +54,7 @@ export default function Services() {
                         <div className="text-block">{srv.description}</div>
                       </div>
                     </div>
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>

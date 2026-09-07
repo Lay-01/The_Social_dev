@@ -14,9 +14,9 @@ export default function Footer() {
           <div className="footer-contant-wrapper" style={{ opacity: 1 }}>
             <div className="footer-info-wrapper">
               <div className="footer-info-block">
-                <a href="#about" className="footer-nav-brand w-inline-block">
+                <a href="#about" className="footer-nav-brand w-inline-block" title="The Social Dev - Home">
                   <div className="brand-title-logo">
-                    <img src={logo} alt="The Social Dev logo" className="brand-logo" />
+                    <img src={logo} alt="The Social Dev - Web Development & Digital Solutions Agency Logo" decoding="async" className="brand-logo" />
                     <span>The_<span className="brand-accent">Social_Dev</span></span>
                   </div>
                 </a>
@@ -39,7 +39,7 @@ export default function Footer() {
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={`Visit our ${item.name} page`}
-                          title={item.name}
+                          title={`Visit our ${item.name} page`}
                           style={{
                             width: '38px',
                             height: '38px',
@@ -71,21 +71,22 @@ export default function Footer() {
                 <div className="footer-nav-block">
                   <h3 style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '14px', fontWeight: 600 }}>Quick Links</h3>
                   <div className="footer-nav-link-block">
-                    <a href="#about" className="footer-link">About Us</a>
-                    <a href="#services" className="footer-link">Services</a>
-                    <a href="#ventures" className="footer-link">Our Ventures</a>
-                    <a href="#why" className="footer-link">Why Choose Us</a>
-                    <a href="#process" className="footer-link">Process</a>
-                    <a href="#pricing" className="footer-link">Pricing</a>
+                    <a href="#about" className="footer-link" title="About Our Web Development Agency">About Our Agency</a>
+                    <a href="#services" className="footer-link" title="Explore Our Web & Digital Services">Web & Digital Services</a>
+                    <a href="#ventures" className="footer-link" title="View Our Live Web Projects">Featured Web Projects</a>
+                    <a href="#why" className="footer-link" title="Why Choose The Social Dev">Why Choose Us</a>
+                    <a href="#process" className="footer-link" title="Our 4-Step Web Development Process">Development Process</a>
+                    <a href="#faq" className="footer-link" title="Frequently Asked Questions">FAQ</a>
+                    <a href="#pricing" className="footer-link" title="Web Development Packages & Pricing">Pricing Packages</a>
                   </div>
                 </div>
                 <div className="footer-nav-block">
-                  <h3 style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '14px', fontWeight: 600 }}>Services</h3>
+                  <h3 style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '14px', fontWeight: 600 }}>Our Services</h3>
                   <div className="footer-nav-link-block">
-                    <a href="#services" className="footer-link">Web Development</a>
-                    <a href="#services" className="footer-link">Aesthetic Social Media</a>
-                    <a href="#services" className="footer-link">UI/UX Design</a>
-                    <a href="#services" className="footer-link">Brand Strategy</a>
+                    <a href="#services" className="footer-link" title="Custom Web Development Services">Website & Web App Development</a>
+                    <a href="#services" className="footer-link" title="Aesthetic Social Media Branding">Aesthetic Social Media Content</a>
+                    <a href="#services" className="footer-link" title="UI/UX Design Services">UI/UX Design & Branding</a>
+                    <a href="#contact" className="footer-link" title="Contact Us for Digital Solutions">Contact Web Developers</a>
                   </div>
                 </div>
               </div>

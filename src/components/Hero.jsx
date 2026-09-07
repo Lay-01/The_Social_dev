@@ -22,18 +22,22 @@ export default function Hero() {
                 <div className="hero-caption-block" style={{ opacity: 1 }}>
                   <img
                     src="https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67b6d7c210598e4a1faf8511_logo-01.svg"
-                    loading="lazy"
-                    alt="The Social Dev Creative Web Development & Digital Agency Icon"
+                    loading="eager"
+                    fetchPriority="high"
+                    decoding="async"
+                    width="20"
+                    height="20"
+                    alt="The Social Dev Creative Web Development and Digital Agency Icon"
                     className="icon-20px"
                     onError={(e) => handleImageError(e, 'serviceIcon')}
                   />
-                  <div className="body-text-b4">THE SOCIAL DEV | CREATIVE AGENCY</div>
+                  <div className="body-text-b4">THE SOCIAL DEV | WEB DEVELOPMENT & DIGITAL AGENCY</div>
                 </div>
                 <div className="hero-info-block" style={{ opacity: 1, transform: 'none' }}>
                   <h1>WHERE TECH MEETS <span className="section-sub-heading">Aesthetic</span></h1>
                   <div className="hero-description-block">
                     <div>
-                      At The Social Dev, we bridge the gap between high-performance technical engineering, custom web development, visual branding, and captivating social media storytelling for ambitious ventures, startups, and growing brands worldwide.
+                      The Social Dev is a premier web development and digital agency. We bridge high-performance technical engineering, custom web applications, React development, UI/UX branding, and captivating social media storytelling for ambitious ventures, startups, and growing brands worldwide.
                     </div>
                   </div>
                 </div>
@@ -43,6 +47,8 @@ export default function Hero() {
                 <a
                   href="#contact"
                   onClick={handleScrollToContact}
+                  title="Contact our web development team"
+                  aria-label="Get in touch for web development services"
                   className="button-primary w-inline-block"
                 >
                   <div className="button-primary-glow-wrapper" style={{ display: 'flex', opacity: 1 }}>

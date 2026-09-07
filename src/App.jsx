@@ -8,8 +8,10 @@ import WhyChooseUs from './components/WhyChooseUs';
 import Ventures from './components/Ventures';
 import Process from './components/Process';
 import Pricing from './components/Pricing';
+import FAQ from './components/FAQ';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import SEOHead from './components/SEOHead';
 
 import { SiteProvider, useSiteContent } from './context/SiteContext';
 import AdminLayout from './admin/AdminLayout';
@@ -43,6 +45,11 @@ function MainLandingPage() {
 
   return (
     <div className="page-wrapper">
+      <SEOHead
+        title="The Social Dev | Custom Web & Software Development"
+        description="The Social Dev builds high-performance custom websites, React web applications, UI/UX designs, and aesthetic social media content for growing brands."
+        canonicalUrl="https://thesocialdev.co.in/"
+      />
       <Navbar onToast={showToast} />
 
       <main>
@@ -54,6 +61,7 @@ function MainLandingPage() {
         <WhyChooseUs />
         <Process />
         <Pricing />
+        <FAQ />
         <Contact onSubmitSuccess={showToast} />
       </main>
 
@@ -139,6 +147,12 @@ function RouterApp() {
   if (isAdminRoute) {
     return (
       <ProtectedRoute>
+        <SEOHead
+          title="Admin Dashboard | The Social Dev"
+          description="Administrative dashboard for managing The Social Dev website content."
+          canonicalUrl="https://thesocialdev.co.in/admin"
+          noindex={true}
+        />
         <AdminLayout />
       </ProtectedRoute>
     );

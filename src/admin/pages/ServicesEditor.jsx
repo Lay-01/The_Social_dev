@@ -128,19 +128,22 @@ export default function ServicesEditor() {
                         </button>
                       </td>
                       <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
-                        <button
-                          className="adminkit-btn adminkit-btn-outline adminkit-btn-sm"
-                          style={{ marginRight: '0.5rem' }}
-                          onClick={() => handleStartEdit(srv)}
-                        >
-                          <i className="ri-pencil-line"></i> Edit
-                        </button>
-                        <button
-                          className="adminkit-btn adminkit-btn-danger adminkit-btn-sm"
-                          onClick={() => setDeletingId(srv.id)}
-                        >
-                          <i className="ri-delete-bin-line"></i>
-                        </button>
+                        <div style={{ display: 'inline-flex', gap: '6px', justifyContent: 'flex-end' }}>
+                          <button
+                            className="adminkit-btn-icon adminkit-btn-icon-primary"
+                            onClick={() => handleStartEdit(srv)}
+                            title="Edit Service"
+                          >
+                            <i className="ri-pencil-line"></i>
+                          </button>
+                          <button
+                            className="adminkit-btn-icon adminkit-btn-icon-danger"
+                            onClick={() => setDeletingId(srv.id)}
+                            title="Delete Service"
+                          >
+                            <i className="ri-delete-bin-line"></i>
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}

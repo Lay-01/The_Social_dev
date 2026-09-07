@@ -55,6 +55,16 @@ export default function AdminOverview({ setActiveTab }) {
         </div>
 
         <div className="adminkit-stat-card">
+          <div className="adminkit-stat-icon" style={{ backgroundColor: '#f0fdf4', color: '#16a34a' }}>
+            <i className="ri-question-line"></i>
+          </div>
+          <div>
+            <div className="adminkit-stat-value">{content.faqs?.length || 0} FAQs</div>
+            <div className="adminkit-stat-label">{content.faqs?.filter(f => f.isActive !== false).length || 0} Active on site</div>
+          </div>
+        </div>
+
+        <div className="adminkit-stat-card">
           <div className="adminkit-stat-icon" style={{ backgroundColor: '#dcfce7', color: '#15803d' }}>
             <i className="ri-mail-check-line"></i>
           </div>
@@ -91,6 +101,20 @@ export default function AdminOverview({ setActiveTab }) {
             </p>
             <button className="adminkit-btn adminkit-btn-primary adminkit-btn-sm" onClick={() => setActiveTab('services')}>
               Manage Services (CRUD) →
+            </button>
+          </div>
+        </div>
+
+        <div className="adminkit-card">
+          <div className="adminkit-card-header">
+            <h3 className="adminkit-card-title"><i className="ri-question-line" style={{ color: '#0ea5e9' }}></i> FAQ Management</h3>
+          </div>
+          <div className="adminkit-card-body">
+            <p style={{ fontSize: '0.875rem', color: '#64748b' }}>
+              Add, edit, reorder, delete, or toggle visibility of website FAQs for visitors and SEO schema.
+            </p>
+            <button className="adminkit-btn adminkit-btn-primary adminkit-btn-sm" onClick={() => setActiveTab('faq')}>
+              Manage FAQs (CRUD) →
             </button>
           </div>
         </div>

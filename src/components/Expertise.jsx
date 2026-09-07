@@ -17,8 +17,8 @@ export default function Expertise() {
             <div className="experties-contant-wrapper">
               {stats.map((stat, idx) => (
                 <div key={idx} className="experties-card" style={{ opacity: 1, transform: 'none' }}>
-                  <h3 style={{ fontSize: 'inherit', margin: 0 }}>{stat.number}</h3>
-                  <div className="experties-title-text"><div>{stat.title}</div></div>
+                  <div style={{ fontSize: '2rem', fontWeight: 800, color: '#ffa260', lineHeight: 1 }}>{stat.number}</div>
+                  <h3 className="experties-title-text" style={{ fontSize: '1rem', fontWeight: 600, margin: '8px 0 0 0', color: '#ffffff' }}>{stat.title}</h3>
                   <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', marginTop: '8px', lineHeight: 1.5 }}>{stat.desc}</p>
                 </div>
               ))}

@@ -197,19 +197,22 @@ export default function VenturesEditor() {
                         </button>
                       </td>
                       <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
-                        <button
-                          className="adminkit-btn adminkit-btn-outline adminkit-btn-sm"
-                          style={{ marginRight: '0.5rem' }}
-                          onClick={() => handleStartEdit(vtr)}
-                        >
-                          <i className="ri-pencil-line"></i> Edit
-                        </button>
-                        <button
-                          className="adminkit-btn adminkit-btn-danger adminkit-btn-sm"
-                          onClick={() => setDeletingId(vtr.id)}
-                        >
-                          <i className="ri-delete-bin-line"></i>
-                        </button>
+                        <div style={{ display: 'inline-flex', gap: '6px', justifyContent: 'flex-end' }}>
+                          <button
+                            className="adminkit-btn-icon adminkit-btn-icon-primary"
+                            onClick={() => handleStartEdit(vtr)}
+                            title="Edit Venture"
+                          >
+                            <i className="ri-pencil-line"></i>
+                          </button>
+                          <button
+                            className="adminkit-btn-icon adminkit-btn-icon-danger"
+                            onClick={() => setDeletingId(vtr.id)}
+                            title="Delete Venture"
+                          >
+                            <i className="ri-delete-bin-line"></i>
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}

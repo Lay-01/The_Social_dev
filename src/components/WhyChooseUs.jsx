@@ -33,7 +33,12 @@ export default function WhyChooseUs() {
                   </div>
                 </div>
                 <div className="why-button-block" style={{ opacity: 1 }}>
-                  <a href={why.ctaLink || '#pricing'} className="button-secondary w-inline-block">
+                  <a
+                    href={why.ctaLink || '#pricing'}
+                    className="button-secondary w-inline-block"
+                    title="View web development pricing packages"
+                    aria-label="View web development pricing packages"
+                  >
                     <div>{why.ctaLabel || 'See Pricing'}</div>
                   </a>
                 </div>
@@ -47,7 +52,8 @@ export default function WhyChooseUs() {
                       <img
                         src={metrics[0]?.icon || "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfc4966053f45e919d6cc5_why-grap-01.svg"}
                         loading="lazy"
-                        alt="Graph"
+                        decoding="async"
+                        alt="100% Quality assurance metric graph"
                         onError={(e) => handleImageError(e, 'whyChart1')}
                       />
                     </div>
@@ -65,7 +71,8 @@ export default function WhyChooseUs() {
                         <img
                           src={metrics[1]?.icon || "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfc6b764f391f6e6d46b23_why-chart.svg"}
                           loading="lazy"
-                          alt="Chart"
+                          decoding="async"
+                          alt="Modern UI layout analytics chart"
                           className="why-card-chart-image"
                           onError={(e) => handleImageError(e, 'whyChart2')}
                         />
@@ -82,7 +89,8 @@ export default function WhyChooseUs() {
                         <img
                           src={metrics[2]?.icon || "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfc7b13494e491bdefb567_why-chart-01.svg"}
                           loading="lazy"
-                          alt="Chart"
+                          decoding="async"
+                          alt="Brand growth metrics chart"
                           className="why-card-graph-image"
                           onError={(e) => handleImageError(e, 'whyChart3')}
                         />

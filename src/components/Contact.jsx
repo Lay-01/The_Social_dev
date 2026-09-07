@@ -55,7 +55,7 @@ export default function Contact({ onSubmitSuccess }) {
                 <div>Contact Us</div>
               </div>
               <h2 style={{ fontSize: '2.5rem', color: '#fff', marginBottom: '16px', fontFamily: '"Instrument Serif", Georgia, serif' }}>
-                Let's Build Something <span className="section-sub-heading" style={{ color: '#ffa260' }}>Great</span>
+                Let's Build Your <span className="section-sub-heading" style={{ color: '#ffa260' }}>Custom Web Solution</span>
               </h2>
               <p style={{ color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, fontSize: '1rem', margin: '0 auto', maxWidth: '540px' }}>
                 Ready to bring your vision to life? Fill in your details below and submit to launch a direct WhatsApp conversation with our team.

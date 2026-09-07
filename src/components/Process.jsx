@@ -38,7 +38,7 @@ export default function Process() {
               <div className="section-top-block">
                 <div className="section-caption-block"><div>Work Process</div></div>
                 <div className="process-title-block">
-                  <h2>Our Proven 4-Step <span className="section-sub-heading">Development Process</span></h2>
+                  <h2>Our Proven 4-Step <span className="section-sub-heading">Web Development Process</span></h2>
                 </div>
               </div>
 
@@ -48,7 +48,8 @@ export default function Process() {
                   <img
                     src="https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67f4b42b77efc5d07db25926_branding-icon-02.svg"
                     loading="lazy"
-                    alt="Icon"
+                    decoding="async"
+                    alt="Process branding icon"
                     className="process-top-logo-image"
                     onError={(e) => handleImageError(e, 'serviceIcon')}
                   />
@@ -62,7 +63,8 @@ export default function Process() {
                           <img
                             src={st.icon}
                             loading="lazy"
-                            alt={st.title}
+                            decoding="async"
+                            alt={`${st.title} step icon`}
                             className="process-icon"
                             onError={(e) => handleImageError(e, 'serviceIcon')}
                           />
@@ -84,7 +86,8 @@ export default function Process() {
                           <img
                             src={st.icon}
                             loading="lazy"
-                            alt={st.title}
+                            decoding="async"
+                            alt={`${st.title} step icon`}
                             className="process-icon"
                             onError={(e) => handleImageError(e, 'serviceIcon')}
                           />

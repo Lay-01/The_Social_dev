@@ -122,7 +122,10 @@ export function SiteProvider({ children }) {
           about: settingsMap.about || prev.about || DEFAULT_SITE_CONTENT.about,
           whyChooseUs: settingsMap.whyChooseUs || prev.whyChooseUs || DEFAULT_SITE_CONTENT.whyChooseUs,
           services: fetchedServices,
-          ventures: fetchedVentures
+          ventures: fetchedVentures,
+          faqs: (settingsMap.faqs && Array.isArray(settingsMap.faqs) && settingsMap.faqs.length > 0)
+            ? settingsMap.faqs
+            : (prev.faqs && prev.faqs.length > 0 ? prev.faqs : DEFAULT_SITE_CONTENT.faqs)
         };
 
         // Cache remote data back into LocalStorage to guarantee instant availability
@@ -206,7 +209,8 @@ export function SiteProvider({ children }) {
           { key: 'about', value: newContent.about },
           { key: 'whyChooseUs', value: newContent.whyChooseUs },
           { key: 'ventures', value: newContent.ventures },
-          { key: 'services', value: newContent.services }
+          { key: 'services', value: newContent.services },
+          { key: 'faqs', value: newContent.faqs }
         ], { onConflict: 'key' });
 
         if (settingsErr) {
@@ -570,6 +574,43 @@ export function SiteProvider({ children }) {
     saveContent({ ...content, socialLinks: updatedList });
   };
 
+  // FAQ Mutators
+  const updateFaqs = (newFaqsList) => {
+    saveContent({ ...content, faqs: newFaqsList });
+  };
+
+  const addFaq = (faqItem) => {
+    const newFaq = {
+      id: generateUUID(),
+      question: sanitizeString(faqItem.question, 500),
+      answer: sanitizeString(faqItem.answer, 3000),
+      isActive: true,
+      sortOrder: (content.faqs || DEFAULT_SITE_CONTENT.faqs || []).length + 1
+    };
+    saveContent({ ...content, faqs: [...(content.faqs || DEFAULT_SITE_CONTENT.faqs || []), newFaq] });
+  };
+
+  const editFaq = (id, updatedFields) => {
+    const currentList = content.faqs || DEFAULT_SITE_CONTENT.faqs || [];
+    const updatedList = currentList.map(faq => {
+      if (faq.id !== id) return faq;
+      return {
+        ...faq,
+        ...updatedFields,
+        question: updatedFields.question !== undefined ? sanitizeString(updatedFields.question, 500) : faq.question,
+        answer: updatedFields.answer !== undefined ? sanitizeString(updatedFields.answer, 3000) : faq.answer,
+        isActive: updatedFields.isActive !== undefined ? Boolean(updatedFields.isActive) : faq.isActive
+      };
+    });
+    saveContent({ ...content, faqs: updatedList });
+  };
+
+  const deleteFaq = (id) => {
+    const currentList = content.faqs || DEFAULT_SITE_CONTENT.faqs || [];
+    const updatedList = currentList.filter(faq => faq.id !== id);
+    saveContent({ ...content, faqs: updatedList });
+  };
+
   const resetToDefaults = () => {
     saveContent(DEFAULT_SITE_CONTENT);
   };
@@ -599,6 +640,10 @@ export function SiteProvider({ children }) {
         updateSocialLinks,
         addSocialLink,
         deleteSocialLink,
+        updateFaqs,
+        addFaq,
+        editFaq,
+        deleteFaq,
         resetToDefaults
       }}
     >

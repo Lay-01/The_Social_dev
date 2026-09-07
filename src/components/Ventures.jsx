@@ -30,7 +30,7 @@ export default function Ventures() {
                 </div>
                 <div className="service-title-block">
                   <h2>
-                    Featured Projects <span className="section-sub-heading">& Live Sites</span>
+                    Featured Web Development Projects <span className="section-sub-heading">& Live Sites</span>
                   </h2>
                 </div>
               </div>
@@ -121,8 +121,9 @@ export default function Ventures() {
                       >
                         <img
                           src={getThumbnailSrc(vtr)}
-                          alt={vtr.title}
+                          alt={`${vtr.title} web development project preview`}
                           loading="lazy"
+                          decoding="async"
                           style={{
                             width: '100%',
                             height: '100%',
@@ -173,6 +174,8 @@ export default function Ventures() {
                             href={vtr.url}
                             target="_blank"
                             rel="noopener noreferrer"
+                            title={`Visit ${vtr.title} live web project`}
+                            aria-label={`Visit ${vtr.title} live web project`}
                             style={{
                               display: 'inline-flex',
                               alignItems: 'center',
