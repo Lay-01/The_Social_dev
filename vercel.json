@@ -35,12 +35,20 @@
           "value": "SAMEORIGIN"
         },
         {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
           "key": "Permissions-Policy",
           "value": "geolocation=(), microphone=(), camera=()"
         },
         {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: blob: https://cdn.prod.website-files.com https://hbcpxaavhlblceqjlyza.supabase.co https://images.unsplash.com https://thesocialdev.co.in; connect-src 'self' https://hbcpxaavhlblceqjlyza.supabase.co https://fonts.googleapis.com https://fonts.gstatic.com;"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://ajax.googleapis.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: blob: https://cdn.prod.website-files.com https://hbcpxaavhlblceqjlyza.supabase.co https://images.unsplash.com https://thesocialdev.co.in; connect-src 'self' https://hbcpxaavhlblceqjlyza.supabase.co https://fonts.googleapis.com https://fonts.gstatic.com https://api.microlink.io https://wa.me; frame-src 'self';"
         }
       ]
     }

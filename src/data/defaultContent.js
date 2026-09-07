@@ -84,9 +84,9 @@ export const DEFAULT_SITE_CONTENT = {
   ventures: [
     {
       id: "vtr-1",
-      title: "Optirise Digital Agency",
+      title: "SocialDev Web Platform",
       description: "High-performance digital agency web platform featuring dark glassmorphic UI, dynamic web tools, interactive client dashboards, and responsive layout designs.",
-      url: "https://optirise-agency.webflow.io",
+      url: "https://thesocialdev.co.in",
       image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
       isActive: true,
       sortOrder: 1
@@ -95,7 +95,7 @@ export const DEFAULT_SITE_CONTENT = {
       id: "vtr-2",
       title: "Pulse Social Media Suite",
       description: "Automated social media curation and creative branding hub designed for ambitious content creators and fast-scaling digital ventures.",
-      url: "https://thesocialdev.co.in/ventures/pulse",
+      url: "https://thesocialdev.co.in/#services",
       image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
       isActive: true,
       sortOrder: 2
@@ -104,7 +104,7 @@ export const DEFAULT_SITE_CONTENT = {
       id: "vtr-3",
       title: "Nova Web Studio & App Platform",
       description: "Full-stack SaaS web application landing page featuring real-time data sync, custom UI components, and integrated booking workflow systems.",
-      url: "https://thesocialdev.co.in/ventures/nova",
+      url: "https://thesocialdev.co.in/#contact",
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
       isActive: true,
       sortOrder: 3

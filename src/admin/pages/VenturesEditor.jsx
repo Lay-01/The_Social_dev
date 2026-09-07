@@ -258,7 +258,7 @@ export default function VenturesEditor() {
                   <input
                     type="text"
                     className="adminkit-input"
-                    placeholder="e.g., Optirise Digital Agency"
+                    placeholder="e.g., SocialDev Web Platform"
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
                     required

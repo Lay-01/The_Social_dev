@@ -49,7 +49,7 @@ function MainLandingPage() {
     <div className="page-wrapper">
       <SEOHead
         title="The Social Dev | Custom Web & Software Development"
-        description="The Social Dev builds high-performance custom websites, React web applications, UI/UX designs, and aesthetic social media content for growing brands."
+        description="The Social Dev builds high-performance custom websites, React web applications, custom UI/UX designs, and aesthetic social media content for growing brands."
         canonicalUrl="https://thesocialdev.co.in/"
       />
       <Navbar onToast={showToast} />
