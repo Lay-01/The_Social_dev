@@ -1,0 +1,29 @@
+# The Social Dev
+
+> Software and Web Development Agency creating custom websites, React applications, UI/UX designs, and aesthetic social media content.
+
+## Overview
+The Social Dev is a web development and digital agency that bridges high-performance technical engineering with visual storytelling. We build custom, responsive, and high-performance websites and digital solutions tailored for startups, ambitious ventures, and growing brands.
+
+## Core Services
+- Website & Web Application Development: Custom landing pages, full-stack React.js applications, Node.js backends, responsive design, and database integration.
+- Aesthetic Social Media Content: Visually cohesive social media graphics, creative branding campaigns, and content strategies for digital platforms.
+- UI/UX Design & Branding: Conversion-focused interface design, logo creation, color palettes, typography systems, and digital brand guidelines.
+
+## Important Pages & Links
+- Homepage: https://thesocialdev.co.in/
+- About Us: https://thesocialdev.co.in/#about
+- Services: https://thesocialdev.co.in/#services
+- Featured Projects & Ventures: https://thesocialdev.co.in/#ventures
+- Why Choose Us: https://thesocialdev.co.in/#why
+- Work Process: https://thesocialdev.co.in/#process
+- Pricing Packages: https://thesocialdev.co.in/#pricing
+- Frequently Asked Questions: https://thesocialdev.co.in/#faq
+- Contact & Inquiries: https://thesocialdev.co.in/#contact
+
+## Official Social Media
+- Instagram: https://www.instagram.com/thesocialdev
+
+## Contact Information
+- Email: the.social.dev12@gmail.com
+- Direct WhatsApp Inquiry available via website contact form.

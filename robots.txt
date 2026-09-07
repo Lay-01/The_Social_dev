@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /admin
 
-Sitemap: https://thesocialdev.com/sitemap.xml
+Sitemap: https://thesocialdev.co.in/sitemap.xml
