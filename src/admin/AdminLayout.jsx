@@ -7,7 +7,9 @@ import WhyChooseUsEditor from './pages/WhyChooseUsEditor';
 import ContactSettings from './pages/ContactSettings';
 import VenturesEditor from './pages/VenturesEditor';
 import FaqEditor from './pages/FaqEditor';
+import ProcessEditor from './pages/ProcessEditor';
 import './admin.css';
+
 
 export default function AdminLayout({ initialTab = 'overview' }) {
   const { user, logout } = useSiteContent();
@@ -47,6 +49,8 @@ export default function AdminLayout({ initialTab = 'overview' }) {
         return <WhyChooseUsEditor />;
       case 'ventures':
         return <VenturesEditor />;
+      case 'process':
+        return <ProcessEditor />;
       case 'faq':
         return <FaqEditor />;
       case 'contact':
@@ -63,11 +67,13 @@ export default function AdminLayout({ initialTab = 'overview' }) {
       case 'services': return 'Services Management';
       case 'why': return 'Why Choose Us Editor';
       case 'ventures': return 'Our Ventures Editor';
+      case 'process': return 'Work Process Editor';
       case 'faq': return 'FAQ Management';
       case 'contact': return 'Contact Email Settings';
       default: return 'Overview';
     }
   };
+
 
   return (
     <div className="adminkit-wrapper">
@@ -147,6 +153,16 @@ export default function AdminLayout({ initialTab = 'overview' }) {
 
           <li className="adminkit-nav-item">
             <button
+              className={`adminkit-nav-link ${activeTab === 'process' ? 'active' : ''}`}
+              onClick={() => selectTab('process')}
+            >
+              <i className="ri-git-commit-line"></i>
+              <span>Work Process (CRUD)</span>
+            </button>
+          </li>
+
+          <li className="adminkit-nav-item">
+            <button
               className={`adminkit-nav-link ${activeTab === 'faq' ? 'active' : ''}`}
               onClick={() => selectTab('faq')}
             >
@@ -154,6 +170,7 @@ export default function AdminLayout({ initialTab = 'overview' }) {
               <span>FAQ Management</span>
             </button>
           </li>
+
         </ul>
 
         <div className="adminkit-nav-header">Settings & Tools</div>

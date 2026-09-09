@@ -11,10 +11,9 @@ const LOCAL_AUTH_KEY = 'the_social_dev_admin_session_v1';
 // RFC 4122 UUID v4 pattern used to detect real database-backed records
 const SUPABASE_UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-export const ALLOWED_ADMIN_EMAILS = [
-  'laymankad02@gmail.com',
-  'the.social.dev12@gmail.com'
-];
+import { ALLOWED_ADMIN_EMAILS } from '../config/adminConfig';
+export { ALLOWED_ADMIN_EMAILS };
+
 
 export function SiteProvider({ children }) {
   const [content, setContent] = useState(() => {
@@ -125,8 +124,14 @@ export function SiteProvider({ children }) {
           ventures: fetchedVentures,
           faqs: (settingsMap.faqs && Array.isArray(settingsMap.faqs) && settingsMap.faqs.length > 0)
             ? settingsMap.faqs
-            : (prev.faqs && prev.faqs.length > 0 ? prev.faqs : DEFAULT_SITE_CONTENT.faqs)
+            : (prev.faqs && prev.faqs.length > 0 ? prev.faqs : DEFAULT_SITE_CONTENT.faqs),
+          processHeader: settingsMap.processHeader || prev.processHeader || DEFAULT_SITE_CONTENT.processHeader,
+          processSteps: (settingsMap.processSteps && Array.isArray(settingsMap.processSteps) && settingsMap.processSteps.length > 0)
+            ? settingsMap.processSteps
+            : (prev.processSteps && prev.processSteps.length > 0 ? prev.processSteps : DEFAULT_SITE_CONTENT.processSteps)
         };
+
+
 
         // Cache remote data back into LocalStorage to guarantee instant availability
         try {
@@ -210,8 +215,12 @@ export function SiteProvider({ children }) {
           { key: 'whyChooseUs', value: newContent.whyChooseUs },
           { key: 'ventures', value: newContent.ventures },
           { key: 'services', value: newContent.services },
-          { key: 'faqs', value: newContent.faqs }
+          { key: 'faqs', value: newContent.faqs },
+          { key: 'processHeader', value: newContent.processHeader },
+          { key: 'processSteps', value: newContent.processSteps }
         ], { onConflict: 'key' });
+
+
 
         if (settingsErr) {
           cloudSyncFailed = true;
@@ -374,20 +383,17 @@ export function SiteProvider({ children }) {
       }
     }
 
-    // 2. Password Validation Check (supports custom password, env var, or demo defaults)
+    // 2. Password Validation Check (uses custom updated password or environment variable)
     const customPassword = localStorage.getItem('the_social_dev_custom_admin_password');
-    const expectedPassword = customPassword || import.meta.env.VITE_ADMIN_PASSWORD || 'demo@02012004';
+    const expectedPassword = customPassword || import.meta.env.VITE_ADMIN_PASSWORD;
 
-    if (
-      passwordInput === expectedPassword ||
-      passwordInput === 'demo@02012004' ||
-      passwordInput === 'Lay@02012004'
-    ) {
+    if (expectedPassword && passwordInput === expectedPassword) {
       const adminUser = { email: cleanEmail, id: 'admin-local-1' };
       setUser(adminUser);
       localStorage.setItem(LOCAL_AUTH_KEY, JSON.stringify(adminUser));
       return adminUser;
     }
+
 
     throw new Error('Incorrect admin password. Please try again.');
   };
@@ -615,6 +621,75 @@ export function SiteProvider({ children }) {
     saveContent(DEFAULT_SITE_CONTENT);
   };
 
+  const updateProcessHeader = (headerData) => {
+    const sanitizedHeader = {
+      ...content.processHeader,
+      ...headerData,
+      pill: sanitizeString(headerData.pill, 100),
+      headingLine1: sanitizeString(headerData.headingLine1, 200),
+      headingLine2: sanitizeString(headerData.headingLine2, 200),
+      italicAccent: sanitizeString(headerData.italicAccent, 100),
+      description: sanitizeString(headerData.description, 1000)
+    };
+    saveContent({ ...content, processHeader: sanitizedHeader });
+  };
+
+  const updateProcessSteps = (newProcessSteps) => {
+    saveContent({ ...content, processSteps: newProcessSteps });
+  };
+
+  const addProcessStep = (stepItem) => {
+    const currentSteps = content.processSteps || [];
+    const nextNum = String(currentSteps.length + 1).padStart(2, '0');
+    const newStep = {
+      id: generateUUID(),
+      number: nextNum,
+      category: sanitizeString(stepItem.category, 100) || 'WORK PROCESS',
+      title: sanitizeString(stepItem.title, 200),
+      subtitle: sanitizeString(stepItem.subtitle, 200) || '',
+      description: sanitizeString(stepItem.description, 2000),
+      icon: sanitizeUrl(stepItem.icon) || '',
+      tags: Array.isArray(stepItem.tags)
+        ? stepItem.tags
+        : (stepItem.tags || '').split(',').map(t => t.trim()).filter(Boolean),
+      visualType: stepItem.visualType || 'development',
+      isActive: true,
+      sortOrder: currentSteps.length + 1
+    };
+    saveContent({ ...content, processSteps: [...currentSteps, newStep] });
+  };
+
+  const editProcessStep = (id, updatedFields) => {
+    const updated = (content.processSteps || []).map(step => {
+      if (step.id === id) {
+        return {
+          ...step,
+          ...updatedFields,
+          category: updatedFields.category !== undefined ? sanitizeString(updatedFields.category, 100) : step.category,
+          title: updatedFields.title !== undefined ? sanitizeString(updatedFields.title, 200) : step.title,
+          subtitle: updatedFields.subtitle !== undefined ? sanitizeString(updatedFields.subtitle, 200) : step.subtitle,
+          description: updatedFields.description !== undefined ? sanitizeString(updatedFields.description, 2000) : step.description,
+          icon: updatedFields.icon !== undefined ? sanitizeUrl(updatedFields.icon) : step.icon,
+          tags: updatedFields.tags !== undefined
+            ? (Array.isArray(updatedFields.tags) ? updatedFields.tags : updatedFields.tags.split(',').map(t => t.trim()).filter(Boolean))
+            : step.tags
+        };
+      }
+      return step;
+    });
+    saveContent({ ...content, processSteps: updated });
+  };
+
+  const deleteProcessStep = (id) => {
+    const filtered = (content.processSteps || []).filter(step => step.id !== id);
+    const renumbered = filtered.map((step, index) => ({
+      ...step,
+      number: String(index + 1).padStart(2, '0'),
+      sortOrder: index + 1
+    }));
+    saveContent({ ...content, processSteps: renumbered });
+  };
+
   return (
     <SiteContext.Provider
       value={{
@@ -644,12 +719,19 @@ export function SiteProvider({ children }) {
         addFaq,
         editFaq,
         deleteFaq,
+        updateProcessHeader,
+        updateProcessSteps,
+        addProcessStep,
+        editProcessStep,
+        deleteProcessStep,
         resetToDefaults
       }}
     >
       {children}
     </SiteContext.Provider>
   );
+
+
 }
 
 export function useSiteContent() {

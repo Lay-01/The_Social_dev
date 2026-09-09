@@ -107,12 +107,34 @@ export default function ServicesEditor() {
                 <tbody>
                   {content.services.map((srv) => (
                     <tr key={srv.id}>
-                      <td style={{ fontWeight: 600, minWidth: '180px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                          {srv.icon && (
-                            <img src={srv.icon} alt="" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
+                      <td style={{ fontWeight: 600, minWidth: '220px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                          {srv.icon && srv.icon.startsWith('ri-') ? (
+                            <div style={{ width: '34px', height: '34px', borderRadius: '8px', backgroundColor: '#0f172a', border: '1px solid rgba(255,162,96,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                              <i className={srv.icon} style={{ fontSize: '1.2rem', color: '#ffa260' }}></i>
+                            </div>
+                          ) : (srv.icon && (srv.icon.startsWith('http://') || srv.icon.startsWith('https://') || srv.icon.startsWith('/'))) ? (
+                            <div style={{ width: '34px', height: '34px', borderRadius: '8px', backgroundColor: '#0f172a', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0 }}>
+                              <img src={srv.icon} alt="" style={{ width: '22px', height: '22px', objectFit: 'contain' }} />
+                            </div>
+                          ) : (
+                            <div style={{ width: '34px', height: '34px', borderRadius: '8px', backgroundColor: '#0f172a', border: '1px solid rgba(255,162,96,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                              <i className="ri-layout-grid-line" style={{ fontSize: '1.2rem', color: '#ffa260' }}></i>
+                            </div>
                           )}
-                          <span>{srv.title}</span>
+                          <div style={{ overflow: 'hidden' }}>
+                            <div style={{ fontWeight: 700, fontSize: '0.92rem' }}>{srv.title}</div>
+                            <div style={{ fontSize: '0.72rem', color: '#94a3b8', fontFamily: 'monospace' }}>
+                              {srv.icon && srv.icon.startsWith('ri-')
+                                ? srv.icon
+                                : srv.icon && srv.icon.startsWith('data:')
+                                ? 'Uploaded Image File'
+                                : srv.icon && srv.icon.startsWith('http')
+                                ? 'Custom Image URL'
+                                : 'Icon Asset'}
+                            </div>
+                          </div>
+
                         </div>
                       </td>
                       <td style={{ color: '#475569', maxWidth: '350px' }}>
@@ -188,12 +210,36 @@ export default function ServicesEditor() {
                   />
                 </div>
 
-                <ImageUploader
-                  label="Icon / Service Image"
-                  value={newIcon}
-                  onChange={setNewIcon}
-                  placeholder="Paste URL (https://...) or upload image file"
-                />
+                <div className="adminkit-form-group">
+                  <label className="adminkit-label">Icon Class or Image URL</label>
+                  <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                    {[
+                      { icon: 'ri-code-s-slash-line', label: 'Code' },
+                      { icon: 'ri-palette-line', label: 'Palette' },
+                      { icon: 'ri-layout-4-line', label: 'UI/UX' },
+                      { icon: 'ri-megaphone-line', label: 'Megaphone' },
+                      { icon: 'ri-smartphone-line', label: 'Mobile' },
+                      { icon: 'ri-global-line', label: 'Web' }
+                    ].map((item) => (
+                      <button
+                        key={item.icon}
+                        type="button"
+                        className={`adminkit-btn ${newIcon === item.icon ? 'adminkit-btn-primary' : 'adminkit-btn-outline'}`}
+                        style={{ padding: '6px 10px', fontSize: '0.8rem' }}
+                        onClick={() => setNewIcon(item.icon)}
+                      >
+                        <i className={item.icon} style={{ marginRight: '4px' }}></i> {item.label}
+                      </button>
+                    ))}
+                  </div>
+                  <input
+                    type="text"
+                    className="adminkit-input"
+                    placeholder="e.g. ri-code-s-slash-line or https://..."
+                    value={newIcon}
+                    onChange={(e) => setNewIcon(e.target.value)}
+                  />
+                </div>
               </div>
               <div className="adminkit-modal-footer">
                 <button type="button" className="adminkit-btn adminkit-btn-secondary" onClick={() => setIsAddModalOpen(false)}>
@@ -240,12 +286,37 @@ export default function ServicesEditor() {
                   />
                 </div>
 
-                <ImageUploader
-                  label="Icon / Service Image"
-                  value={editIcon}
-                  onChange={setEditIcon}
-                  placeholder="Paste URL (https://...) or upload image file"
-                />
+                <div className="adminkit-form-group">
+                  <label className="adminkit-label">Icon Class or Image URL</label>
+                  <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                    {[
+                      { icon: 'ri-code-s-slash-line', label: 'Code' },
+                      { icon: 'ri-palette-line', label: 'Palette' },
+                      { icon: 'ri-layout-4-line', label: 'UI/UX' },
+                      { icon: 'ri-megaphone-line', label: 'Megaphone' },
+                      { icon: 'ri-smartphone-line', label: 'Mobile' },
+                      { icon: 'ri-global-line', label: 'Web' }
+                    ].map((item) => (
+                      <button
+                        key={item.icon}
+                        type="button"
+                        className={`adminkit-btn ${editIcon === item.icon ? 'adminkit-btn-primary' : 'adminkit-btn-outline'}`}
+                        style={{ padding: '6px 10px', fontSize: '0.8rem' }}
+                        onClick={() => setEditIcon(item.icon)}
+                      >
+                        <i className={item.icon} style={{ marginRight: '4px' }}></i> {item.label}
+                      </button>
+                    ))}
+                  </div>
+                  <input
+                    type="text"
+                    className="adminkit-input"
+                    placeholder="e.g. ri-code-s-slash-line or https://..."
+                    value={editIcon}
+                    onChange={(e) => setEditIcon(e.target.value)}
+                  />
+                </div>
+
 
                 <div className="adminkit-form-group" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <input

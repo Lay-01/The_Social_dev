@@ -65,6 +65,16 @@ export default function AdminOverview({ setActiveTab }) {
         </div>
 
         <div className="adminkit-stat-card">
+          <div className="adminkit-stat-icon" style={{ backgroundColor: '#fef3c7', color: '#d97706' }}>
+            <i className="ri-git-commit-line"></i>
+          </div>
+          <div>
+            <div className="adminkit-stat-value">{content.processSteps?.length || 0} Process Steps</div>
+            <div className="adminkit-stat-label">{content.processSteps?.filter(p => p.isActive !== false).length || 0} Active in Carousel</div>
+          </div>
+        </div>
+
+        <div className="adminkit-stat-card">
           <div className="adminkit-stat-icon" style={{ backgroundColor: '#dcfce7', color: '#15803d' }}>
             <i className="ri-mail-check-line"></i>
           </div>
@@ -74,6 +84,7 @@ export default function AdminOverview({ setActiveTab }) {
           </div>
         </div>
       </div>
+
 
       {/* Quick Action Navigation Grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem', marginBottom: '1.5rem' }}>

@@ -39,14 +39,18 @@ export default function Services() {
 
   const themeClasses = ['theme-blue', 'theme-purple', 'theme-orange', 'theme-teal'];
   const iconSymbols = ['ri-code-s-slash-line', 'ri-palette-line', 'ri-layout-4-line', 'ri-megaphone-line'];
-
-  const servicesToRender = rawServices.length >= 4 
-    ? rawServices.slice(0, 4).map((srv, index) => ({
+  const servicesToRender = rawServices.length > 0 
+    ? rawServices.map((srv, index) => ({
         id: srv.id,
         title: srv.title,
         description: srv.description,
-        themeClass: themeClasses[index % themeClasses.length],
-        iconSymbol: iconSymbols[index % iconSymbols.length]
+        themeClass: srv.themeClass || themeClasses[index % themeClasses.length],
+        iconSymbol: (srv.icon && srv.icon.startsWith('ri-')) 
+          ? srv.icon 
+          : iconSymbols[index % iconSymbols.length],
+        iconImage: (srv.icon && (srv.icon.startsWith('http://') || srv.icon.startsWith('https://') || srv.icon.startsWith('/'))) 
+          ? srv.icon 
+          : null
       }))
     : defaultServices;
 
@@ -61,30 +65,43 @@ export default function Services() {
   };
 
   return (
-    <section id="services" className="services-section">
+    <section id="services" className="services">
       <div className="container">
         <div className="page-vertical-padding">
           <div className="section-padding-large">
-            <div className="services-contant-wrapper">
+            <div className="services-main-grid">
               
-              {/* Left Side — Introduction */}
-              <div className="services-intro-left">
+              {/* Left Side — Intro Header Block */}
+              <div className="services-intro-col">
                 <div className="services-pill-badge">
                   <span className="services-pill-dot"></span>
                   <span>Our Services</span>
                 </div>
 
-                <h2 className="services-heading">
-                  End-to-End<br />
-                  Web &amp; Digital<br />
-                  Solutions <span className="section-sub-heading">For<br />Business Growth</span>
+                <h2 className="services-main-title">
+                  Comprehensive <br />
+                  Web &amp; Design <br />
+                  <span className="section-sub-heading">Solutions</span>
                 </h2>
 
                 <p className="services-intro-desc">
-                  We help businesses build their digital presence with modern websites, creative designs and smart digital solutions that drive real results.
+                  From custom full-stack web applications to conversion-focused UI/UX design and aesthetic social media content — we build digital platforms built to scale.
                 </p>
 
                 <div className="services-accent-line"></div>
+
+                <a 
+                  href="#contact" 
+                  className="button-primary services-cta-btn"
+                  onClick={handleScrollToContact}
+                >
+                  <div className="button-primary-text">
+                    <div>Get Started Today</div>
+                  </div>
+                  <div className="button-primary-icon-block">
+                    <i className="ri-arrow-right-line" style={{ fontSize: '1.1rem', color: '#07090e' }}></i>
+                  </div>
+                </a>
               </div>
 
               {/* Right Side — Services Dashboard Panel */}
@@ -98,13 +115,7 @@ export default function Services() {
                       <h3 className="services-panel-title">Our Services</h3>
                     </div>
                     <div className="services-panel-nav">
-                      <span className="services-nav-counter">01 / 04</span>
-                      <button className="services-nav-btn" aria-label="Previous services page" title="Previous page">
-                        <i className="ri-arrow-left-s-line"></i>
-                      </button>
-                      <button className="services-nav-btn" aria-label="Next services page" title="Next page">
-                        <i className="ri-arrow-right-s-line"></i>
-                      </button>
+                      <span className="services-nav-counter">01 / {String(servicesToRender.length).padStart(2, '0')}</span>
                     </div>
                   </div>
 
@@ -120,7 +131,11 @@ export default function Services() {
                         aria-label={`Inquire about ${srv.title}`}
                       >
                         <div className="service-icon-box">
-                          <i className={`${srv.iconSymbol}`}></i>
+                          {srv.iconImage ? (
+                            <img src={srv.iconImage} alt="" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
+                          ) : (
+                            <i className={srv.iconSymbol}></i>
+                          )}
                         </div>
 
                         <div>

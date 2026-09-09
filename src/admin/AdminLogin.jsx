@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useSiteContent, ALLOWED_ADMIN_EMAILS } from '../context/SiteContext';
+import { useSiteContent } from '../context/SiteContext';
+import { ALLOWED_ADMIN_EMAILS } from '../config/adminConfig';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import SecurityCaptcha from './components/SecurityCaptcha';
 import AdminForgotPassword from './AdminForgotPassword';
+
 import './admin.css';
 
 export default function AdminLogin({ onLoginSuccess }) {

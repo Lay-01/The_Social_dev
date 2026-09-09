@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import SecurityCaptcha from './components/SecurityCaptcha';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
-import { ALLOWED_ADMIN_EMAILS } from '../context/SiteContext';
+import { ALLOWED_ADMIN_EMAILS } from '../config/adminConfig';
 import './admin.css';
+
 
 export default function AdminForgotPassword({ onBackToLogin }) {
   const [email, setEmail] = useState('');

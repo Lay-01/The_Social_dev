@@ -31,7 +31,7 @@ export const DEFAULT_SITE_CONTENT = {
       id: "srv-1",
       title: "Website & Web Application Development",
       description: "Custom web development from sleek landing pages to database-driven React applications, Node.js backends, and full-stack software solutions. Built with responsive layouts, fast load speeds, and search engine optimization.",
-      icon: "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfd1dcc5b0275fa8dddfd3_service-logo-01.svg",
+      icon: "ri-code-s-slash-line",
       isActive: true,
       sortOrder: 1
     },
@@ -39,7 +39,7 @@ export const DEFAULT_SITE_CONTENT = {
       id: "srv-2",
       title: "Aesthetic Social Media Content",
       description: "High-quality, visually cohesive social media designs and creative branding campaigns crafted to elevate brand identity, boost audience engagement, and build a strong visual presence on Instagram.",
-      icon: "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfd1dc769d5d9b9c2129fb_service-logo-02.svg",
+      icon: "ri-palette-line",
       isActive: true,
       sortOrder: 2
     },
@@ -47,11 +47,20 @@ export const DEFAULT_SITE_CONTENT = {
       id: "srv-3",
       title: "UI/UX Design & Digital Branding",
       description: "Conversion-focused user interface design paired with strategic visual identity development. We design memorable logos, color schemes, typography, and digital design systems that resonate with your customers.",
-      icon: "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67dfd1dca2a5a3817450cec1_service-logo-03.svg",
+      icon: "ri-layout-4-line",
       isActive: true,
       sortOrder: 3
+    },
+    {
+      id: "srv-4",
+      title: "Designing",
+      description: "T-shirt designs, Flyers, Posters, Printables.",
+      icon: "ri-megaphone-line",
+      isActive: true,
+      sortOrder: 4
     }
   ],
+
   whyChooseUs: {
     caption: "Why Choose Us?",
     heading: "Built Around",
@@ -146,5 +155,68 @@ export const DEFAULT_SITE_CONTENT = {
       isActive: true,
       sortOrder: 5
     }
+  ],
+  processHeader: {
+    pill: "Work Process",
+    headingLine1: "Our Proven 4-Step",
+    headingLine2: "Web Development",
+    italicAccent: "Process",
+    description: "A structured, transparent engineering workflow designed to bring your vision to life seamlessly from start to finish."
+  },
+  processSteps: [
+    {
+      id: "prc-1",
+      number: "01",
+      category: "DISCOVERY",
+      title: "Discovery",
+      subtitle: "Goal & Audience Mapping",
+      description: "We sit to understand your business goals, target audience, and the content you are looking for.",
+      icon: "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67e0d95fb795eb7cff2dcee5_process-card-01.svg",
+      tags: ["Goal Alignment", "Target Audience", "Requirements"],
+      visualType: "discovery",
+      isActive: true,
+      sortOrder: 1
+    },
+    {
+      id: "prc-2",
+      number: "02",
+      category: "STRATEGY & DESIGN",
+      title: "Strategy & Design",
+      subtitle: "Roadmap & Visual UI",
+      description: "We create a roadmap, sample UI, and define the content aesthetic.",
+      icon: "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67e0d95fa98b39950ae5b008_process-card-02.svg",
+      tags: ["UX Roadmap", "Sample UI", "Content Aesthetic"],
+      visualType: "strategy",
+      isActive: true,
+      sortOrder: 2
+    },
+    {
+      id: "prc-3",
+      number: "03",
+      category: "DEVELOPMENT & EXECUTION",
+      title: "Development & Execution",
+      subtitle: "Build & Continuous Updates",
+      description: "We build your website or craft your content strategy, keeping you in the loop with regular updates.",
+      icon: "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67e0d95fe82a6f61fbea3843_process-card-04.svg",
+      tags: ["Clean Code", "Regular Updates", "Execution"],
+      visualType: "development",
+      isActive: true,
+      sortOrder: 3
+    },
+    {
+      id: "prc-4",
+      number: "04",
+      category: "LAUNCH & REFINEMENT",
+      title: "Launch & Refinement",
+      subtitle: "Deployment & Final Polish",
+      description: "We deploy your project and perform final adjustments to ensure everything functions perfectly.",
+      icon: "https://cdn.prod.website-files.com/67b6c656b6f9f2332b70fbdf/67e0d95f65969933d7eefa31_process-card-03.svg",
+      tags: ["Production Deploy", "Final Adjustments", "QA Polish"],
+      visualType: "launch",
+      isActive: true,
+      sortOrder: 4
+    }
   ]
 };
+
+

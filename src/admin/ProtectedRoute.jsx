@@ -1,6 +1,8 @@
 import React from 'react';
-import { useSiteContent, ALLOWED_ADMIN_EMAILS } from '../context/SiteContext';
+import { useSiteContent } from '../context/SiteContext';
+import { ALLOWED_ADMIN_EMAILS } from '../config/adminConfig';
 import AdminLogin from './AdminLogin';
+
 
 export default function ProtectedRoute({ children }) {
   const { user } = useSiteContent();
