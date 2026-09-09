@@ -7,6 +7,25 @@ export default function Footer() {
   const { content } = useSiteContent();
   const socialLinks = content?.socialLinks || [];
 
+  const handleNavClick = (e, targetId) => {
+    if (window.location.pathname.includes('/privacy-policy') || window.location.pathname.includes('/terms-of-service')) {
+      window.location.href = `/#${targetId}`;
+      return;
+    }
+    e.preventDefault();
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+      if (window.history && window.history.pushState) {
+        window.history.pushState(null, '', `#${targetId}`);
+      } else {
+        window.location.hash = `#${targetId}`;
+      }
+    } else {
+      window.location.hash = `#${targetId}`;
+    }
+  };
+
   return (
     <footer className="footer">
       <div className="container">
@@ -14,7 +33,12 @@ export default function Footer() {
           <div className="footer-contant-wrapper" style={{ opacity: 1 }}>
             <div className="footer-info-wrapper">
               <div className="footer-info-block">
-                <a href="#about" className="footer-nav-brand w-inline-block" title="The Social Dev - Home">
+                <a
+                  href="#about"
+                  className="footer-nav-brand w-inline-block"
+                  title="The Social Dev - Home"
+                  onClick={(e) => handleNavClick(e, 'about')}
+                >
                   <div className="brand-title-logo">
                     <img src={logo} alt="The Social Dev - Web Development & Digital Solutions Agency Logo" width="40" height="40" decoding="async" className="brand-logo" />
                     <span>The_<span className="brand-accent">Social_Dev</span></span>
@@ -71,24 +95,22 @@ export default function Footer() {
                 <div className="footer-nav-block">
                   <h3 style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '14px', fontWeight: 600 }}>Quick Links</h3>
                   <div className="footer-nav-link-block">
-                    <a href="#about" className="footer-link" title="About Our Web Development Agency">About Our Agency</a>
-                    <a href="#services" className="footer-link" title="Explore Our Web & Digital Services">Web & Digital Services</a>
-                    <a href="#ventures" className="footer-link" title="View Our Live Web Projects">Featured Web Projects</a>
-                    <a href="#why" className="footer-link" title="Why Choose The Social Dev">Why Choose Us</a>
-                    <a href="#process" className="footer-link" title="Our 4-Step Web Development Process">Development Process</a>
-                    <a href="#faq" className="footer-link" title="Frequently Asked Questions">FAQ</a>
-                    <a href="#pricing" className="footer-link" title="Web Development Packages & Pricing">Pricing Packages</a>
-                    <a href="/privacy-policy" className="footer-link" title="Privacy Policy">Privacy Policy</a>
-                    <a href="/terms-of-service" className="footer-link" title="Terms of Service">Terms of Service</a>
+                    <a href="#about" className="footer-link" title="About Us" onClick={(e) => handleNavClick(e, 'about')}>About Us</a>
+                    <a href="#services" className="footer-link" title="Services" onClick={(e) => handleNavClick(e, 'services')}>Services</a>
+                    <a href="#ventures" className="footer-link" title="Our Ventures" onClick={(e) => handleNavClick(e, 'ventures')}>Our Ventures</a>
+                    <a href="#why" className="footer-link" title="Why Us" onClick={(e) => handleNavClick(e, 'why')}>Why Us</a>
+                    <a href="#process" className="footer-link" title="Process" onClick={(e) => handleNavClick(e, 'process')}>Process</a>
+                    <a href="#pricing" className="footer-link" title="Pricing" onClick={(e) => handleNavClick(e, 'pricing')}>Pricing</a>
+                    <a href="#faq" className="footer-link" title="Frequently Asked Questions (FAQs)" onClick={(e) => handleNavClick(e, 'faq')}>FAQs</a>
                   </div>
                 </div>
                 <div className="footer-nav-block">
                   <h3 style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '14px', fontWeight: 600 }}>Our Services</h3>
                   <div className="footer-nav-link-block">
-                    <a href="#services" className="footer-link" title="Custom Web Development Services">Website & Web App Development</a>
-                    <a href="#services" className="footer-link" title="Aesthetic Social Media Branding">Aesthetic Social Media Content</a>
-                    <a href="#services" className="footer-link" title="UI/UX Design Services">UI/UX Design & Branding</a>
-                    <a href="#contact" className="footer-link" title="Contact Us for Digital Solutions">Contact Web Developers</a>
+                    <a href="#services" className="footer-link" title="Custom Web Development Services" onClick={(e) => handleNavClick(e, 'services')}>Website & Web App Development</a>
+                    <a href="#services" className="footer-link" title="Aesthetic Social Media Branding" onClick={(e) => handleNavClick(e, 'services')}>Aesthetic Social Media Content</a>
+                    <a href="#services" className="footer-link" title="UI/UX Design Services" onClick={(e) => handleNavClick(e, 'services')}>UI/UX Design & Branding</a>
+                    <a href="#contact" className="footer-link" title="Contact Us for Digital Solutions" onClick={(e) => handleNavClick(e, 'contact')}>Contact Web Developers</a>
                   </div>
                 </div>
               </div>
