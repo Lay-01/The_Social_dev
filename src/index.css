@@ -628,6 +628,11 @@ img, svg {
               radial-gradient(circle at 10% 80%, rgba(139, 92, 246, 0.04) 0%, transparent 50%);
 }
 
+.service-bg-glow {
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
 .ventures-header-left {
   max-width: 440px;
   display: flex;

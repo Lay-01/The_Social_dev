@@ -280,7 +280,7 @@ export default function VenturesEditor() {
                 <div className="adminkit-form-group">
                   <label className="adminkit-label">Live Site URL</label>
                   <input
-                    type="url"
+                    type="text"
                     className="adminkit-input"
                     placeholder="https://your-project.com"
                     value={newUrl}
@@ -346,7 +346,7 @@ export default function VenturesEditor() {
                 <div className="adminkit-form-group">
                   <label className="adminkit-label">Live Site URL</label>
                   <input
-                    type="url"
+                    type="text"
                     className="adminkit-input"
                     placeholder="https://your-project.com"
                     value={editUrl}

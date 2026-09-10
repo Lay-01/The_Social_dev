@@ -7,12 +7,23 @@ export default function Ventures() {
   const venturesList = (content?.ventures || []).filter(vtr => vtr.isActive !== false);
   const scrollRef = useRef(null);
 
+  const formatUrl = (rawUrl) => {
+    if (!rawUrl) return '';
+    const trimmed = rawUrl.trim();
+    if (!trimmed) return '';
+    if (/^(https?:\/\/|mailto:|#|\/)/i.test(trimmed)) {
+      return trimmed;
+    }
+    return `https://${trimmed}`;
+  };
+
   const getThumbnailSrc = (vtr) => {
     if (vtr.image && vtr.image.trim()) {
       return vtr.image;
     }
     if (vtr.url && vtr.url.trim()) {
-      return `https://api.microlink.io/?url=${encodeURIComponent(vtr.url)}&screenshot=true&embed=screenshot.url`;
+      const formatted = formatUrl(vtr.url);
+      return `https://api.microlink.io/?url=${encodeURIComponent(formatted)}&screenshot=true&embed=screenshot.url`;
     }
     return 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80';
   };
@@ -31,7 +42,7 @@ export default function Ventures() {
 
   return (
     <section id="ventures" className="ventures-section">
-      <div className="container">
+      <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         <div className="page-vertical-padding">
           <div className="section-padding-large">
             <div className="service-contant-wrapper">
@@ -63,7 +74,7 @@ export default function Ventures() {
                     <p>No venture projects currently active.</p>
                   </div>
                 ) : (
-                  <div className="ventures-showcase-frame">
+                  <div className="ventures-showcase-frame" style={{ position: 'relative', zIndex: 2 }}>
                     
                     {/* Frame Header Bar */}
                     <div className="ventures-frame-header">
@@ -72,169 +83,207 @@ export default function Ventures() {
                         <span>Projects</span>
                       </div>
                       <div className="ventures-frame-counter">
-                        1 / {venturesList.length}
+                        {venturesList.length} Active {venturesList.length === 1 ? 'Project' : 'Projects'}
                       </div>
                     </div>
 
                     {/* Frame Scrollable Cards Grid (2 columns) */}
                     <div className="ventures-scroll-list" ref={scrollRef}>
-                      {venturesList.map((vtr) => (
-                        <div
-                          key={vtr.id}
-                          className="venture-card"
-                          style={{
-                            backgroundColor: 'rgba(13, 20, 36, 0.75)',
-                            border: '1px solid rgba(255, 255, 255, 0.08)',
-                            backdropFilter: 'blur(16px)',
-                            WebkitBackdropFilter: 'blur(16px)',
-                            borderRadius: '12px',
-                            overflow: 'hidden',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            transition: 'all 0.25s ease',
-                            position: 'relative'
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.borderColor = 'rgba(255, 162, 96, 0.4)';
-                            e.currentTarget.style.boxShadow = '0 10px 24px rgba(0, 0, 0, 0.4)';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-                            e.currentTarget.style.boxShadow = 'none';
-                          }}
-                        >
-                          {/* Browser Window Header Mockup */}
+                      {venturesList.map((vtr) => {
+                        const targetUrl = formatUrl(vtr.url);
+                        return (
                           <div
+                            key={vtr.id}
+                            className="venture-card"
                             style={{
-                              backgroundColor: 'rgba(20, 29, 47, 0.9)',
-                              padding: '0.4rem 0.75rem',
+                              backgroundColor: 'rgba(13, 20, 36, 0.75)',
+                              border: '1px solid rgba(255, 255, 255, 0.08)',
+                              backdropFilter: 'blur(16px)',
+                              WebkitBackdropFilter: 'blur(16px)',
+                              borderRadius: '12px',
+                              overflow: 'hidden',
                               display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'space-between',
-                              borderBottom: '1px solid rgba(255, 255, 255, 0.06)'
+                              flexDirection: 'column',
+                              transition: 'all 0.25s ease',
+                              position: 'relative',
+                              zIndex: 3
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.borderColor = 'rgba(255, 162, 96, 0.4)';
+                              e.currentTarget.style.boxShadow = '0 10px 24px rgba(0, 0, 0, 0.4)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                              e.currentTarget.style.boxShadow = 'none';
                             }}
                           >
-                            <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
-                              <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#ef4444' }}></span>
-                              <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#f59e0b' }}></span>
-                              <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10b981' }}></span>
-                            </div>
+                            {/* Browser Window Header Mockup */}
                             <div
                               style={{
-                                fontSize: '0.65rem',
-                                color: '#94a3b8',
-                                fontFamily: 'monospace',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
-                                maxWidth: '110px'
+                                backgroundColor: 'rgba(20, 29, 47, 0.9)',
+                                padding: '0.4rem 0.75rem',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                borderBottom: '1px solid rgba(255, 255, 255, 0.06)'
                               }}
                             >
-                              {vtr.title}
-                            </div>
-                            <i className="ri-menu-line" style={{ fontSize: '0.72rem', color: '#64748b' }}></i>
-                          </div>
-
-                          {/* Site Preview Thumbnail Container */}
-                          <div
-                            style={{
-                              position: 'relative',
-                              width: '100%',
-                              height: '125px',
-                              backgroundColor: '#090d16',
-                              overflow: 'hidden'
-                            }}
-                          >
-                            <img
-                              src={getThumbnailSrc(vtr)}
-                              alt={`${vtr.title} web development project preview`}
-                              loading="lazy"
-                              decoding="async"
-                              width="300"
-                              height="125"
-                              style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'cover',
-                                transition: 'transform 0.4s ease'
-                              }}
-                              onError={(e) => handleImageError(e, 'serviceIcon')}
-                            />
-                          </div>
-
-                          {/* Content Info Block */}
-                          <div style={{ padding: '0.85rem', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
-                            <div>
-                              <h3
+                              <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
+                                <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#ef4444' }}></span>
+                                <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#f59e0b' }}></span>
+                                <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10b981' }}></span>
+                              </div>
+                              <div
                                 style={{
-                                  fontSize: '0.98rem',
-                                  fontWeight: 700,
-                                  color: '#fff',
-                                  marginBottom: '0.25rem',
-                                  lineHeight: 1.25
+                                  fontSize: '0.65rem',
+                                  color: '#94a3b8',
+                                  fontFamily: 'monospace',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  whiteSpace: 'nowrap',
+                                  maxWidth: '110px'
                                 }}
                               >
                                 {vtr.title}
-                              </h3>
-                              <p
-                                style={{
-                                  fontSize: '0.78rem',
-                                  color: '#94a3b8',
-                                  lineHeight: 1.4,
-                                  marginBottom: '0.85rem',
-                                  display: '-webkit-box',
-                                  WebkitLineClamp: 2,
-                                  WebkitBoxOrient: 'vertical',
-                                  overflow: 'hidden'
-                                }}
-                              >
-                                {vtr.description}
-                              </p>
+                              </div>
+                              <i className="ri-menu-line" style={{ fontSize: '0.72rem', color: '#64748b' }}></i>
                             </div>
 
-                            {/* URL Link Button CTA Bar */}
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: '0.3rem' }}>
-                              {vtr.url ? (
-                                <a
-                                  href={vtr.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  title={`Visit ${vtr.title} live web project`}
-                                  aria-label={`Visit ${vtr.title} live web project`}
-                                  style={{
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    gap: '0.35rem',
-                                    padding: '0.4rem 0.75rem',
-                                    borderRadius: '8px',
-                                    backgroundColor: 'rgba(255, 162, 96, 0.08)',
-                                    color: '#ffa260',
-                                    border: '1px solid rgba(255, 162, 96, 0.35)',
-                                    fontWeight: 600,
-                                    fontSize: '0.78rem',
-                                    textDecoration: 'none',
-                                    transition: 'all 0.25s ease'
-                                  }}
-                                  onMouseEnter={(e) => {
-                                    e.currentTarget.style.backgroundColor = '#ffa260';
-                                    e.currentTarget.style.color = '#07090e';
-                                  }}
-                                  onMouseLeave={(e) => {
-                                    e.currentTarget.style.backgroundColor = 'rgba(255, 162, 96, 0.08)';
-                                    e.currentTarget.style.color = '#ffa260';
-                                  }}
-                                >
-                                  <span>Visit Venture</span>
-                                  <i className="ri-external-link-line" style={{ fontSize: '0.75rem' }}></i>
+                            {/* Site Preview Thumbnail Container */}
+                            <div
+                              style={{
+                                position: 'relative',
+                                width: '100%',
+                                height: '125px',
+                                backgroundColor: '#090d16',
+                                overflow: 'hidden'
+                              }}
+                            >
+                              {targetUrl ? (
+                                <a href={targetUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '100%', height: '100%' }}>
+                                  <img
+                                    src={getThumbnailSrc(vtr)}
+                                    alt={`${vtr.title} web development project preview`}
+                                    loading="lazy"
+                                    decoding="async"
+                                    width="300"
+                                    height="125"
+                                    style={{
+                                      width: '100%',
+                                      height: '100%',
+                                      objectFit: 'cover',
+                                      transition: 'transform 0.4s ease'
+                                    }}
+                                    onError={(e) => handleImageError(e, 'serviceIcon')}
+                                  />
                                 </a>
                               ) : (
-                                <div></div>
+                                <img
+                                  src={getThumbnailSrc(vtr)}
+                                  alt={`${vtr.title} web development project preview`}
+                                  loading="lazy"
+                                  decoding="async"
+                                  width="300"
+                                  height="125"
+                                  style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'cover',
+                                    transition: 'transform 0.4s ease'
+                                  }}
+                                  onError={(e) => handleImageError(e, 'serviceIcon')}
+                                />
                               )}
-                              <i className="ri-arrow-right-up-line" style={{ fontSize: '1rem', color: '#64748b' }}></i>
+                            </div>
+
+                            {/* Content Info Block */}
+                            <div style={{ padding: '0.85rem', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+                              <div>
+                                <h3
+                                  style={{
+                                    fontSize: '0.98rem',
+                                    fontWeight: 700,
+                                    color: '#fff',
+                                    marginBottom: '0.25rem',
+                                    lineHeight: 1.25
+                                  }}
+                                >
+                                  {targetUrl ? (
+                                    <a
+                                      href={targetUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      style={{ color: '#fff', textDecoration: 'none' }}
+                                    >
+                                      {vtr.title}
+                                    </a>
+                                  ) : (
+                                    vtr.title
+                                  )}
+                                </h3>
+                                <p
+                                  style={{
+                                    fontSize: '0.78rem',
+                                    color: '#94a3b8',
+                                    lineHeight: 1.4,
+                                    marginBottom: '0.85rem',
+                                    display: '-webkit-box',
+                                    WebkitLineClamp: 2,
+                                    WebkitBoxOrient: 'vertical',
+                                    overflow: 'hidden'
+                                  }}
+                                >
+                                  {vtr.description}
+                                </p>
+                              </div>
+
+                              {/* URL Link Button CTA Bar */}
+                              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: '0.3rem' }}>
+                                {targetUrl ? (
+                                  <a
+                                    href={targetUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    title={`Visit ${vtr.title} live web project`}
+                                    aria-label={`Visit ${vtr.title} live web project`}
+                                    style={{
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      gap: '0.35rem',
+                                      padding: '0.4rem 0.75rem',
+                                      borderRadius: '8px',
+                                      backgroundColor: 'rgba(255, 162, 96, 0.08)',
+                                      color: '#ffa260',
+                                      border: '1px solid rgba(255, 162, 96, 0.35)',
+                                      fontWeight: 600,
+                                      fontSize: '0.78rem',
+                                      textDecoration: 'none',
+                                      transition: 'all 0.25s ease',
+                                      position: 'relative',
+                                      zIndex: 4,
+                                      cursor: 'pointer'
+                                    }}
+                                    onMouseEnter={(e) => {
+                                      e.currentTarget.style.backgroundColor = '#ffa260';
+                                      e.currentTarget.style.color = '#07090e';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                      e.currentTarget.style.backgroundColor = 'rgba(255, 162, 96, 0.08)';
+                                      e.currentTarget.style.color = '#ffa260';
+                                    }}
+                                  >
+                                    <span>Visit Venture</span>
+                                    <i className="ri-external-link-line" style={{ fontSize: '0.75rem' }}></i>
+                                  </a>
+                                ) : (
+                                  <div></div>
+                                )}
+                                <i className="ri-arrow-right-up-line" style={{ fontSize: '1rem', color: '#64748b' }}></i>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
 
                     {/* Frame Navigation Scroll Controls */}
@@ -256,7 +305,7 @@ export default function Ventures() {
         </div>
       </div>
 
-      <div className="service-bg-glow" style={{ opacity: 0.6 }}></div>
+      <div className="service-bg-glow" style={{ opacity: 0.6, pointerEvents: 'none', zIndex: 0 }}></div>
     </section>
   );
 }

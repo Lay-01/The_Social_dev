@@ -2,17 +2,17 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import { DEFAULT_SITE_CONTENT } from '../data/defaultContent';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { sanitizeString, sanitizeUrl, validateEmail, generateUUID } from '../utils/sanitize';
+import { ALLOWED_ADMIN_EMAILS } from '../config/adminConfig';
+export { ALLOWED_ADMIN_EMAILS };
 
 const SiteContext = createContext();
 
 const LOCAL_STORAGE_KEY = 'the_social_dev_site_content_v2';
 const LOCAL_AUTH_KEY = 'the_social_dev_admin_session_v1';
+const TAB_ID = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2);
 
 // RFC 4122 UUID v4 pattern used to detect real database-backed records
 const SUPABASE_UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-import { ALLOWED_ADMIN_EMAILS } from '../config/adminConfig';
-export { ALLOWED_ADMIN_EMAILS };
 
 
 export function SiteProvider({ children }) {
@@ -62,12 +62,12 @@ export function SiteProvider({ children }) {
         .from('site_settings')
         .select('*');
 
-      const { data: servicesData } = await supabase
+      const { data: servicesData, error: servicesErr } = await supabase
         .from('services')
         .select('*')
         .order('sort_order', { ascending: true });
 
-      const { data: venturesData } = await supabase
+      const { data: venturesData, error: venturesErr } = await supabase
         .from('ventures')
         .select('*')
         .order('sort_order', { ascending: true });
@@ -81,57 +81,59 @@ export function SiteProvider({ children }) {
       }
 
       setContent(prev => {
-        // Source of truth: dedicated `services` table FIRST (it reflects hard
-        // deletes), then the site_settings JSON mirror, then local cache.
-        const fetchedServices = (servicesData && servicesData.length > 0)
-          ? servicesData.map(s => ({
-              id: s.id,
-              title: s.title,
-              description: s.description,
-              icon: s.icon,
-              isActive: s.is_active !== false,
-              sortOrder: s.sort_order
-            }))
-          : ((settingsMap.services && Array.isArray(settingsMap.services) && settingsMap.services.length > 0)
-              ? settingsMap.services
-              : (prev.services && prev.services.length > 0 ? prev.services : DEFAULT_SITE_CONTENT.services));
+        // Dedicated `services` table check: if query succeeded (data is array), map rows.
+        let fetchedServices;
+        if (!servicesErr && Array.isArray(servicesData)) {
+          fetchedServices = servicesData.map(s => ({
+            id: s.id,
+            title: s.title,
+            description: s.description,
+            icon: s.icon,
+            isActive: s.is_active !== false,
+            sortOrder: s.sort_order
+          }));
+        } else if (!settingsErr && Array.isArray(settingsMap.services)) {
+          fetchedServices = settingsMap.services;
+        } else {
+          fetchedServices = prev.services || DEFAULT_SITE_CONTENT.services;
+        }
 
-        // Source of truth: dedicated `ventures` table FIRST (it reflects hard
-        // deletes), then the site_settings JSON mirror, then local cache.
-        const fetchedVentures = (venturesData && venturesData.length > 0)
-          ? venturesData.map(v => ({
-              id: v.id,
-              title: v.title,
-              description: v.description,
-              url: v.url,
-              image: v.image,
-              isActive: v.is_active !== false,
-              sortOrder: v.sort_order
-            }))
-          : ((settingsMap.ventures && Array.isArray(settingsMap.ventures) && settingsMap.ventures.length > 0)
-              ? settingsMap.ventures
-              : (prev.ventures && prev.ventures.length > 0 ? prev.ventures : DEFAULT_SITE_CONTENT.ventures));
+        // Dedicated `ventures` table check: if query succeeded (data is array), map rows.
+        let fetchedVentures;
+        if (!venturesErr && Array.isArray(venturesData)) {
+          fetchedVentures = venturesData.map(v => ({
+            id: v.id,
+            title: v.title,
+            description: v.description,
+            url: v.url,
+            image: v.image,
+            isActive: v.is_active !== false,
+            sortOrder: v.sort_order
+          }));
+        } else if (!settingsErr && Array.isArray(settingsMap.ventures)) {
+          fetchedVentures = settingsMap.ventures;
+        } else {
+          fetchedVentures = prev.ventures || DEFAULT_SITE_CONTENT.ventures;
+        }
 
         const updated = {
           ...prev,
           contactEmail: settingsMap.contactEmail || prev.contactEmail || DEFAULT_SITE_CONTENT.contactEmail,
-          socialLinks: (settingsMap.socialLinks && Array.isArray(settingsMap.socialLinks) && settingsMap.socialLinks.length > 0)
+          socialLinks: (!settingsErr && Array.isArray(settingsMap.socialLinks))
             ? settingsMap.socialLinks
-            : (prev.socialLinks && prev.socialLinks.length > 0 ? prev.socialLinks : DEFAULT_SITE_CONTENT.socialLinks),
+            : (prev.socialLinks || DEFAULT_SITE_CONTENT.socialLinks),
           about: settingsMap.about || prev.about || DEFAULT_SITE_CONTENT.about,
           whyChooseUs: settingsMap.whyChooseUs || prev.whyChooseUs || DEFAULT_SITE_CONTENT.whyChooseUs,
           services: fetchedServices,
           ventures: fetchedVentures,
-          faqs: (settingsMap.faqs && Array.isArray(settingsMap.faqs) && settingsMap.faqs.length > 0)
+          faqs: (!settingsErr && Array.isArray(settingsMap.faqs))
             ? settingsMap.faqs
-            : (prev.faqs && prev.faqs.length > 0 ? prev.faqs : DEFAULT_SITE_CONTENT.faqs),
+            : (prev.faqs || DEFAULT_SITE_CONTENT.faqs),
           processHeader: settingsMap.processHeader || prev.processHeader || DEFAULT_SITE_CONTENT.processHeader,
-          processSteps: (settingsMap.processSteps && Array.isArray(settingsMap.processSteps) && settingsMap.processSteps.length > 0)
+          processSteps: (!settingsErr && Array.isArray(settingsMap.processSteps))
             ? settingsMap.processSteps
-            : (prev.processSteps && prev.processSteps.length > 0 ? prev.processSteps : DEFAULT_SITE_CONTENT.processSteps)
+            : (prev.processSteps || DEFAULT_SITE_CONTENT.processSteps)
         };
-
-
 
         // Cache remote data back into LocalStorage to guarantee instant availability
         try {
@@ -166,7 +168,9 @@ export function SiteProvider({ children }) {
       try {
         channel = new BroadcastChannel('the_social_dev_channel');
         channel.onmessage = (event) => {
-          if (event.data === 'revalidate') {
+          const isRevalidate = event.data === 'revalidate' || event.data?.type === 'revalidate';
+          const isOtherTab = !event.data?.senderId || event.data.senderId !== TAB_ID;
+          if (isRevalidate && isOtherTab) {
             fetchFromSupabase();
           }
         };
@@ -194,15 +198,6 @@ export function SiteProvider({ children }) {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newContent));
     } catch {}
 
-    // Broadcast update signal to all open tabs on the browser
-    if (typeof BroadcastChannel !== 'undefined') {
-      try {
-        const bc = new BroadcastChannel('the_social_dev_channel');
-        bc.postMessage('revalidate');
-        bc.close();
-      } catch {}
-    }
-
     setSaveStatus('saving');
 
     try {
@@ -220,17 +215,13 @@ export function SiteProvider({ children }) {
           { key: 'processSteps', value: newContent.processSteps }
         ], { onConflict: 'key' });
 
-
-
         if (settingsErr) {
           cloudSyncFailed = true;
           console.error('Supabase site_settings upsert FAILED:', settingsErr);
         }
 
         // Ensure every item carries a STABLE database-compatible UUID BEFORE
-        // saving. Previously a fresh random UUID was generated on every save
-        // for legacy non-UUID ids, creating duplicate rows in Supabase and
-        // breaking deletion reconciliation.
+        // saving.
         let idsNormalized = false;
         const ensureStableIds = (items) => {
           (items || []).forEach(item => {
@@ -241,8 +232,7 @@ export function SiteProvider({ children }) {
           });
           return items || [];
         };
-        // Merge duplicate rows created by the old per-save-UUID bug: items
-        // sharing the same title collapse into their most recent entry.
+
         const dedupeByTitle = (items) => {
           const list = items || [];
           const winner = new Map();
@@ -300,11 +290,6 @@ export function SiteProvider({ children }) {
           } catch {}
         }
 
-        // Reconcile the dedicated tables against the saved lists by HARD-DELETING
-        // any DB row that is no longer present. Upsert alone never removes rows,
-        // so deleted ventures/services would otherwise survive as orphaned rows
-        // and reappear on other browsers/devices that fetch from these tables.
-        // This also heals any pre-existing orphaned rows on the next save.
         const reconcileHardDeletes = async (tableName, keptItems) => {
           try {
             const { data: existingRows, error: fetchErr } = await supabase.from(tableName).select('id');
@@ -338,8 +323,16 @@ export function SiteProvider({ children }) {
         await reconcileHardDeletes('ventures', stableVentures);
       }
 
-      // Surface real cloud-sync failures to the admin UI instead of silently
-      // reporting success while the database was never actually updated.
+      // Broadcast update signal to ALL OTHER open tabs AFTER cloud sync completes
+      if (typeof BroadcastChannel !== 'undefined') {
+        try {
+          const bc = new BroadcastChannel('the_social_dev_channel');
+          bc.postMessage({ type: 'revalidate', senderId: TAB_ID });
+          bc.close();
+        } catch {}
+      }
+
+      // Surface real cloud-sync failures to the admin UI
       setSaveStatus(cloudSyncFailed ? 'error' : 'success');
       setTimeout(() => setSaveStatus(null), 3000);
     } catch (err) {
