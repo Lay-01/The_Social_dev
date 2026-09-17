@@ -35,12 +35,12 @@ export default function Navbar({ onToast }) {
   };
 
   const navLinks = [
-    { label: 'About Us', href: '#about' },
-    { label: 'Services', href: '#services' },
-    { label: 'Our Ventures', href: '#ventures' },
-    { label: 'Why Us', href: '#why' },
-    { label: 'Process', href: '#process' },
-    { label: 'Pricing', href: '#pricing' },
+    { label: 'About Us', href: '#about', icon: 'ri-user-star-line' },
+    { label: 'Services', href: '#services', icon: 'ri-code-s-slash-line' },
+    { label: 'Our Ventures', href: '#ventures', icon: 'ri-rocket-2-line' },
+    { label: 'Why Us', href: '#why', icon: 'ri-shield-check-line' },
+    { label: 'Process', href: '#process', icon: 'ri-git-merge-line' },
+    { label: 'Pricing', href: '#pricing', icon: 'ri-price-tag-3-line' },
   ];
 
   return (
@@ -107,7 +107,7 @@ export default function Navbar({ onToast }) {
         </div>
       </div>
 
-      {/* Original Webflow Mobile Slide-out Drawer */}
+      {/* Pro Mobile Slide-out Drawer */}
       {mobileOpen && (
         <>
           <div className="nav-mobile-backdrop" onClick={() => setMobileOpen(false)} />
@@ -140,8 +140,11 @@ export default function Navbar({ onToast }) {
                     else window.location.hash = link.href;
                   }}
                 >
-                  <i className="ri-arrow-right-s-line" />
-                  <span>{link.label}</span>
+                  <div className="nav-mobile-icon-box">
+                    <i className={link.icon || 'ri-arrow-right-s-line'} />
+                  </div>
+                  <span className="nav-mobile-label">{link.label}</span>
+                  <i className="ri-arrow-right-line nav-mobile-arrow" />
                 </a>
               ))}
             </div>
