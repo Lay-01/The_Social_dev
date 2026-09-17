@@ -181,7 +181,7 @@ export default function Navbar({ onToast }) {
     </header>
   );
 }
-}
+
 
 
 
