@@ -305,9 +305,7 @@ img, svg {
   bottom: 0;
   width: 85%;
   max-width: 340px;
-  background: rgba(13, 17, 26, 0.98);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background: #07090e !important; /* 100% SOLID OPAQUE DARK BACKGROUND - NO TRANSPARENCY BLEED */
   z-index: 10005;
   padding: 28px 24px;
   display: flex;
@@ -315,8 +313,8 @@ img, svg {
   box-sizing: border-box;
   transform: translateX(100%);
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8);
+  border-left: 1px solid rgba(255, 162, 96, 0.35);
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.98);
 }
 
 .nav-mobile-drawer.open {
@@ -328,13 +326,13 @@ img, svg {
   align-items: center;
   justify-content: space-between;
   padding-bottom: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   margin-bottom: 24px;
 }
 
 .nav-mobile-close-btn {
-  background: rgba(255, 255, 255, 0.06);
-  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   color: #fff;
   font-size: 1.5rem;
   width: 38px;
@@ -354,7 +352,7 @@ img, svg {
 }
 
 .nav-mobile-link {
-  color: rgba(255, 255, 255, 0.85);
+  color: #ffffff;
   text-decoration: none;
   font-size: 1.05rem;
   font-weight: 600;
@@ -364,8 +362,8 @@ img, svg {
   align-items: center;
   gap: 12px;
   transition: all 0.2s ease;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .nav-mobile-link i {
@@ -375,8 +373,8 @@ img, svg {
 
 .nav-mobile-link:hover,
 .nav-mobile-link.active {
-  background: rgba(255, 162, 96, 0.12);
-  border-color: rgba(255, 162, 96, 0.3);
+  background: rgba(255, 162, 96, 0.16);
+  border-color: rgba(255, 162, 96, 0.4);
   color: #ffa260;
 }
 
@@ -386,7 +384,7 @@ img, svg {
   gap: 12px;
   margin-top: auto;
   padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .mobile-full {
@@ -401,9 +399,9 @@ img, svg {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   z-index: 10002;
 }
 
