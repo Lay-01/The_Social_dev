@@ -152,20 +152,6 @@ export default function Contact({ onSubmitSuccess }) {
 
                 {/* Integrated Icon & Status WhatsApp Button */}
                 <div style={{ marginTop: '10px' }}>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    marginBottom: '6px'
-                  }}>
-                    <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>
-                      INTEGRATED ICON & STATUS
-                    </span>
-                    <span style={{ fontSize: '0.8rem', color: '#94a3b8', fontWeight: 500 }}>
-                      Active
-                    </span>
-                  </div>
-
                   <button
                     type="submit"
                     style={{

@@ -1,167 +1,161 @@
 import React, { useState, useEffect } from 'react';
-import { copyEmailToClipboard } from '../utils/mailto';
 import logo from '../../images/socdev.jpg';
-import { useSiteContent } from '../context/SiteContext';
 
 export default function Navbar({ onToast }) {
-  const { content } = useSiteContent();
-  const targetEmail = content?.contactEmail || 'the.social.dev12@gmail.com';
-
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('');
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
-
-      // Section scroll spy
-      const sections = ['about', 'services', 'ventures', 'why', 'process', 'pricing', 'contact'];
-      let current = '';
-      for (const section of sections) {
-        const el = document.getElementById(section);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 140 && rect.bottom >= 140) {
-            current = section;
-            break;
-          }
-        }
-      }
-      setActiveSection(current);
+      setScrolled(window.scrollY > 20);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Lock body scrolling when mobile menu drawer is open
-  useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [mobileOpen]);
-
   const handleGetInTouch = (e) => {
     e.preventDefault();
     setMobileOpen(false);
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      window.location.hash = 'contact';
-    }
+    const el = document.getElementById('contact');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    else window.location.hash = 'contact';
   };
 
   const handleCopyEmail = (e) => {
     e.preventDefault();
-    copyEmailToClipboard(targetEmail).then(() => {
-      if (onToast) {
-        onToast(`Email copied: ${targetEmail}`);
-      }
+    const email = 'the.social.dev12@gmail.com';
+    navigator.clipboard.writeText(email).then(() => {
+      setCopied(true);
+      if (onToast) onToast('Email copied to clipboard!');
+      setTimeout(() => setCopied(false), 2500);
+    }).catch(() => {
+      if (onToast) onToast('Email: the.social.dev12@gmail.com');
     });
   };
 
+  const navLinks = [
+    { label: 'About Us', href: '#about' },
+    { label: 'Services', href: '#services' },
+    { label: 'Our Ventures', href: '#ventures' },
+    { label: 'Why Us', href: '#why' },
+    { label: 'Process', href: '#process' },
+    { label: 'Pricing', href: '#pricing' },
+  ];
+
   return (
-    <>
-      <header className={`custom-navbar ${scrolled ? 'scrolled' : ''}`}>
-        <div className="nav-container">
-          <a href="/" aria-label="The Social Dev Homepage" title="The Social Dev - Web Development & Digital Solutions" className="nav-brand w-nav-brand w--current">
-            <div className="brand-title-logo">
-              <img src={logo} alt="The Social Dev Logo" width="40" height="40" decoding="async" className="brand-logo" />
-              <span>The_<span className="brand-accent">Social_Dev</span></span>
+    <header className={`custom-navbar ${scrolled ? 'is-scrolled' : ''}`}>
+      <div className="container">
+        <div className="navbar-inner">
+          
+          {/* Logo Brand */}
+          <a href="/" className="navbar-brand">
+            <div className="brand-logo-box">
+              <img src={logo} alt="The Social Dev Logo" className="brand-logo-img" />
             </div>
+            <span className="brand-logo-text">
+              The_<span className="brand-accent">Social_Dev</span>
+            </span>
           </a>
 
-          {/* Desktop Navigation Links */}
-          <nav className="nav-desktop-menu">
-            <a href="#about" title="About Our Web Development Agency" className={`nav-link ${activeSection === 'about' ? 'active' : ''}`}>About Us</a>
-            <a href="#services" title="Web & Digital Services" className={`nav-link ${activeSection === 'services' ? 'active' : ''}`}>Services</a>
-            <a href="#ventures" title="Featured Projects & Ventures" className={`nav-link ${activeSection === 'ventures' ? 'active' : ''}`}>Our Ventures</a>
-            <a href="#why" title="Why Choose The Social Dev" className={`nav-link ${activeSection === 'why' ? 'active' : ''}`}>Why Us</a>
-            <a href="#process" title="Web Development Process" className={`nav-link ${activeSection === 'process' ? 'active' : ''}`}>Process</a>
-            <a href="#pricing" title="Web Development Pricing" className={`nav-link ${activeSection === 'pricing' ? 'active' : ''}`}>Pricing</a>
+          {/* Nav Links Desktop */}
+          <nav className="navbar-menu">
+            {navLinks.map((link, idx) => (
+              <a
+                key={idx}
+                href={link.href}
+                className="navbar-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const targetId = link.href.replace('#', '');
+                  const el = document.getElementById(targetId);
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  else window.location.hash = link.href;
+                }}
+              >
+                {link.label}
+              </a>
+            ))}
           </nav>
 
-          {/* Desktop Right CTA Buttons */}
-          <div className="nav-button-block-desktop">
-            <button 
+          {/* Action Buttons Right Desktop */}
+          <div className="navbar-actions">
+            <button
               onClick={handleCopyEmail}
-              title="Copy email to clipboard"
               className="btn-copy-email"
+              title="Copy email to clipboard"
+              type="button"
             >
-              <i className="ri-file-copy-line" style={{ color: '#ffa260' }}></i> Copy Email
+              <i className={copied ? "ri-check-line" : "ri-mail-line"} />
+              <span>{copied ? 'Copied!' : 'Copy Email'}</span>
             </button>
-
-            <a href="#contact" className="nav-button-cta" onClick={handleGetInTouch}>
-              <span>Get In Touch</span>
+            <a href="#contact" onClick={handleGetInTouch} className="btn-get-in-touch">
+              Get In Touch <span className="arrow">→</span>
             </a>
           </div>
 
-          {/* Mobile Hamburger Toggle Button */}
-          <button 
-            className="nav-hamburger-btn" 
-            onClick={() => setMobileOpen(!mobileOpen)} 
-            aria-label="Toggle navigation menu"
-            aria-expanded={mobileOpen}
+          {/* Mobile Menu Toggle Button */}
+          <button
+            className="mobile-toggle"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle Navigation"
+            type="button"
           >
-            <i className={mobileOpen ? "ri-close-line" : "ri-menu-3-line"}></i>
+            <i className={mobileOpen ? "ri-close-line" : "ri-menu-line"} />
           </button>
-        </div>
-      </header>
 
-      {/* Mobile Drawer Menu */}
-      <div className={`nav-mobile-drawer ${mobileOpen ? 'open' : ''}`}>
-        <div className="nav-mobile-header">
-          <div className="brand-title-logo">
-            <img src={logo} alt="The Social Dev logo" width="40" height="40" decoding="async" className="brand-logo" />
-            <span>The_<span className="brand-accent">Social_Dev</span></span>
-          </div>
-          <button className="nav-mobile-close-btn" onClick={() => setMobileOpen(false)} aria-label="Close menu">
-            <i className="ri-close-line"></i>
-          </button>
-        </div>
-
-        <nav className="nav-mobile-links">
-          <a href="#about" className={`nav-mobile-link ${activeSection === 'about' ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>
-            <i className="ri-information-line"></i> About Us
-          </a>
-          <a href="#services" className={`nav-mobile-link ${activeSection === 'services' ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>
-            <i className="ri-service-line"></i> Services
-          </a>
-          <a href="#ventures" className={`nav-mobile-link ${activeSection === 'ventures' ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>
-            <i className="ri-rocket-2-line"></i> Our Ventures
-          </a>
-          <a href="#why" className={`nav-mobile-link ${activeSection === 'why' ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>
-            <i className="ri-star-line"></i> Why Us
-          </a>
-          <a href="#process" className={`nav-mobile-link ${activeSection === 'process' ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>
-            <i className="ri-git-commit-line"></i> Process
-          </a>
-          <a href="#pricing" className={`nav-mobile-link ${activeSection === 'pricing' ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>
-            <i className="ri-price-tag-3-line"></i> Pricing
-          </a>
-        </nav>
-
-        <div className="nav-mobile-actions">
-          <a href="#contact" className="nav-button-cta mobile-full" onClick={handleGetInTouch}>
-            Get In Touch
-          </a>
-          <button onClick={handleCopyEmail} className="btn-copy-email mobile-full">
-            <i className="ri-file-copy-line"></i> Copy Email
-          </button>
         </div>
       </div>
 
-      {/* Mobile Drawer Backdrop Overlay */}
+      {/* Mobile Drawer */}
       {mobileOpen && (
-        <div className="nav-mobile-backdrop" onClick={() => setMobileOpen(false)}></div>
+        <div className="mobile-menu-drawer">
+          <div className="mobile-drawer-header">
+            <a href="/" className="navbar-brand">
+              <div className="brand-logo-box">
+                <img src={logo} alt="The Social Dev Logo" className="brand-logo-img" />
+              </div>
+              <span className="brand-logo-text">
+                The_<span className="brand-accent">Social_Dev</span>
+              </span>
+            </a>
+            <button className="mobile-close-btn" onClick={() => setMobileOpen(false)} type="button">
+              <i className="ri-close-line" />
+            </button>
+          </div>
+          <div className="mobile-nav-links">
+            {navLinks.map((link, idx) => (
+              <a
+                key={idx}
+                href={link.href}
+                className="mobile-nav-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMobileOpen(false);
+                  const targetId = link.href.replace('#', '');
+                  const el = document.getElementById(targetId);
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  else window.location.hash = link.href;
+                }}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+          <div className="mobile-actions">
+            <button onClick={handleCopyEmail} className="btn-copy-email w-full" type="button">
+              <i className={copied ? "ri-check-line" : "ri-mail-line"} />
+              <span>{copied ? 'Copied!' : 'Copy Email'}</span>
+            </button>
+            <a href="#contact" onClick={handleGetInTouch} className="btn-get-in-touch w-full">
+              Get In Touch <span className="arrow">→</span>
+            </a>
+          </div>
+        </div>
       )}
-    </>
+    </header>
   );
 }
+
+
+
