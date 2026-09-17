@@ -107,24 +107,11 @@ export default function Navbar({ onToast }) {
         </div>
       </div>
 
-      {/* Mobile Drawer & Backdrop */}
+      {/* Mobile Menu Dropdown & Overlay */}
       {mobileOpen && (
         <>
           <div className="mobile-menu-backdrop" onClick={() => setMobileOpen(false)} />
           <div className="mobile-menu-drawer">
-            <div className="mobile-drawer-header">
-              <a href="/" className="navbar-brand">
-                <div className="brand-logo-box">
-                  <img src={logo} alt="The Social Dev Logo" className="brand-logo-img" />
-                </div>
-                <span className="brand-logo-text">
-                  The_<span className="brand-accent">Social_Dev</span>
-                </span>
-              </a>
-              <button className="mobile-close-btn" onClick={() => setMobileOpen(false)} type="button">
-                <i className="ri-close-line" />
-              </button>
-            </div>
             <div className="mobile-nav-links">
               {navLinks.map((link, idx) => (
                 <a
