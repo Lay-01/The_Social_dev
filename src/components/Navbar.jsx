@@ -14,6 +14,18 @@ export default function Navbar({ onToast }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Lock body scrolling when mobile menu overlay is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileOpen]);
+
   const handleGetInTouch = (e) => {
     e.preventDefault();
     setMobileOpen(false);
@@ -97,40 +109,45 @@ export default function Navbar({ onToast }) {
           {/* Mobile Menu Toggle Button */}
           <button
             className="mobile-toggle"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle Navigation"
+            onClick={() => setMobileOpen(true)}
+            aria-label="Open Navigation Menu"
             type="button"
           >
-            <i className={mobileOpen ? "ri-close-line" : "ri-menu-3-line"} />
+            <i className="ri-menu-3-line" />
           </button>
 
         </div>
       </div>
 
-      {/* Pro Mobile Slide-out Drawer */}
+      {/* Full-Screen Solid Mobile Navigation Overlay */}
       {mobileOpen && (
-        <>
-          <div className="nav-mobile-backdrop" onClick={() => setMobileOpen(false)} />
-          <div className="nav-mobile-drawer open">
-            <div className="nav-mobile-header">
-              <a href="/" className="navbar-brand">
-                <div className="brand-logo-box">
-                  <img src={logo} alt="The Social Dev Logo" className="brand-logo-img" />
-                </div>
-                <span className="brand-logo-text">
-                  The_<span className="brand-accent">Social_Dev</span>
-                </span>
-              </a>
-              <button className="nav-mobile-close-btn" onClick={() => setMobileOpen(false)} type="button">
-                <i className="ri-close-line" />
-              </button>
-            </div>
-            <div className="nav-mobile-links">
+        <div className="mobile-overlay-menu">
+          <div className="mobile-overlay-header">
+            <a href="/" className="navbar-brand" onClick={() => setMobileOpen(false)}>
+              <div className="brand-logo-box">
+                <img src={logo} alt="The Social Dev Logo" className="brand-logo-img" />
+              </div>
+              <span className="brand-logo-text">
+                The_<span className="brand-accent">Social_Dev</span>
+              </span>
+            </a>
+            <button
+              className="mobile-overlay-close"
+              onClick={() => setMobileOpen(false)}
+              aria-label="Close Navigation Menu"
+              type="button"
+            >
+              <i className="ri-close-line" />
+            </button>
+          </div>
+
+          <div className="mobile-overlay-body">
+            <div className="mobile-overlay-links">
               {navLinks.map((link, idx) => (
                 <a
                   key={idx}
                   href={link.href}
-                  className="nav-mobile-link"
+                  className="mobile-overlay-link"
                   onClick={(e) => {
                     e.preventDefault();
                     setMobileOpen(false);
@@ -140,15 +157,16 @@ export default function Navbar({ onToast }) {
                     else window.location.hash = link.href;
                   }}
                 >
-                  <div className="nav-mobile-icon-box">
-                    <i className={link.icon || 'ri-arrow-right-s-line'} />
+                  <div className="mobile-overlay-icon">
+                    <i className={link.icon} />
                   </div>
-                  <span className="nav-mobile-label">{link.label}</span>
-                  <i className="ri-arrow-right-line nav-mobile-arrow" />
+                  <span className="mobile-overlay-label">{link.label}</span>
+                  <i className="ri-arrow-right-line mobile-overlay-arrow" />
                 </a>
               ))}
             </div>
-            <div className="nav-mobile-actions">
+
+            <div className="mobile-overlay-actions">
               <button onClick={handleCopyEmail} className="btn-copy-email mobile-full" type="button">
                 <i className={copied ? "ri-check-line" : "ri-mail-line"} />
                 <span>{copied ? 'Copied!' : 'Copy Email'}</span>
@@ -158,10 +176,11 @@ export default function Navbar({ onToast }) {
               </a>
             </div>
           </div>
-        </>
+        </div>
       )}
     </header>
   );
+}
 }
 
 
