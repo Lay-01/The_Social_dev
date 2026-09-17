@@ -107,51 +107,55 @@ export default function Navbar({ onToast }) {
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer & Backdrop */}
       {mobileOpen && (
-        <div className="mobile-menu-drawer">
-          <div className="mobile-drawer-header">
-            <a href="/" className="navbar-brand">
-              <div className="brand-logo-box">
-                <img src={logo} alt="The Social Dev Logo" className="brand-logo-img" />
-              </div>
-              <span className="brand-logo-text">
-                The_<span className="brand-accent">Social_Dev</span>
-              </span>
-            </a>
-            <button className="mobile-close-btn" onClick={() => setMobileOpen(false)} type="button">
-              <i className="ri-close-line" />
-            </button>
-          </div>
-          <div className="mobile-nav-links">
-            {navLinks.map((link, idx) => (
-              <a
-                key={idx}
-                href={link.href}
-                className="mobile-nav-link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setMobileOpen(false);
-                  const targetId = link.href.replace('#', '');
-                  const el = document.getElementById(targetId);
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  else window.location.hash = link.href;
-                }}
-              >
-                {link.label}
+        <>
+          <div className="mobile-menu-backdrop" onClick={() => setMobileOpen(false)} />
+          <div className="mobile-menu-drawer">
+            <div className="mobile-drawer-header">
+              <a href="/" className="navbar-brand">
+                <div className="brand-logo-box">
+                  <img src={logo} alt="The Social Dev Logo" className="brand-logo-img" />
+                </div>
+                <span className="brand-logo-text">
+                  The_<span className="brand-accent">Social_Dev</span>
+                </span>
               </a>
-            ))}
+              <button className="mobile-close-btn" onClick={() => setMobileOpen(false)} type="button">
+                <i className="ri-close-line" />
+              </button>
+            </div>
+            <div className="mobile-nav-links">
+              {navLinks.map((link, idx) => (
+                <a
+                  key={idx}
+                  href={link.href}
+                  className="mobile-nav-link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setMobileOpen(false);
+                    const targetId = link.href.replace('#', '');
+                    const el = document.getElementById(targetId);
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    else window.location.hash = link.href;
+                  }}
+                >
+                  <i className="ri-arrow-right-s-line" style={{ color: '#ffa260' }} />
+                  <span>{link.label}</span>
+                </a>
+              ))}
+            </div>
+            <div className="mobile-actions">
+              <button onClick={handleCopyEmail} className="btn-copy-email w-full" type="button">
+                <i className={copied ? "ri-check-line" : "ri-mail-line"} />
+                <span>{copied ? 'Copied!' : 'Copy Email'}</span>
+              </button>
+              <a href="#contact" onClick={handleGetInTouch} className="btn-get-in-touch w-full">
+                Get In Touch <span className="arrow">→</span>
+              </a>
+            </div>
           </div>
-          <div className="mobile-actions">
-            <button onClick={handleCopyEmail} className="btn-copy-email w-full" type="button">
-              <i className={copied ? "ri-check-line" : "ri-mail-line"} />
-              <span>{copied ? 'Copied!' : 'Copy Email'}</span>
-            </button>
-            <a href="#contact" onClick={handleGetInTouch} className="btn-get-in-touch w-full">
-              Get In Touch <span className="arrow">→</span>
-            </a>
-          </div>
-        </div>
+        </>
       )}
     </header>
   );
