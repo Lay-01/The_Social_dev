@@ -101,7 +101,7 @@ export default function Navbar({ onToast }) {
             aria-label="Toggle Navigation"
             type="button"
           >
-            <i className={mobileOpen ? "ri-close-line" : "ri-menu-line"} />
+            <i className={mobileOpen ? "ri-close-line" : "ri-menu-3-line"} />
           </button>
 
         </div>
