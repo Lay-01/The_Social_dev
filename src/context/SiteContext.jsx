@@ -83,7 +83,7 @@ export function SiteProvider({ children }) {
       setContent(prev => {
         // Dedicated `services` table check: if query succeeded (data is array), map rows.
         let fetchedServices;
-        if (!servicesErr && Array.isArray(servicesData)) {
+        if (!servicesErr && Array.isArray(servicesData) && servicesData.length > 0) {
           fetchedServices = servicesData.map(s => ({
             id: s.id,
             title: s.title,
@@ -94,13 +94,15 @@ export function SiteProvider({ children }) {
           }));
         } else if (!settingsErr && Array.isArray(settingsMap.services)) {
           fetchedServices = settingsMap.services;
+        } else if (!servicesErr && Array.isArray(servicesData) && servicesData.length === 0) {
+          fetchedServices = [];
         } else {
           fetchedServices = prev.services || DEFAULT_SITE_CONTENT.services;
         }
 
         // Dedicated `ventures` table check: if query succeeded (data is array), map rows.
         let fetchedVentures;
-        if (!venturesErr && Array.isArray(venturesData)) {
+        if (!venturesErr && Array.isArray(venturesData) && venturesData.length > 0) {
           fetchedVentures = venturesData.map(v => ({
             id: v.id,
             title: v.title,
@@ -112,6 +114,8 @@ export function SiteProvider({ children }) {
           }));
         } else if (!settingsErr && Array.isArray(settingsMap.ventures)) {
           fetchedVentures = settingsMap.ventures;
+        } else if (!venturesErr && Array.isArray(venturesData) && venturesData.length === 0) {
+          fetchedVentures = [];
         } else {
           fetchedVentures = prev.ventures || DEFAULT_SITE_CONTENT.ventures;
         }
@@ -193,9 +197,27 @@ export function SiteProvider({ children }) {
 
   // Save changes locally and to Supabase
   const saveContent = async (newContent) => {
-    setContent(newContent);
+    // 1. Ensure every service and venture carries a stable database-compatible UUID BEFORE saving
+    const ensureStableIds = (items) => {
+      return (items || []).map(item => {
+        if (!item) return item;
+        if (!item.id || !SUPABASE_UUID_REGEX.test(item.id)) {
+          return { ...item, id: generateUUID() };
+        }
+        return item;
+      });
+    };
+
+    const normalizedContent = {
+      ...newContent,
+      services: ensureStableIds(newContent.services),
+      ventures: ensureStableIds(newContent.ventures)
+    };
+
+    // 2. Set React state and LocalStorage WITH the normalized content so state, storage & DB share identical IDs
+    setContent(normalizedContent);
     try {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newContent));
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(normalizedContent));
     } catch {}
 
     setSaveStatus('saving');
@@ -204,15 +226,15 @@ export function SiteProvider({ children }) {
       let cloudSyncFailed = false;
       if (isSupabaseConfigured) {
         const { error: settingsErr } = await supabase.from('site_settings').upsert([
-          { key: 'contactEmail', value: newContent.contactEmail },
-          { key: 'socialLinks', value: newContent.socialLinks },
-          { key: 'about', value: newContent.about },
-          { key: 'whyChooseUs', value: newContent.whyChooseUs },
-          { key: 'ventures', value: newContent.ventures },
-          { key: 'services', value: newContent.services },
-          { key: 'faqs', value: newContent.faqs },
-          { key: 'processHeader', value: newContent.processHeader },
-          { key: 'processSteps', value: newContent.processSteps }
+          { key: 'contactEmail', value: normalizedContent.contactEmail },
+          { key: 'socialLinks', value: normalizedContent.socialLinks },
+          { key: 'about', value: normalizedContent.about },
+          { key: 'whyChooseUs', value: normalizedContent.whyChooseUs },
+          { key: 'ventures', value: normalizedContent.ventures },
+          { key: 'services', value: normalizedContent.services },
+          { key: 'faqs', value: normalizedContent.faqs },
+          { key: 'processHeader', value: normalizedContent.processHeader },
+          { key: 'processSteps', value: normalizedContent.processSteps }
         ], { onConflict: 'key' });
 
         if (settingsErr) {
@@ -220,35 +242,8 @@ export function SiteProvider({ children }) {
           console.error('Supabase site_settings upsert FAILED:', settingsErr);
         }
 
-        // Ensure every item carries a STABLE database-compatible UUID BEFORE
-        // saving.
-        let idsNormalized = false;
-        const ensureStableIds = (items) => {
-          (items || []).forEach(item => {
-            if (item && item.id && !SUPABASE_UUID_REGEX.test(item.id)) {
-              item.id = generateUUID();
-              idsNormalized = true;
-            }
-          });
-          return items || [];
-        };
-
-        const dedupeByTitle = (items) => {
-          const list = items || [];
-          const winner = new Map();
-          list.forEach(item => {
-            const key = (item?.title || '').trim().toLowerCase();
-            if (key) winner.set(key, item);
-          });
-          const deduped = list.filter(item => {
-            const key = (item?.title || '').trim().toLowerCase();
-            return !key || winner.get(key) === item;
-          });
-          if (deduped.length !== list.length) idsNormalized = true;
-          return deduped;
-        };
-        const stableServices = dedupeByTitle(ensureStableIds(newContent.services));
-        const stableVentures = dedupeByTitle(ensureStableIds(newContent.ventures));
+        const stableServices = normalizedContent.services || [];
+        const stableVentures = normalizedContent.ventures || [];
 
         if (stableServices.length > 0) {
           const formattedServices = stableServices.map((srv, idx) => ({
@@ -281,13 +276,6 @@ export function SiteProvider({ children }) {
             cloudSyncFailed = true;
             console.error('Supabase ventures upsert FAILED:', venturesErr);
           }
-        }
-
-        // Persist newly assigned UUIDs locally so future saves reuse them
-        if (idsNormalized) {
-          try {
-            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ ...newContent, services: stableServices, ventures: stableVentures }));
-          } catch {}
         }
 
         const reconcileHardDeletes = async (tableName, keptItems) => {

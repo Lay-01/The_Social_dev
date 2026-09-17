@@ -12,8 +12,12 @@ lerna-debug.log*
 .env.local
 .env.*.local
 
-# Agent local configurations
+# Agent local configurations & temporary files
 .agents/
+.kilo/
+SYNC_FIX_STEPS.txt
+socdev.whtt
+*.whtt
 
 # Build & Dependencies
 node_modules

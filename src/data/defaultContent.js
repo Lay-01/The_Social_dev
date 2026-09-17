@@ -28,7 +28,7 @@ export const DEFAULT_SITE_CONTENT = {
   },
   services: [
     {
-      id: "srv-1",
+      id: "a1b2c3d4-e5f6-47a8-99b0-c1d2e3f4a5b6",
       title: "Website & Web Application Development",
       description: "Custom web development from sleek landing pages to database-driven React applications, Node.js backends, and full-stack software solutions. Built with responsive layouts, fast load speeds, and search engine optimization.",
       icon: "ri-code-s-slash-line",
@@ -36,7 +36,7 @@ export const DEFAULT_SITE_CONTENT = {
       sortOrder: 1
     },
     {
-      id: "srv-2",
+      id: "a2b3c4d5-e6f7-48a9-90b1-c2d3e4f5a6b7",
       title: "Aesthetic Social Media Content",
       description: "High-quality, visually cohesive social media designs and creative branding campaigns crafted to elevate brand identity, boost audience engagement, and build a strong visual presence on Instagram.",
       icon: "ri-palette-line",
@@ -44,7 +44,7 @@ export const DEFAULT_SITE_CONTENT = {
       sortOrder: 2
     },
     {
-      id: "srv-3",
+      id: "a3c4d5e6-f7a8-49b0-91b2-c3d4e5f6a7b8",
       title: "UI/UX Design & Digital Branding",
       description: "Conversion-focused user interface design paired with strategic visual identity development. We design memorable logos, color schemes, typography, and digital design systems that resonate with your customers.",
       icon: "ri-layout-4-line",
@@ -52,7 +52,7 @@ export const DEFAULT_SITE_CONTENT = {
       sortOrder: 3
     },
     {
-      id: "srv-4",
+      id: "a4d5e6f7-a8b9-40c1-92b3-c4d5e6f7a8b9",
       title: "Designing",
       description: "T-shirt designs, Flyers, Posters, Printables.",
       icon: "ri-megaphone-line",
@@ -92,7 +92,7 @@ export const DEFAULT_SITE_CONTENT = {
   },
   ventures: [
     {
-      id: "vtr-1",
+      id: "b1a2c3d4-e5f6-47a8-99b0-c1d2e3f4a5b6",
       title: "SocialDev Web Platform",
       description: "High-performance digital agency web platform featuring dark glassmorphic UI, dynamic web tools, interactive client dashboards, and responsive layout designs.",
       url: "https://thesocialdev.co.in",
@@ -101,7 +101,7 @@ export const DEFAULT_SITE_CONTENT = {
       sortOrder: 1
     },
     {
-      id: "vtr-2",
+      id: "c2b3c4d5-e6f7-48a9-90b1-c2d3e4f5a6b7",
       title: "Pulse Social Media Suite",
       description: "Automated social media curation and creative branding hub designed for ambitious content creators and fast-scaling digital ventures.",
       url: "https://thesocialdev.co.in/#services",
@@ -110,7 +110,7 @@ export const DEFAULT_SITE_CONTENT = {
       sortOrder: 2
     },
     {
-      id: "vtr-3",
+      id: "d3c4d5e6-f7a8-49b0-91b2-c3d4e5f6a7b8",
       title: "Nova Web Studio & App Platform",
       description: "Full-stack SaaS web application landing page featuring real-time data sync, custom UI components, and integrated booking workflow systems.",
       url: "https://thesocialdev.co.in/#contact",
