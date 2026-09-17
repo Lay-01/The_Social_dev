@@ -107,17 +107,30 @@ export default function Navbar({ onToast }) {
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown & Overlay */}
+      {/* Original Webflow Mobile Slide-out Drawer */}
       {mobileOpen && (
         <>
-          <div className="mobile-menu-backdrop" onClick={() => setMobileOpen(false)} />
-          <div className="mobile-menu-drawer">
-            <div className="mobile-nav-links">
+          <div className="nav-mobile-backdrop" onClick={() => setMobileOpen(false)} />
+          <div className="nav-mobile-drawer open">
+            <div className="nav-mobile-header">
+              <a href="/" className="navbar-brand">
+                <div className="brand-logo-box">
+                  <img src={logo} alt="The Social Dev Logo" className="brand-logo-img" />
+                </div>
+                <span className="brand-logo-text">
+                  The_<span className="brand-accent">Social_Dev</span>
+                </span>
+              </a>
+              <button className="nav-mobile-close-btn" onClick={() => setMobileOpen(false)} type="button">
+                <i className="ri-close-line" />
+              </button>
+            </div>
+            <div className="nav-mobile-links">
               {navLinks.map((link, idx) => (
                 <a
                   key={idx}
                   href={link.href}
-                  className="mobile-nav-link"
+                  className="nav-mobile-link"
                   onClick={(e) => {
                     e.preventDefault();
                     setMobileOpen(false);
@@ -127,17 +140,17 @@ export default function Navbar({ onToast }) {
                     else window.location.hash = link.href;
                   }}
                 >
-                  <i className="ri-arrow-right-s-line" style={{ color: '#ffa260' }} />
+                  <i className="ri-arrow-right-s-line" />
                   <span>{link.label}</span>
                 </a>
               ))}
             </div>
-            <div className="mobile-actions">
-              <button onClick={handleCopyEmail} className="btn-copy-email w-full" type="button">
+            <div className="nav-mobile-actions">
+              <button onClick={handleCopyEmail} className="btn-copy-email mobile-full" type="button">
                 <i className={copied ? "ri-check-line" : "ri-mail-line"} />
                 <span>{copied ? 'Copied!' : 'Copy Email'}</span>
               </button>
-              <a href="#contact" onClick={handleGetInTouch} className="btn-get-in-touch w-full">
+              <a href="#contact" onClick={handleGetInTouch} className="btn-get-in-touch mobile-full">
                 Get In Touch <span className="arrow">→</span>
               </a>
             </div>
