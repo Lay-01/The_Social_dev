@@ -9,8 +9,8 @@ export default function Services() {
   const defaultServices = [
     {
       id: 'srv-1',
-      title: 'Website Development',
-      description: 'Fast, responsive, and SEO-friendly landing pages and custom web applications built using React, Next.js, or PHP.',
+      title: 'Website & Web Application Development',
+      description: 'Custom web development from sleek landing pages to database-driven React web applications, Node.js backends, and full-stack software solutions for growing businesses.',
       themeClass: 'theme-blue',
       iconSymbol: 'ri-code-s-slash-line'
     },
@@ -24,7 +24,7 @@ export default function Services() {
     {
       id: 'srv-3',
       title: 'UI/UX Design & Branding',
-      description: 'Conversion-focused interface design paired with complete brand identities—including logo, color palettes, and style guidelines.',
+      description: 'Conversion-focused UI/UX design paired with strategic visual identity development. We design memorable logos, color schemes, typography, and digital design systems.',
       themeClass: 'theme-orange',
       iconSymbol: 'ri-layout-4-line'
     },
@@ -79,9 +79,9 @@ export default function Services() {
                 </div>
 
                 <h2 className="services-main-title">
-                  Comprehensive <br />
-                  Web &amp; Design <br />
-                  <span className="section-sub-heading">Solutions</span>
+                  End-to-End Web Development <br />
+                  &amp; Digital Solutions For <br />
+                  <span className="section-sub-heading">Business Growth</span>
                 </h2>
 
                 <p className="services-intro-desc">

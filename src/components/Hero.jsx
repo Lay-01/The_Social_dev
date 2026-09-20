@@ -25,7 +25,7 @@ export default function Hero() {
             <div className="hero-left-col">
               <div className="hero-line-badge">
                 <span className="hero-line-dash" />
-                <span className="hero-line-label">WEB DEVELOPMENT &amp; DIGITAL AGENCY</span>
+                <span className="hero-line-label">CUSTOM WEB DEVELOPMENT AGENCY</span>
               </div>
 
               <div className="hero-info-block">
@@ -35,10 +35,10 @@ export default function Hero() {
                 </h1>
                 <div className="hero-description-block">
                   <div>
-                    The Social Dev is a premier web development and digital agency.
+                    The Social Dev is a premier web development agency in India.
                     We bridge high-performance technical engineering, custom web
-                    applications, React development, UI/UX branding, and captivating
-                    social media storytelling for ambitious ventures, startups, and
+                    application development, React web application development, UI/UX design,
+                    and captivating social media storytelling for ambitious startups and
                     growing brands worldwide.
                   </div>
                 </div>

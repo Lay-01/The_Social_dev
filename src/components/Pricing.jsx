@@ -36,7 +36,7 @@ export default function Pricing() {
             <div className="section-top-block">
               <div className="section-caption-block"><div>Pricing</div></div>
               <div className="process-title-block">
-                <h2>Flexible Offerings <span className="section-sub-heading">For Ambitious Ventures</span></h2>
+                <h2>Web Development Pricing <span className="section-sub-heading">&amp; Packages</span></h2>
               </div>
             </div>
 

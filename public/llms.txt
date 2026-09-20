@@ -1,6 +1,6 @@
 # The Social Dev
 
-> Software and Web Development Agency creating custom websites, React applications, UI/UX designs, and aesthetic social media content.
+> Custom Web Development Agency in India creating high-performance websites, React web applications, UI/UX designs, and aesthetic social media content.
 
 ## Overview
 The Social Dev is a web development and digital agency that bridges high-performance technical engineering with visual storytelling. We build custom, responsive, and high-performance websites and digital solutions tailored for startups, ambitious ventures, and growing brands.

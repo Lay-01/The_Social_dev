@@ -100,7 +100,7 @@ export default function Process() {
 
   const processHeader = content?.processHeader || {
     pill: "Work Process",
-    headingLine1: "Our Proven 4-Step",
+    headingLine1: "Our 4-Step Custom",
     headingLine2: "Web Development",
     italicAccent: "Process",
     description: "A structured, transparent engineering workflow designed to bring your vision to life seamlessly from start to finish."

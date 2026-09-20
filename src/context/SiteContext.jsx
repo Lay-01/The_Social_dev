@@ -144,6 +144,11 @@ export function SiteProvider({ children }) {
           localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated));
         } catch {}
 
+        // Prevent unnecessary re-render / UI flicker if cached data is already identical
+        if (JSON.stringify(prev) === JSON.stringify(updated)) {
+          return prev;
+        }
+
         return updated;
       });
     } catch (err) {

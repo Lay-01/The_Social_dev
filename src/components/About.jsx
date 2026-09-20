@@ -124,7 +124,7 @@ export default function About() {
                       decoding="async"
                       width="24"
                       height="24"
-                      alt=""
+                      alt="Arrow icon indicating growth"
                       onError={(e) => handleImageError(e, 'serviceIcon')}
                     />
                   </div>
@@ -139,7 +139,7 @@ export default function About() {
                     decoding="async"
                     width="48"
                     height="48"
-                    alt=""
+                    alt="Digital agency growth badge"
                     className="about-boost-image"
                     onError={(e) => handleImageError(e, 'serviceIcon')}
                   />

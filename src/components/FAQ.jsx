@@ -28,10 +28,12 @@ export default function FAQ() {
 
   return (
     <section id="faq" className="faq-section" style={{ padding: '80px 0', position: 'relative' }}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, '\\u003c') }}
-      />
+      {faqData.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, '\\u003c') }}
+        />
+      )}
 
       <div className="container">
         <div className="page-vertical-padding">

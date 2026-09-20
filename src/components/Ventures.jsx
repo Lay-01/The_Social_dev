@@ -19,11 +19,7 @@ export default function Ventures() {
 
   const getThumbnailSrc = (vtr) => {
     if (vtr.image && vtr.image.trim()) {
-      return vtr.image;
-    }
-    if (vtr.url && vtr.url.trim()) {
-      const formatted = formatUrl(vtr.url);
-      return `https://api.microlink.io/?url=${encodeURIComponent(formatted)}&screenshot=true&embed=screenshot.url`;
+      return vtr.image.trim();
     }
     return 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80';
   };
@@ -63,7 +59,7 @@ export default function Ventures() {
                 <div className="ventures-accent-line"></div>
 
                 <p className="ventures-subtitle">
-                  A collection of real-world projects, built with modern technologies and a focus on performance, design and user experience.
+                  A showcase of custom web development projects and live React web applications, built with modern technologies and a focus on performance, design, and user experience.
                 </p>
               </div>
 

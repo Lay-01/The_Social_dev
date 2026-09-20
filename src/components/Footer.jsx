@@ -61,7 +61,7 @@ export default function Footer() {
                           key={item.id || item.name}
                           href={safeUrl}
                           target="_blank"
-                          rel="noopener noreferrer"
+                          rel="me noopener noreferrer"
                           aria-label={`Visit our ${item.name} page`}
                           title={`Visit our ${item.name} page`}
                           style={{
@@ -118,7 +118,7 @@ export default function Footer() {
 
             <div className="footer-devider-block"></div>
             <div className="footer-bottom-link" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
-              <div className="body-text-b3">&copy; 2026 The_Social_Dev. All rights reserved.</div>
+              <div className="body-text-b3">&copy; 2026 The Social Dev. All rights reserved.</div>
               <div className="body-text-b3" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem' }}>
                 Last updated: March 2026 | Where Tech Meets Aesthetic
               </div>
