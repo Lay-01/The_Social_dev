@@ -18,6 +18,12 @@ export default defineConfig({
       }
     },
     sourcemap: false,
-    minify: 'esbuild'
+    minify: 'esbuild',
+    target: 'es2015',
+    cssMinify: true
+  },
+  esbuild: {
+    legalComments: 'none',
+    drop: ['console', 'debugger']
   }
 })

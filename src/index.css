@@ -3021,6 +3021,9 @@ img, svg {
   flex-shrink: 0 !important;
 }
 
+.hero.hero-react-override .hero-line-badge h1.hero-line-label,
+.hero.hero-react-override h1.hero-line-label,
+h1.hero-line-label,
 .hero-line-label {
   font-size: 0.72rem !important;
   font-weight: 600 !important;
@@ -3028,11 +3031,16 @@ img, svg {
   text-transform: uppercase !important;
   color: rgba(255, 255, 255, 0.55) !important;
   font-family: 'Plus Jakarta Sans', sans-serif !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline-block !important;
+  line-height: inherit !important;
 }
 
 /* ── 3. HERO HEADLINE ─────────────────────────────── */
 
-.hero.hero-react-override h1 {
+.hero.hero-react-override h2.hero-main-title,
+.hero.hero-react-override .hero-info-block h2 {
   font-size: clamp(2.8rem, 5.2vw, 5rem) !important;
   font-weight: 800 !important;
   line-height: 1.06 !important;
@@ -3043,7 +3051,8 @@ img, svg {
   margin: 0 !important;
 }
 
-.hero.hero-react-override h1 .section-sub-heading {
+.hero.hero-react-override h2.hero-main-title .section-sub-heading,
+.hero.hero-react-override .hero-info-block h2 .section-sub-heading {
   font-family: 'Instrument Serif', Georgia, serif !important;
   font-style: italic !important;
   font-weight: 400 !important;

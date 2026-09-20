@@ -25,14 +25,14 @@ export default function Hero() {
             <div className="hero-left-col">
               <div className="hero-line-badge">
                 <span className="hero-line-dash" />
-                <span className="hero-line-label">CUSTOM WEB DEVELOPMENT AGENCY</span>
+                <h1 className="hero-line-label">THE SOCIAL DEV | WEB DEVELOPMENT AGENCY IN INDIA</h1>
               </div>
 
               <div className="hero-info-block">
-                <h1>
+                <h2 className="hero-main-title">
                   WHERE TECH<br />
                   MEETS <span className="section-sub-heading">Aesthetic</span>
-                </h1>
+                </h2>
                 <div className="hero-description-block">
                   <div>
                     The Social Dev is a premier web development agency in India.
