@@ -31,15 +31,17 @@ export default function Hero() {
               <div className="hero-info-block">
                 <h2 className="hero-main-title">
                   WHERE TECH<br />
-                  MEETS <span className="section-sub-heading">Aesthetic</span>
+                  MEETS <span className="section-sub-heading">AESTHETIC</span>
+                  <span style={{ display: 'block', fontSize: 'clamp(1.1rem, 2vw, 1.4rem)', marginTop: '1rem', fontWeight: 600, letterSpacing: '0.1em', color: '#ffa260', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+                    - CUSTOM WEB APPLICATIONS
+                  </span>
                 </h2>
                 <div className="hero-description-block">
                   <div>
                     The Social Dev is a premier web development agency in India.
                     We bridge high-performance technical engineering, custom web
-                    application development, React web application development, UI/UX design,
-                    and captivating social media storytelling for ambitious startups and
-                    growing brands worldwide.
+                    applications, UI/UX design, and captivating social media 
+                    storytelling for ambitious startups and growing brands worldwide.
                   </div>
                 </div>
               </div>
@@ -85,7 +87,7 @@ export default function Hero() {
                         <span className="dot dot-green" />
                       </div>
                       <div className="react-brand-icon">
-                        <i className="ri-reactjs-line"></i>
+                        <i className="ri-code-s-slash-line"></i>
                       </div>
                     </div>
 
@@ -182,8 +184,8 @@ export default function Hero() {
                     <span className="fc-svc-name">Web Development</span>
                   </div>
                   <div className="fc-service-item">
-                    <span className="fc-svc-icon blue-bg"><i className="ri-reactjs-line" /></span>
-                    <span className="fc-svc-name">React Development</span>
+                    <span className="fc-svc-icon blue-bg"><i className="ri-code-line" /></span>
+                    <span className="fc-svc-name">Custom Development</span>
                   </div>
                   <div className="fc-service-item">
                     <span className="fc-svc-icon orange-bg"><i className="ri-quill-pen-line" /></span>

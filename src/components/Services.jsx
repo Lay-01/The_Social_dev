@@ -10,7 +10,7 @@ export default function Services() {
     {
       id: 'srv-1',
       title: 'Website & Web Application Development',
-      description: 'Custom web development from sleek landing pages to database-driven React web applications, Node.js backends, and full-stack software solutions for growing businesses.',
+      description: 'Custom web development from sleek landing pages to database-driven web applications, custom backends, and full-stack solutions for growing businesses.',
       themeClass: 'theme-blue',
       iconSymbol: 'ri-code-s-slash-line'
     },

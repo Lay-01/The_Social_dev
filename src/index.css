@@ -3051,6 +3051,19 @@ h1.hero-line-label,
   margin: 0 !important;
 }
 
+@media (max-width: 768px) {
+  .hero.hero-react-override h1.hero-line-label,
+  h1.hero-line-label,
+  .hero-line-label {
+    font-size: 0.55rem !important;
+    white-space: normal !important;
+  }
+  .hero.hero-react-override h2.hero-main-title,
+  .hero.hero-react-override .hero-info-block h2 {
+    font-size: clamp(1.5rem, 3vw, 2.5rem) !important;
+  }
+}
+
 .hero.hero-react-override h2.hero-main-title .section-sub-heading,
 .hero.hero-react-override .hero-info-block h2 .section-sub-heading {
   font-family: 'Instrument Serif', Georgia, serif !important;

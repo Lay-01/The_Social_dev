@@ -59,7 +59,7 @@ export default function Ventures() {
                 <div className="ventures-accent-line"></div>
 
                 <p className="ventures-subtitle">
-                  A showcase of custom web development projects and live React web applications, built with modern technologies and a focus on performance, design, and user experience.
+                  A showcase of custom web development projects and live web applications, built with modern technologies and a focus on performance, design, and user experience.
                 </p>
               </div>
 
