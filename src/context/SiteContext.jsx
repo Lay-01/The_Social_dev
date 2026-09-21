@@ -335,7 +335,7 @@ export function SiteProvider({ children }) {
     }
   };
 
-  // Auth Methods with Strict Email Whitelist & Password Validation
+  // Auth Methods — Supabase Auth only; no frontend password comparison or localStorage password storage
   const login = async (emailInput, passwordInput) => {
     const cleanEmail = (emailInput || '').trim().toLowerCase();
 
@@ -351,37 +351,25 @@ export function SiteProvider({ children }) {
       throw new Error('Please enter your admin password.');
     }
 
-    // 1. If Supabase Cloud is configured, attempt cloud authentication first
-    if (isSupabaseConfigured) {
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: cleanEmail,
-          password: passwordInput
-        });
-        if (!error && data?.user) {
-          const adminUser = { email: data.user.email, id: data.user.id };
-          setUser(adminUser);
-          localStorage.setItem(LOCAL_AUTH_KEY, JSON.stringify(adminUser));
-          return adminUser;
-        }
-      } catch {
-        // Fallback to local password check if cloud user is not created yet
-      }
+    if (!isSupabaseConfigured) {
+      throw new Error('Authentication service is not configured. Please contact support.');
     }
 
-    // 2. Password Validation Check (uses custom updated password or environment variable)
-    const customPassword = localStorage.getItem('the_social_dev_custom_admin_password');
-    const expectedPassword = customPassword || import.meta.env.VITE_ADMIN_PASSWORD;
+    // Delegate entirely to Supabase Auth — no frontend password comparison fallback
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: cleanEmail,
+      password: passwordInput
+    });
 
-    if (expectedPassword && passwordInput === expectedPassword) {
-      const adminUser = { email: cleanEmail, id: 'admin-local-1' };
-      setUser(adminUser);
-      localStorage.setItem(LOCAL_AUTH_KEY, JSON.stringify(adminUser));
-      return adminUser;
+    if (error || !data?.user) {
+      throw new Error(error?.message || 'Invalid credentials. Please try again.');
     }
 
-
-    throw new Error('Incorrect admin password. Please try again.');
+    // Store only non-sensitive identifiers (no password) for optimistic UI rendering
+    const adminUser = { email: data.user.email, id: data.user.id };
+    setUser(adminUser);
+    localStorage.setItem(LOCAL_AUTH_KEY, JSON.stringify(adminUser));
+    return adminUser;
   };
 
   const updateAdminPassword = async (newPassword) => {
@@ -389,31 +377,27 @@ export function SiteProvider({ children }) {
       throw new Error('New password must be at least 6 characters long.');
     }
 
-    // 1. If Supabase is configured, update the cloud user password
-    if (isSupabaseConfigured) {
-      try {
-        const { error } = await supabase.auth.updateUser({ password: newPassword });
-        if (error) {
-          console.warn('Supabase password update note:', error.message);
-        }
-      } catch (err) {
-        console.warn('Supabase password update error:', err);
-      }
+    if (!isSupabaseConfigured) {
+      throw new Error('Authentication service is not configured.');
     }
 
-    // 2. Persist custom password in localStorage for immediate fallback login
-    localStorage.setItem('the_social_dev_custom_admin_password', newPassword);
+    // Update password exclusively through Supabase Auth — never store in localStorage
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) {
+      throw new Error(error.message || 'Failed to update password. Please try again.');
+    }
+
     return true;
   };
 
   const logout = async () => {
-    if (isSupabaseConfigured) {
-      try {
-        await supabase.auth.signOut();
-      } catch {}
-    }
+    try {
+      await supabase.auth.signOut();
+    } catch { /* Ignore signOut errors — session is cleared client-side regardless */ }
     setUser(null);
     localStorage.removeItem(LOCAL_AUTH_KEY);
+    // Clear any stale token that the custom Supabase adapter may have stored
+    localStorage.removeItem('supabase_access_token');
   };
 
   // Content Mutators with Sanitization

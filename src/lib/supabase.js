@@ -1,7 +1,7 @@
 // Standalone Supabase REST Client Adapter (Zero-dependency, Vite-friendly)
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://hbcpxaavhlblceqjlyza.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_RL0Buoy8YpRGlSFvo7U4wQ_vAca-t9E';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const isSupabaseConfigured = Boolean(
   supabaseUrl && 
@@ -219,6 +219,7 @@ export const supabase = {
 };
 
 export const SQL_SCHEMA_SETUP = `-- Supabase SQL Setup Queries for The_Social_Dev Admin Dashboard
+-- Run this in your Supabase project: Dashboard > SQL Editor
 
 -- 1. Create site_settings table (for key-value pairs like email, about, whyChooseUs, ventures, services)
 CREATE TABLE IF NOT EXISTS site_settings (
@@ -252,12 +253,12 @@ CREATE TABLE IF NOT EXISTS ventures (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 4. Row Level Security Policies
+-- 4. Enable Row Level Security on all tables
 ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE services ENABLE ROW LEVEL SECURITY;
 ALTER TABLE ventures ENABLE ROW LEVEL SECURITY;
 
--- Allow public read access across all tables
+-- 5. Allow public READ access (site content must be publicly visible)
 DROP POLICY IF EXISTS "Public read site_settings" ON site_settings;
 CREATE POLICY "Public read site_settings" ON site_settings FOR SELECT USING (true);
 
@@ -267,13 +268,29 @@ CREATE POLICY "Public read services" ON services FOR SELECT USING (true);
 DROP POLICY IF EXISTS "Public read ventures" ON ventures;
 CREATE POLICY "Public read ventures" ON ventures FOR SELECT USING (true);
 
--- Allow site management write access for admin updates
+-- 6. Restrict WRITE operations to authenticated users only (admin JWT required)
+-- Anonymous users cannot INSERT, UPDATE or DELETE.
 DROP POLICY IF EXISTS "Admin write site_settings" ON site_settings;
-CREATE POLICY "Admin write site_settings" ON site_settings FOR ALL USING (true);
+DROP POLICY IF EXISTS "Authenticated write site_settings" ON site_settings;
+CREATE POLICY "Authenticated write site_settings" ON site_settings
+  FOR ALL
+  TO authenticated
+  USING (true)
+  WITH CHECK (true);
 
 DROP POLICY IF EXISTS "Admin write services" ON services;
-CREATE POLICY "Admin write services" ON services FOR ALL USING (true);
+DROP POLICY IF EXISTS "Authenticated write services" ON services;
+CREATE POLICY "Authenticated write services" ON services
+  FOR ALL
+  TO authenticated
+  USING (true)
+  WITH CHECK (true);
 
 DROP POLICY IF EXISTS "Admin write ventures" ON ventures;
-CREATE POLICY "Admin write ventures" ON ventures FOR ALL USING (true);
+DROP POLICY IF EXISTS "Authenticated write ventures" ON ventures;
+CREATE POLICY "Authenticated write ventures" ON ventures
+  FOR ALL
+  TO authenticated
+  USING (true)
+  WITH CHECK (true);
 `;
