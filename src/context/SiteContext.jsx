@@ -81,66 +81,79 @@ export function SiteProvider({ children }) {
       }
 
       setContent(prev => {
-        // Dedicated `services` table check: if query succeeded (data is array), map rows.
+        // Dedicated `services` table check: if query succeeded and returned non-empty array, map rows.
         let fetchedServices = prev.services;
-        if (!servicesErr && Array.isArray(servicesData)) {
-          if (servicesData.length > 0) {
-            fetchedServices = servicesData.map(s => ({
-              id: s.id,
-              title: s.title,
-              description: s.description,
-              icon: s.icon,
-              isActive: s.is_active !== false,
-              sortOrder: s.sort_order
-            }));
-          } else {
-            fetchedServices = [];
-          }
-        } else if (!settingsErr && Array.isArray(settingsMap.services)) {
+        if (!servicesErr && Array.isArray(servicesData) && servicesData.length > 0) {
+          fetchedServices = servicesData.map(s => ({
+            id: s.id,
+            title: s.title,
+            description: s.description,
+            icon: s.icon,
+            isActive: s.is_active !== false,
+            sortOrder: s.sort_order
+          }));
+        } else if (!settingsErr && Array.isArray(settingsMap.services) && settingsMap.services.length > 0) {
           fetchedServices = settingsMap.services;
-        } else if (!prev.services || prev.services.length === 0) {
+        } else if (Array.isArray(prev.services) && prev.services.length > 0) {
+          fetchedServices = prev.services;
+        } else {
           fetchedServices = DEFAULT_SITE_CONTENT.services;
         }
 
-        // Dedicated `ventures` table check: if query succeeded (data is array), map rows.
+        // Dedicated `ventures` table check: if query succeeded and returned non-empty array, map rows.
         let fetchedVentures = prev.ventures;
-        if (!venturesErr && Array.isArray(venturesData)) {
-          if (venturesData.length > 0) {
-            fetchedVentures = venturesData.map(v => ({
-              id: v.id,
-              title: v.title,
-              description: v.description,
-              url: v.url,
-              image: v.image,
-              isActive: v.is_active !== false,
-              sortOrder: v.sort_order
-            }));
-          } else {
-            fetchedVentures = [];
-          }
-        } else if (!settingsErr && Array.isArray(settingsMap.ventures)) {
+        if (!venturesErr && Array.isArray(venturesData) && venturesData.length > 0) {
+          fetchedVentures = venturesData.map(v => ({
+            id: v.id,
+            title: v.title,
+            description: v.description,
+            url: v.url,
+            image: v.image,
+            isActive: v.is_active !== false,
+            sortOrder: v.sort_order
+          }));
+        } else if (!settingsErr && Array.isArray(settingsMap.ventures) && settingsMap.ventures.length > 0) {
           fetchedVentures = settingsMap.ventures;
-        } else if (!prev.ventures || prev.ventures.length === 0) {
+        } else if (Array.isArray(prev.ventures) && prev.ventures.length > 0) {
+          fetchedVentures = prev.ventures;
+        } else {
           fetchedVentures = DEFAULT_SITE_CONTENT.ventures;
         }
 
+        // FAQs check
+        let fetchedFaqs = prev.faqs;
+        if (!settingsErr && Array.isArray(settingsMap.faqs) && settingsMap.faqs.length > 0) {
+          fetchedFaqs = settingsMap.faqs;
+        } else if (Array.isArray(prev.faqs) && prev.faqs.length > 0) {
+          fetchedFaqs = prev.faqs;
+        } else {
+          fetchedFaqs = DEFAULT_SITE_CONTENT.faqs;
+        }
+
+        // Process steps check
+        let fetchedProcessSteps = prev.processSteps;
+        if (!settingsErr && Array.isArray(settingsMap.processSteps) && settingsMap.processSteps.length > 0) {
+          fetchedProcessSteps = settingsMap.processSteps;
+        } else if (Array.isArray(prev.processSteps) && prev.processSteps.length > 0) {
+          fetchedProcessSteps = prev.processSteps;
+        } else {
+          fetchedProcessSteps = DEFAULT_SITE_CONTENT.processSteps;
+        }
+
         const updated = {
+          ...DEFAULT_SITE_CONTENT,
           ...prev,
           contactEmail: settingsMap.contactEmail || prev.contactEmail || DEFAULT_SITE_CONTENT.contactEmail,
-          socialLinks: (!settingsErr && Array.isArray(settingsMap.socialLinks))
+          socialLinks: (!settingsErr && Array.isArray(settingsMap.socialLinks) && settingsMap.socialLinks.length > 0)
             ? settingsMap.socialLinks
             : (prev.socialLinks || DEFAULT_SITE_CONTENT.socialLinks),
           about: (!settingsErr && settingsMap.about) ? settingsMap.about : (prev.about || DEFAULT_SITE_CONTENT.about),
           whyChooseUs: (!settingsErr && settingsMap.whyChooseUs) ? settingsMap.whyChooseUs : (prev.whyChooseUs || DEFAULT_SITE_CONTENT.whyChooseUs),
           services: fetchedServices,
           ventures: fetchedVentures,
-          faqs: (!settingsErr && Array.isArray(settingsMap.faqs))
-            ? settingsMap.faqs
-            : (prev.faqs || DEFAULT_SITE_CONTENT.faqs),
+          faqs: fetchedFaqs,
           processHeader: (!settingsErr && settingsMap.processHeader) ? settingsMap.processHeader : (prev.processHeader || DEFAULT_SITE_CONTENT.processHeader),
-          processSteps: (!settingsErr && Array.isArray(settingsMap.processSteps))
-            ? settingsMap.processSteps
-            : (prev.processSteps || DEFAULT_SITE_CONTENT.processSteps)
+          processSteps: fetchedProcessSteps
         };
 
         // Cache remote data back into LocalStorage to guarantee instant availability

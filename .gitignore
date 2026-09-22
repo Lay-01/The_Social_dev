@@ -1,36 +1,31 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# Dependencies
+node_modules/
 
-# Environment Variables & Secrets (NEVER commit these)
+# Production build outputs
+dist/
+dist-ssr/
+build/
+
+# Local env files
 .env
 .env.local
 .env.*.local
 
-# Agent local configurations & temporary files
-.agents/
-.kilo/
-SYNC_FIX_STEPS.txt
-socdev.whtt
-*.whtt
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
 
-# Build & Dependencies
-node_modules
-dist
-dist-ssr
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# OS & Editor files
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+Thumbs.db
+.vscode/
+.idea/
+
+# Webflow scraped/legacy assets
+socdev/
+backblue.gif
+fade.gif
+css/
+js/
+images/
