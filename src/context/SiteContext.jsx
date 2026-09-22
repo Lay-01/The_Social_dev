@@ -210,6 +210,13 @@ export function SiteProvider({ children }) {
     window.addEventListener('focus', handleFocusOrVisibility);
     document.addEventListener('visibilitychange', handleFocusOrVisibility);
 
+    // Periodic auto-sync every 30s to keep multiple devices updated in real-time
+    const pollInterval = setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        fetchFromSupabase();
+      }
+    }, 30000);
+
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         setUser({ email: session.user.email, id: session.user.id });
@@ -221,6 +228,7 @@ export function SiteProvider({ children }) {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('focus', handleFocusOrVisibility);
       document.removeEventListener('visibilitychange', handleFocusOrVisibility);
+      clearInterval(pollInterval);
       if (channel) channel.close();
       authListener?.subscription?.unsubscribe();
     };
