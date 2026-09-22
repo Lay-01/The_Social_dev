@@ -82,26 +82,28 @@ export function SiteProvider({ children }) {
 
       setContent(prev => {
         // Dedicated `services` table check: if query succeeded (data is array), map rows.
-        let fetchedServices;
-        if (!servicesErr && Array.isArray(servicesData) && servicesData.length > 0) {
-          fetchedServices = servicesData.map(s => ({
-            id: s.id,
-            title: s.title,
-            description: s.description,
-            icon: s.icon,
-            isActive: s.is_active !== false,
-            sortOrder: s.sort_order
-          }));
+        let fetchedServices = prev.services;
+        if (!servicesErr && Array.isArray(servicesData)) {
+          if (servicesData.length > 0) {
+            fetchedServices = servicesData.map(s => ({
+              id: s.id,
+              title: s.title,
+              description: s.description,
+              icon: s.icon,
+              isActive: s.is_active !== false,
+              sortOrder: s.sort_order
+            }));
+          } else {
+            fetchedServices = [];
+          }
         } else if (!settingsErr && Array.isArray(settingsMap.services)) {
           fetchedServices = settingsMap.services;
-        } else if (!servicesErr && Array.isArray(servicesData) && servicesData.length === 0) {
-          fetchedServices = [];
-        } else {
-          fetchedServices = prev.services || DEFAULT_SITE_CONTENT.services;
+        } else if (!prev.services || prev.services.length === 0) {
+          fetchedServices = DEFAULT_SITE_CONTENT.services;
         }
 
         // Dedicated `ventures` table check: if query succeeded (data is array), map rows.
-        let fetchedVentures;
+        let fetchedVentures = prev.ventures;
         if (!venturesErr && Array.isArray(venturesData)) {
           if (venturesData.length > 0) {
             fetchedVentures = venturesData.map(v => ({
@@ -118,8 +120,8 @@ export function SiteProvider({ children }) {
           }
         } else if (!settingsErr && Array.isArray(settingsMap.ventures)) {
           fetchedVentures = settingsMap.ventures;
-        } else {
-          fetchedVentures = prev.ventures || DEFAULT_SITE_CONTENT.ventures;
+        } else if (!prev.ventures || prev.ventures.length === 0) {
+          fetchedVentures = DEFAULT_SITE_CONTENT.ventures;
         }
 
         const updated = {
@@ -128,14 +130,14 @@ export function SiteProvider({ children }) {
           socialLinks: (!settingsErr && Array.isArray(settingsMap.socialLinks))
             ? settingsMap.socialLinks
             : (prev.socialLinks || DEFAULT_SITE_CONTENT.socialLinks),
-          about: settingsMap.about || prev.about || DEFAULT_SITE_CONTENT.about,
-          whyChooseUs: settingsMap.whyChooseUs || prev.whyChooseUs || DEFAULT_SITE_CONTENT.whyChooseUs,
+          about: (!settingsErr && settingsMap.about) ? settingsMap.about : (prev.about || DEFAULT_SITE_CONTENT.about),
+          whyChooseUs: (!settingsErr && settingsMap.whyChooseUs) ? settingsMap.whyChooseUs : (prev.whyChooseUs || DEFAULT_SITE_CONTENT.whyChooseUs),
           services: fetchedServices,
           ventures: fetchedVentures,
           faqs: (!settingsErr && Array.isArray(settingsMap.faqs))
             ? settingsMap.faqs
             : (prev.faqs || DEFAULT_SITE_CONTENT.faqs),
-          processHeader: settingsMap.processHeader || prev.processHeader || DEFAULT_SITE_CONTENT.processHeader,
+          processHeader: (!settingsErr && settingsMap.processHeader) ? settingsMap.processHeader : (prev.processHeader || DEFAULT_SITE_CONTENT.processHeader),
           processSteps: (!settingsErr && Array.isArray(settingsMap.processSteps))
             ? settingsMap.processSteps
             : (prev.processSteps || DEFAULT_SITE_CONTENT.processSteps)
