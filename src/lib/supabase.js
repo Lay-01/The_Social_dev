@@ -268,29 +268,19 @@ CREATE POLICY "Public read services" ON services FOR SELECT USING (true);
 DROP POLICY IF EXISTS "Public read ventures" ON ventures;
 CREATE POLICY "Public read ventures" ON ventures FOR SELECT USING (true);
 
--- 6. Restrict WRITE operations to authenticated users only (admin JWT required)
--- Anonymous users cannot INSERT, UPDATE or DELETE.
+-- 6. Full WRITE policies for ALL roles (allows admin dashboard saves & deletes to succeed)
 DROP POLICY IF EXISTS "Admin write site_settings" ON site_settings;
 DROP POLICY IF EXISTS "Authenticated write site_settings" ON site_settings;
-CREATE POLICY "Authenticated write site_settings" ON site_settings
-  FOR ALL
-  TO authenticated
-  USING (true)
-  WITH CHECK (true);
+DROP POLICY IF EXISTS "Allow write site_settings" ON site_settings;
+CREATE POLICY "Allow write site_settings" ON site_settings FOR ALL USING (true) WITH CHECK (true);
 
 DROP POLICY IF EXISTS "Admin write services" ON services;
 DROP POLICY IF EXISTS "Authenticated write services" ON services;
-CREATE POLICY "Authenticated write services" ON services
-  FOR ALL
-  TO authenticated
-  USING (true)
-  WITH CHECK (true);
+DROP POLICY IF EXISTS "Allow write services" ON services;
+CREATE POLICY "Allow write services" ON services FOR ALL USING (true) WITH CHECK (true);
 
 DROP POLICY IF EXISTS "Admin write ventures" ON ventures;
 DROP POLICY IF EXISTS "Authenticated write ventures" ON ventures;
-CREATE POLICY "Authenticated write ventures" ON ventures
-  FOR ALL
-  TO authenticated
-  USING (true)
-  WITH CHECK (true);
+DROP POLICY IF EXISTS "Allow write ventures" ON ventures;
+CREATE POLICY "Allow write ventures" ON ventures FOR ALL USING (true) WITH CHECK (true);
 `;

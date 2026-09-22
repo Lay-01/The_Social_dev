@@ -42,12 +42,13 @@
     const val = localStorage.getItem(key);
     if (val !== null) {
       passwordKeyFound = true;
+      try { localStorage.removeItem(key); } catch {}
       check(
         'Password Handling',
         `localStorage["${key}"]`,
         false,
         'CRITICAL',
-        `Plaintext password found in localStorage. Value length: ${val.length}. Remove immediately.`
+        `Legacy password key detected and automatically purged from localStorage.`
       );
     }
   }

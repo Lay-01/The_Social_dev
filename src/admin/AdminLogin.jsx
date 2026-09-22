@@ -80,6 +80,7 @@ export default function AdminLogin({ onLoginSuccess }) {
 
     try {
       await login(cleanEmail, password);
+      setPassword('');
       if (onLoginSuccess) onLoginSuccess();
     } catch (err) {
       setError(err.message || 'Invalid admin credentials');
