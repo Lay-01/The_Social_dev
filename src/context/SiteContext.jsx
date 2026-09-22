@@ -382,7 +382,7 @@ export function SiteProvider({ children }) {
     }
   };
 
-  // Auth Methods — Supabase Auth with non-blocking fallback for authorized admin emails
+  // Auth Methods — Strict Supabase Auth enforcement
   const login = async (emailInput, passwordInput) => {
     const cleanEmail = (emailInput || '').trim().toLowerCase();
 
@@ -394,33 +394,29 @@ export function SiteProvider({ children }) {
       throw new Error('Access denied: Email address is not authorized for Admin Access.');
     }
 
-    if (!passwordInput) {
+    if (!passwordInput || !passwordInput.trim()) {
       throw new Error('Please enter your admin password.');
     }
 
     if (isSupabaseConfigured) {
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: cleanEmail,
-          password: passwordInput
-        });
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: cleanEmail,
+        password: passwordInput
+      });
 
-        if (!error && data?.user) {
-          const adminUser = { email: data.user.email, id: data.user.id };
-          setUser(adminUser);
-          localStorage.setItem(LOCAL_AUTH_KEY, JSON.stringify(adminUser));
-          return adminUser;
-        }
-      } catch {
-        // Fall through to authorized fallback if Supabase Auth service is unconfigured or unreachable
+      if (error) {
+        throw new Error(error.message || 'Invalid email or password. Access denied.');
+      }
+
+      if (data?.user) {
+        const adminUser = { email: data.user.email, id: data.user.id };
+        setUser(adminUser);
+        localStorage.setItem(LOCAL_AUTH_KEY, JSON.stringify(adminUser));
+        return adminUser;
       }
     }
 
-    // Secure session creation for authorized admin emails (no plain-text password stored)
-    const adminUser = { email: cleanEmail, id: 'admin-' + Date.now() };
-    setUser(adminUser);
-    localStorage.setItem(LOCAL_AUTH_KEY, JSON.stringify(adminUser));
-    return adminUser;
+    throw new Error('Authentication service is unconfigured or unreachable. Access denied.');
   };
 
   const updateAdminPassword = async (newPassword) => {

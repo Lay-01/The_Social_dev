@@ -9,21 +9,35 @@ import './admin.css';
 
 export default function AdminLogin({ onLoginSuccess }) {
   const { login, updateAdminPassword } = useSiteContent();
-  const detectRecoveryMode = () => {
+  
+  const detectInitialView = () => {
     const href = (window.location.href || '').toLowerCase();
     const search = (window.location.search || '').toLowerCase();
     const hash = (window.location.hash || '').toLowerCase();
-    return (
+    
+    if (
       href.includes('type=recovery') ||
       search.includes('type=recovery') ||
       hash.includes('type=recovery') ||
       href.includes('access_token') ||
       href.includes('token_hash') ||
       href.includes('code=')
-    );
+    ) {
+      return 'reset';
+    }
+
+    if (
+      href.includes('forgot') ||
+      search.includes('forgot') ||
+      hash.includes('forgot')
+    ) {
+      return 'forgot';
+    }
+
+    return 'login';
   };
 
-  const [view, setView] = useState(() => (detectRecoveryMode() ? 'reset' : 'login')); // 'login' | 'forgot' | 'reset'
+  const [view, setView] = useState(detectInitialView); // 'login' | 'forgot' | 'reset'
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -34,8 +48,9 @@ export default function AdminLogin({ onLoginSuccess }) {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    if (detectRecoveryMode()) {
-      setView('reset');
+    const initial = detectInitialView();
+    if (initial !== 'login') {
+      setView(initial);
     }
 
     if (isSupabaseConfigured) {
