@@ -46,11 +46,13 @@ export function sanitizeUrl(urlStr) {
   const trimmed = urlStr.trim();
   if (!trimmed) return '';
 
-  // Allow relative URLs, http/https URLs, mailto URLs, base64 data URIs for image uploads, and anchor hashes
-  if (
-    /^(https?:\/\/|\/|#|mailto:|data:image\/[a-zA-Z]+;base64,)/i.test(trimmed)
-  ) {
-    // Remove inline JS execution vectors
+  // Allow base64 Data URIs for image uploads (PNG, JPEG, WebP, SVG, GIF, AVIF) without truncation
+  if (/^data:image\/[a-zA-Z0-9.+_-]+;base64,/i.test(trimmed)) {
+    return trimmed.replace(/javascript\s*:/gi, '');
+  }
+
+  // Allow relative URLs, blob URLs, http/https URLs, mailto URLs, and anchor hashes
+  if (/^(https?:\/\/|blob:|\/|#|mailto:)/i.test(trimmed)) {
     return trimmed.replace(/javascript\s*:/gi, '');
   }
 
@@ -59,7 +61,7 @@ export function sanitizeUrl(urlStr) {
     return `https://${trimmed}`;
   }
 
-  return sanitizeString(trimmed, 2048);
+  return sanitizeString(trimmed, 5000);
 }
 
 /**

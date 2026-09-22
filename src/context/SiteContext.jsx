@@ -200,6 +200,14 @@ export function SiteProvider({ children }) {
       } catch {}
     }
 
+    const handleFocusOrVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        fetchFromSupabase();
+      }
+    };
+    window.addEventListener('focus', handleFocusOrVisibility);
+    document.addEventListener('visibilitychange', handleFocusOrVisibility);
+
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         setUser({ email: session.user.email, id: session.user.id });
@@ -209,6 +217,8 @@ export function SiteProvider({ children }) {
 
     return () => {
       window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('focus', handleFocusOrVisibility);
+      document.removeEventListener('visibilitychange', handleFocusOrVisibility);
       if (channel) channel.close();
       authListener?.subscription?.unsubscribe();
     };
